@@ -10,18 +10,19 @@ class App extends React.Component {
   }
 
   render() {
-    return;
-    <div className="App">
-      <UserRole />;
-      <DataTable
-        classes={["table", "table-bordered"]}
-        header={["name", "age"]}
-        data={[
-          { name: "test", age: 20 },
-          { name: "test", age: 20 },
-        ]}
-      />
-    </div>;
+    return (
+      <div className="App">
+        <UserRole />;
+        <DataTable
+          classes={["table", "table-bordered"]}
+          header={["name", "age"]}
+          data={[
+            { name: "test", age: 20 },
+            { name: "test", age: 20 },
+          ]}
+        />
+      </div>
+    );
   }
 }
 

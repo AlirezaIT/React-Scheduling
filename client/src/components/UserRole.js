@@ -1,23 +1,38 @@
 import React from "react";
-import { Form, FormGroup, Col, Label, Input } from "reactstrap";
+import { Form, FormGroup, Col, Label, Input, Button } from "reactstrap";
 
 class UserRole extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: "teacher" };
-
-    this.handleChange = this.handleChange.bind(this);
+    this.state = {
+      email: "",
+      pass: "",
+      stNO: "",
+      role: "teacher",
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value,
+    });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    // alert("Your Role is: " + this.state.value);
-    console.log(this.state.value);
+    // console.log();
+    alert(JSON.stringify(this.state));
+    this.setState({
+      email: "",
+      pass: "",
+      stNO: "",
+    });
   }
   render() {
     return (
@@ -28,26 +43,55 @@ class UserRole extends React.Component {
         <div className="col-12">
           <Form onSubmit={this.handleSubmit}>
             <FormGroup row>
-              <select value={this.state.value} onChange={this.handleChange}>
+              <select
+                role={this.state.value}
+                onChange={this.handleInputChange}
+                name="role"
+              >
                 <option value="teacher">Teacher</option>
                 <option value="student">Student</option>
               </select>
 
-              {this.state.value === "teacher" && (
+              {this.state.role == "teacher" && (
                 <>
-                  {/* <Label htmlFor="email">Email</Label> */}
-                  <Input type="text" id="email" placeholder="Email" />
-                  <Input type="password" id="pass" placeholder="Password" />
+                  <Input
+                    type="text"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    value={this.state.email}
+                    onChange={this.handleInputChange}
+                  />
+                  <Input
+                    type="password"
+                    id="pass"
+                    name="pass"
+                    placeholder="Password"
+                    value={this.state.pass}
+                    onChange={this.handleInputChange}
+                  />
                 </>
               )}
 
-              {this.state.value === "student" && (
+              {this.state.role === "student" && (
                 <>
-                  <Input type="text" id="stNO" placeholder="Student Number" />
+                  <Input
+                    type="text"
+                    id="stNO"
+                    name="stNO"
+                    placeholder="Student Number"
+                    value={this.state.stNO}
+                    onChange={this.handleInputChange}
+                  />
                 </>
               )}
-
-              <input type="submit" value="Submit" />
+            </FormGroup>
+            <FormGroup row>
+              <Col md={12}>
+                <Button type="submit" color="primary">
+                  Sumbit
+                </Button>
+              </Col>
             </FormGroup>
           </Form>
         </div>
