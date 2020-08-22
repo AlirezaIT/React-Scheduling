@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, FormGroup, Col, Label, Input, Button } from "reactstrap";
+import { Form, FormGroup, Col, Input, Button } from "reactstrap";
 
 class UserRole extends React.Component {
   constructor(props) {
