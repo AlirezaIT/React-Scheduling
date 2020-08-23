@@ -75,8 +75,13 @@ class App extends React.Component {
             classes={["table", "table-bordered"]}
             header={["name", "age"]}
             data={[
-              { name: "test", age: 20 },
-              { name: "test", age: 20 },
+              { name: "test5", age: 20 },
+              { name: "test12", age: 30 },
+
+              { name: "test42", age: 30 },
+
+              { name: "test25", age: 75 },
+              { name: "test20", age: 30 },
             ]}
           />
         </Container>
