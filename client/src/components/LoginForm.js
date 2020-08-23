@@ -49,7 +49,7 @@ class UserRole extends React.Component {
     return (
       <AuthContext.Consumer>
         {(context) => (
-          <Container>
+          <Container fluid>
             <Row>
               <Col md={{ span: 4, offset: 4 }}>
                 <h3> Select your Role: </h3>
