@@ -1,15 +1,26 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import LoginForm from "./components/LoginForm";
 import DataTable from "./components/DataTable";
+import Header from "./components/Header";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
+import { Col, Row, Container } from "react-bootstrap";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { authErr: "", authUser: "" };
+    this.toggleNav = this.toggleNav.bind(this);
+    this.state = {
+      isNavOpen: false,
+    };
+  }
+
+  toggleNav() {
+    this.setState({
+      isNavOpen: !this.state.isNavOpen,
+    });
   }
 
   // componentDidMount() {
@@ -43,10 +54,21 @@ class App extends React.Component {
 
     return (
       <AuthContext.Provider value={value}>
-        <div className="App">
+        <Header isNavOpen={this.state.isNavOpen} toggleNav={this.toggleNav} />
+        <Container>
           <Switch>
-            <Route path="/login" component={LoginForm} />
-            <Redirect from="/" to="/login" />
+            <Route path="/login" component={LoginForm}>
+              <Row className="vheight-100 mt-5">
+                {/* <Col sm={4}></Col> */}
+                {/* <Col sm={4} className="below-nav"> */}
+                <LoginForm />
+                {/* {</Col> */}
+              </Row>
+            </Route>
+            {/* <Redirect from="/" to="/login" /> */}
+            <Route>
+              <Redirect to="/login" />
+            </Route>
           </Switch>
           {/* <LoginForm />; */}
           <DataTable
@@ -57,7 +79,7 @@ class App extends React.Component {
               { name: "test", age: 20 },
             ]}
           />
-        </div>
+        </Container>
       </AuthContext.Provider>
     );
   }

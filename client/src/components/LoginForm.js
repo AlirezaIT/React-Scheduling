@@ -7,8 +7,9 @@ import {
   FormControl,
   Container,
   Row,
+  Alert,
 } from "react-bootstrap";
-import { Alert } from "reactstrap";
+
 import { AuthContext } from "../auth/AuthContext";
 
 class UserRole extends React.Component {
@@ -51,7 +52,7 @@ class UserRole extends React.Component {
           <Container>
             <Row>
               <Col md={{ span: 4, offset: 4 }}>
-                <h3> Select you Role : </h3>
+                <h3> Select your Role: </h3>
 
                 <Form method="POST" onSubmit={this.handleSubmit}>
                   <FormGroup>
