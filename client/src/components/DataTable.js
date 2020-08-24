@@ -15,7 +15,10 @@ function DataTable({ data, header, classes }) {
         </thead>
         <tbody>
           {data.map((x, i) => (
-            <td key={i}>{x[header[i]]}</td>
+            <tr>
+              <td key={i}>{x[header[i]]}</td>
+              <td key={i}>{x + (1)[header[i + 1]]}</td>
+            </tr>
           ))}
         </tbody>
       </table>
