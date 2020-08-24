@@ -3,6 +3,7 @@ import "./App.css";
 import LoginForm from "./components/LoginForm";
 import DataTable from "./components/DataTable";
 import Header from "./components/Header";
+import AddExam from "./components/AddExam";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
@@ -55,35 +56,38 @@ class App extends React.Component {
     return (
       <AuthContext.Provider value={value}>
         <Header isNavOpen={this.state.isNavOpen} toggleNav={this.toggleNav} />
-        <Container>
+        <Container fluid>
           <Switch>
             <Route path="/login" component={LoginForm}>
               <Row className="vheight-100 mt-5">
-                {/* <Col sm={4}></Col> */}
-                {/* <Col sm={4} className="below-nav"> */}
                 <LoginForm />
-                {/* {</Col> */}
               </Row>
             </Route>
-            {/* <Redirect from="/" to="/login" /> */}
+
+            <Route path="/addexam" component={LoginForm}>
+              <Row className="vheight-100 mt-5">
+                <AddExam />
+              </Row>
+            </Route>
+
             <Route>
               <Redirect to="/login" />
             </Route>
           </Switch>
-          {/* <LoginForm />; */}
-          <DataTable
-            classes={["table", "table-bordered"]}
-            header={["name", "age"]}
-            data={[
-              { name: "test5", age: 20 },
-              { name: "test12", age: 30 },
 
-              { name: "test42", age: 30 },
+          {/* <DataTable
+            classes={["table", "table-bordered"]}
+            header={["name", "age", "family"]}
+            data={[
+              { name: "test5", age: 20, family: "aaa" },
+              { name: "test12", age: 80 },
+
+              { name: "test42", age: 65 },
 
               { name: "test25", age: 75 },
-              { name: "test20", age: 30 },
+              { name: "test20", age: 30, family: "bbb" },
             ]}
-          />
+          /> */}
         </Container>
       </AuthContext.Provider>
     );
