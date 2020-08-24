@@ -1,8 +1,10 @@
 import React from "react";
+import Header from "./Header";
 
 function DataTable({ data, header, classes }) {
   return (
     <div className="container">
+      {console.log(data)}
       <table className={classes ? classes.join(" ") : ""}>
         <thead>
           <tr>
@@ -15,9 +17,10 @@ function DataTable({ data, header, classes }) {
         </thead>
         <tbody>
           {data.map((x, i) => (
-            <tr>
-              <td key={i}>{x[header[i]]}</td>
-              <td key={i}>{x + (1)[header[i + 1]]}</td>
+            <tr key={i}>
+              {header.map((l, k) => (
+                <td key={k}>{x[header[k]]}</td>
+              ))}
             </tr>
           ))}
         </tbody>
