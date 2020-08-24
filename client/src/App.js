@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import LoginForm from "./components/LoginForm";
 import DataTable from "./components/DataTable";
+import StudentPage from "./components/studentPage";
 import Header from "./components/Header";
 import AddExam from "./components/AddExam";
 import { Route, Switch, Redirect } from "react-router-dom";
