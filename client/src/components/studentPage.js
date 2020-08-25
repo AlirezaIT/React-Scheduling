@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { movies } from "../services/fakeMovieService";
+
 import { Table } from "reactstrap";
 import DataTable from "./DataTable";
 const listExams = [
@@ -44,15 +44,15 @@ class StudentPage extends Component {
     super(props);
     this.state = {
       exams: listExams,
-      reserveExams: listReserveExams,
+      reservedExams: listReserveExams,
     };
   }
 
   handleCancelReservation = (reserveExam) => {
-    const reserveExams = this.state.reserveExams.filter(
+    const reservedExams = this.state.reservedExams.filter(
       (re) => re.id !== reserveExam.id
     );
-    this.setState({ reserveExams }); //reserveExams = reserveExams
+    this.setState({ reservedExams }); //reserveExams = reserveExams
   };
 
   handleReserve = (exam) => {
@@ -61,9 +61,13 @@ class StudentPage extends Component {
   renderCancel() {
     // if (this.state.reserveExams.find((re) => re.date  Date() )
   }
-  render() {
+  renderExams() {
+    const { lenght: examCount } = this.state.exams;
+
+    if (examCount === 0) return <p>There are no exams assigned to you</p>;
     return (
       <div>
+        <p>You have {examCount} exams</p>
         <table className="table">
           <thead>
             <tr>
@@ -88,7 +92,16 @@ class StudentPage extends Component {
             ))}
           </tbody>
         </table>
+      </div>
+    );
+  }
 
+  renderReserveredExams() {
+    const { lenght: countReserved } = this.state.reservedExams;
+    if (countReserved === 0) return <p>There are no reserved exams </p>;
+    return (
+      <div>
+        <p>You have {countReserved} exams</p>
         <table className="table">
           <thead>
             <tr>
@@ -100,16 +113,16 @@ class StudentPage extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.reserveExams.map((reserveExam) => (
-              <tr key={reserveExam.id}>
-                <td>{reserveExam.title}</td>
-                <td>{reserveExam.date}</td>
-                <td>{reserveExam.slot}</td>
-                <td>{reserveExam.grade}</td>
+            {this.state.reservedExams.map((reservedExam) => (
+              <tr key={reservedExam.id}>
+                <td>{reservedExam.title}</td>
+                <td>{reservedExam.date}</td>
+                <td>{reservedExam.slot}</td>
+                <td>{reservedExam.grade}</td>
                 <td>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => this.handleCancelReservation(reserveExam)}
+                    onClick={() => this.handleCancelReservation(reservedExam)}
                   >
                     Cancel
                   </button>
@@ -118,6 +131,15 @@ class StudentPage extends Component {
             ))}
           </tbody>
         </table>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <div>{this.renderExams()}</div>
+        <div> {this.renderReserveredExams()}</div>
       </div>
     );
   }
