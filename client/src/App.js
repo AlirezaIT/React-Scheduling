@@ -4,6 +4,7 @@ import LoginForm from "./components/LoginForm";
 import DataTable from "./components/DataTable";
 import StudentPage from "./components/studentPage";
 import Header from "./components/Header";
+import AddExam from "./components/AddExam";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
@@ -57,17 +58,20 @@ class App extends React.Component {
     return (
       <AuthContext.Provider value={value}>
         <Header isNavOpen={this.state.isNavOpen} toggleNav={this.toggleNav} />
-        <Container>
+        <Container fluid>
           <Switch>
             <Route path="/login" component={LoginForm}>
               <Row className="vheight-100 mt-5">
-                {/* <Col sm={4}></Col> */}
-                {/* <Col sm={4} className="below-nav"> */}
                 <LoginForm />
-                {/* {</Col> */}
               </Row>
             </Route>
-            {/* <Redirect from="/" to="/login" /> */}
+
+            <Route path="/addexam" component={LoginForm}>
+              <Row className="vheight-100 mt-5">
+                <AddExam />
+              </Row>
+            </Route>
+
             <Route>
               <Redirect to="/login" />
             </Route>

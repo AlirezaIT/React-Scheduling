@@ -64,32 +64,7 @@ class StudentPage extends Component {
   render() {
     return (
       <div>
-        <DataTable
-          classes={["table", "table-bordered"]}
-          header={["ExamTitle", "Reserve"]}
-          data={[
-            {
-              ExamTitle: this.state.exams,
-              Reserve: (
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => this.handleReserve()}
-                >
-                  Reserve
-                </button>
-              ),
-            },
-          ]}
-        />
-      </div>
-    );
-  }
-}
-
-export default StudentPage;
-
-{
-  /* <table className="table">
+        <table className="table">
           <thead>
             <tr>
               <th>Exam Tile</th>
@@ -142,5 +117,10 @@ export default StudentPage;
               </tr>
             ))}
           </tbody>
-        </table> */
+        </table>
+      </div>
+    );
+  }
 }
+
+export default StudentPage;
