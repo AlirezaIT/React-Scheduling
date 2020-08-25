@@ -87,7 +87,7 @@ class App extends React.Component {
               { name: "test20", age: 30, remove_btn: `remove`, is_absent: false},
             ]}
           /> */}
-          <StudentListReservedExams />
+          {/* <StudentListReservedExams /> */}
         </Container>
       </AuthContext.Provider>
     );
