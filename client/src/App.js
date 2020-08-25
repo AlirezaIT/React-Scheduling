@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
+import StudentListReservedExams from "./components/StudentListReservedExams";
 
 class App extends React.Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class App extends React.Component {
             </Route>
           </Switch>
           {/* <LoginForm />; */}
-          <DataTable
+          {/* <DataTable
             classes={["table", "table-bordered"]}
             header={["name", "age", 'remove_btn', 'add_btn', 'absent_checkbox', 'detail_btn', 'course_dropdown', 'teacher_dropdown']}
             dropdowns={{
@@ -85,7 +86,8 @@ class App extends React.Component {
               { name: "test25", age: 75, remove_btn: `remove`, is_absent: true},
               { name: "test20", age: 30, remove_btn: `remove`, is_absent: false},
             ]}
-          />
+          /> */}
+          <StudentListReservedExams />
         </Container>
       </AuthContext.Provider>
     );
