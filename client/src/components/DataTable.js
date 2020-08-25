@@ -61,6 +61,8 @@ class DataTable extends React.Component {
                   } else if (h.includes('dropdown')) {
                     return <td>
                        <select className="form-control" id="inputState" onChange={(e) => this.onSelectedHandler(e, row, h)} defaultValue="2">
+                          {/* dropdowns = {course_dropdown , teacher_dropdown}  */}
+                          {/* h = course_dropdown , teacher_dropdown  */}
                           {dropdowns[h].map((d, di) => (<option key={di} value={d.id}>{d.name}</option>))}
                       </select>
                     </td>
