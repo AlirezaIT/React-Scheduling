@@ -9,7 +9,7 @@ import {
   Row,
   Alert,
 } from "react-bootstrap";
-
+import { Redirect } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 
 class UserRole extends React.Component {
@@ -20,6 +20,7 @@ class UserRole extends React.Component {
       pass: "",
       stNO: "",
       role: "teacher",
+      submitted: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,10 +36,16 @@ class UserRole extends React.Component {
     });
   }
 
-  handleSubmit(event) {
+  handleSubmit(event, onLogin) {
     event.preventDefault();
     // console.log();
     alert(JSON.stringify(this.state));
+    // if (this.state.role === "teacher") {
+    //   onLogin(this.state.email, this.state.pass);
+    // } else console.log("student");
+    onLogin(this.state.email, this.state.pass, this.state.role);
+
+    this.setState({ submitted: true });
     this.setState({
       email: "",
       pass: "",
@@ -46,6 +53,7 @@ class UserRole extends React.Component {
     });
   }
   render() {
+    // if (this.state.submitted) return <Redirect to="/addexam" />;
     return (
       <AuthContext.Consumer>
         {(context) => (
@@ -54,7 +62,12 @@ class UserRole extends React.Component {
               <Col md={{ span: 4, offset: 4 }}>
                 <h3> Select your Role: </h3>
 
-                <Form method="POST" onSubmit={this.handleSubmit}>
+                <Form
+                  method="POST"
+                  onSubmit={(event) =>
+                    this.handleSubmit(event, context.loginUser)
+                  }
+                >
                   <FormGroup>
                     <select
                       className="form-control"

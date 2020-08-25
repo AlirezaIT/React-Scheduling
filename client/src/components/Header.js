@@ -20,7 +20,7 @@ const Header = (props) => {
                 </NavItem>
                 <NavItem>
                   <NavLink className="nav-link" to="/aboutus">
-                    Add Exam
+                    Create Exam
                   </NavLink>
                 </NavItem>
                 <NavItem>

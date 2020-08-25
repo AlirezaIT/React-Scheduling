@@ -3,7 +3,9 @@ import "./App.css";
 import LoginForm from "./components/LoginForm";
 import DataTable from "./components/DataTable";
 import Header from "./components/Header";
-import AddExam from "./components/AddExam";
+import CreateExam from "./components/CreateExam";
+import CreateSession from "./components/CreateSession";
+import API from "./api/API";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
@@ -45,6 +47,18 @@ class App extends React.Component {
   //   }
   // }
 
+  login = (username, password, role) => {
+    API.userLogin(username, password, role)
+      .then((user) => {
+        this.setState({ authUser: user, authErr: null });
+        this.props.history.push("/addexam");
+      })
+      .catch((errorObj) => {
+        const err0 = errorObj.errors[0];
+        this.setState({ authErr: err0, authUser: null });
+      });
+  };
+
   render() {
     const value = {
       authUser: this.state.authUser,
@@ -64,12 +78,11 @@ class App extends React.Component {
               </Row>
             </Route>
 
-            <Route path="/addexam" component={LoginForm}>
+            <Route path="/create-exam">
               <Row className="vheight-100 mt-5">
-                <AddExam />
+                <CreateExam />
               </Row>
             </Route>
-
             <Route>
               <Redirect to="/login" />
             </Route>

@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "./Header";
+import { Button } from "react-bootstrap";
 
 function DataTable({ data, header, classes }) {
   return (
