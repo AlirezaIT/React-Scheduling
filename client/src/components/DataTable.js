@@ -18,11 +18,19 @@ class DataTable extends React.Component {
     if (header.includes('add')) {
       console.log('add');
     }
+    if (header.includes('detail')) {
+      console.log(row);
+      console.log('detail11111');
+    }
   }
   onCheckBoxHandler(e, row, header) {
-    console.log(e);
-    console.log(row);
-    console.log(header);
+    const { data } = this.state;
+    const foundItem = data.find(x => x.name === row.name);
+    foundItem.is_absent = !row['is_absent'];
+    this.setState({
+      data: data
+    });
+    // database update
   }
   render() {
     const {data, classes, header} = this.state;
@@ -40,15 +48,15 @@ class DataTable extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {data.map((x, i) => (
+            {data.map((row, i) => (
               <tr key={i}>
                 {header.map((h, j) => {
                   if (h.includes('btn')) {
-                    return <td><button key={i + j} onClick={() => this.onClickHandler(x, h)} className={h.includes('remove') ? 'btn btn-danger' : 'btn btn-success'}>{h.split('_')[0]}</button></td>
+                    return <td><button key={i + j} onClick={() => this.onClickHandler(row, h)} className={h.includes('remove') ? 'btn btn-danger' : 'btn btn-success'}>{h.split('_')[0]}</button></td>
                   } if (h.includes('checkbox')) {
-                    return <td><input type="checkbox" checked={x[`is_${h.split('_')[0]}`]} key={i + j} onChange={(e) => this.onCheckBoxHandler(e, x, h)} className="form-control"/></td>
+                    return <td><input type="checkbox" checked={row[`is_${h.split('_')[0]}`]} key={i + j} onChange={(e) => this.onCheckBoxHandler(e, row, h)} className="form-control"/></td>
                   } else {
-                    return <td key={i + j}>{x[h]}</td>
+                    return <td key={i + j}>{row[h]}</td>
                   }
                 })}
               </tr>

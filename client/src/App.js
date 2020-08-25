@@ -73,13 +73,11 @@ class App extends React.Component {
           {/* <LoginForm />; */}
           <DataTable
             classes={["table", "table-bordered"]}
-            header={["name", "age", 'remove_btn', 'add_btn', 'absent_checkbox']}
+            header={["name", "age", 'remove_btn', 'add_btn', 'absent_checkbox', 'detail_btn']}
             data={[
-              { name: "test5", age: 20, remove_btn: `remove`, is_absent: false},
+              { name: "test5", age: 20, remove_btn: `remove`, is_absent: true},
               { name: "test12", age: 30, remove_btn: `remove`, is_absent: false},
-
-              { name: "test42", age: 30, remove_btn: `remove`, is_absent: false},
-
+              { name: "test42", age: 30, remove_btn: `remove`, is_absent: true},
               { name: "test25", age: 75, remove_btn: `remove`, is_absent: true},
               { name: "test20", age: 30, remove_btn: `remove`, is_absent: false},
             ]}
