@@ -32,6 +32,9 @@ class DataTable extends React.Component {
     });
     // database update
   }
+  onSelectedHandler(e, row, header) {
+    console.log(e.target.value);
+  }
   render() {
     const {data, classes, header} = this.state;
     return (
@@ -42,7 +45,7 @@ class DataTable extends React.Component {
             <tr>
               {header.map((h, i) => (
                 <th scope="col" key={i}>
-                  {h.includes('btn') ||  h.includes('checkbox') ? h.split('_')[0] : h}
+                  {h.includes('btn') ||  h.includes('checkbox') || h.includes('dropdown') ? h.split('_')[0] : h}
                 </th>
               ))}
             </tr>
@@ -55,6 +58,15 @@ class DataTable extends React.Component {
                     return <td><button key={i + j} onClick={() => this.onClickHandler(row, h)} className={h.includes('remove') ? 'btn btn-danger' : 'btn btn-success'}>{h.split('_')[0]}</button></td>
                   } if (h.includes('checkbox')) {
                     return <td><input type="checkbox" checked={row[`is_${h.split('_')[0]}`]} key={i + j} onChange={(e) => this.onCheckBoxHandler(e, row, h)} className="form-control"/></td>
+                  } else if (h.includes('dropdown')) {
+                    return <td>
+                       <select className="form-control" id="inputState" onChange={(e) => this.onSelectedHandler(e, row, h)} defaultValue="2">
+                        <option selected>Choose...</option>
+                        <option value="1">course 1</option>
+                        <option value="2">course 2</option>
+                      </select>
+                    </td>
+                    // return <td><input type="checkbox" checked={row[`is_${h.split('_')[0]}`]} key={i + j} onChange={(e) => this.onCheckBoxHandler(e, row, h)} className="form-control"/></td>
                   } else {
                     return <td key={i + j}>{row[h]}</td>
                   }
