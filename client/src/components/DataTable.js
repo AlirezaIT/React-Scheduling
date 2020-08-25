@@ -36,7 +36,7 @@ class DataTable extends React.Component {
     console.log(e.target.value);
   }
   render() {
-    const {data, classes, header} = this.state;
+    const {data, classes, header, dropdowns} = this.state;
     return (
       <div className="container">
         {console.log(data)}
@@ -61,9 +61,7 @@ class DataTable extends React.Component {
                   } else if (h.includes('dropdown')) {
                     return <td>
                        <select className="form-control" id="inputState" onChange={(e) => this.onSelectedHandler(e, row, h)} defaultValue="2">
-                        <option selected>Choose...</option>
-                        <option value="1">course 1</option>
-                        <option value="2">course 2</option>
+                          {dropdowns[h].map((d, di) => (<option key={di} value={d.id}>{d.name}</option>))}
                       </select>
                     </td>
                     // return <td><input type="checkbox" checked={row[`is_${h.split('_')[0]}`]} key={i + j} onChange={(e) => this.onCheckBoxHandler(e, row, h)} className="form-control"/></td>
