@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 function DataTable({ data, header, classes }) {
   return (
     <div className="container">
-      {console.log(data)}
+      {/* {console.log(data)} */}
       <table className={classes ? classes.join(" ") : ""}>
         <thead>
           <tr>

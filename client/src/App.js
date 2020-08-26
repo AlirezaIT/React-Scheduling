@@ -1,10 +1,8 @@
 import React from "react";
 import "./App.css";
 import LoginForm from "./components/LoginForm";
-import DataTable from "./components/DataTable";
 import Header from "./components/Header";
 import CreateExam from "./components/CreateExam";
-import CreateSession from "./components/CreateSession";
 import API from "./api/API";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";

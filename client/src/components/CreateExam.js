@@ -27,6 +27,25 @@ class CreateExam extends React.Component {
           {(context) => (
             <Container fluid>
               <Row>
+                <Col md={8}>
+                  <DataTable
+                    classes={["table", "table-bordered"]}
+                    header={["name", "age", "family"]}
+                    data={[
+                      {
+                        name: "test5",
+                        age: 20,
+                        family: "aaa",
+                      },
+                      { name: "test12", age: 80 },
+
+                      { name: "test42", age: 65 },
+
+                      { name: "test25", age: 75 },
+                      { name: "test20", age: 30, family: "bbb" },
+                    ]}
+                  />
+                </Col>
                 <Col md={4}>
                   <Form>
                     <Form.Group Row>
@@ -60,26 +79,6 @@ class CreateExam extends React.Component {
                       toggleModal={this.toggleModal}
                     />
                   )}
-                </Col>
-
-                <Col md={8}>
-                  <DataTable
-                    classes={["table", "table-bordered"]}
-                    header={["name", "age", "family"]}
-                    data={[
-                      {
-                        name: "test5",
-                        age: 20,
-                        family: "aaa",
-                      },
-                      { name: "test12", age: 80 },
-
-                      { name: "test42", age: 65 },
-
-                      { name: "test25", age: 75 },
-                      { name: "test20", age: 30, family: "bbb" },
-                    ]}
-                  />
                 </Col>
               </Row>
             </Container>
