@@ -11,6 +11,7 @@ async function userLogin(username, password, role) {
         username: username,
         password: password,
         role: role,
+        role: role,
       }),
     })
       .then((response) => {
@@ -40,5 +41,36 @@ async function userLogin(username, password, role) {
   });
 }
 
-const API = { userLogin };
+async function userLogout() {
+  return new Promise((resolve, reject) => {
+      fetch(baseURL + '/logout', {
+          method: 'POST',
+      }).then((response) => {
+          if (response.ok) {
+              resolve(null);
+          } else {
+              // analyze the cause of error
+              response.json()
+                  .then((obj) => { reject(obj); }) // error msg in the response body
+                  .catch((err) => { reject({ errors: [{ param: "Application", msg: "Cannot parse server response" }] }) }); // something else
+          }
+      });
+  });
+}
+
+async function isAuthenticated(){
+  const response = await fetch(`${baseURL}/verify`);
+  const userJson = await response.json();
+  if(response.ok){
+      return userJson;
+  } else {
+      let err = {status: response.status, errObj:userJson};
+      throw err;  // An object with the error coming from the server
+  }
+}
+const API = { 
+  userLogin,
+  userLogout,
+  isAuthenticated
+};
 export default API;

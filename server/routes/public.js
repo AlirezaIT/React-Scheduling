@@ -1,6 +1,7 @@
 const express = require("express");
 const jsonwebtoken = require("jsonwebtoken");
 const userDao = require("../services/user_dao");
+const {ROLES} = require("../utils/consts");
 const router = express.Router();
 const expireTime = 300; //seconds
 const authErrorObj = {
@@ -9,36 +10,72 @@ const authErrorObj = {
 const jwtSecret = "12345";
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(404).send({
-      errors: [{ param: "Server", msg: "Invalid username or password" }],
-    });
-  }
-  try {
-    const user = await userDao.getUser(username);
-    if (!user) {
+  const { username, password, role } = req.body;
+  /**
+   * @ROLE TEACHER
+   * password login
+   */
+  if (ROLES.TEACHER === role) {
+    if (!username || !password) {
       return res.status(404).send({
         errors: [{ param: "Server", msg: "Invalid username or password" }],
       });
     }
-    const isSame = await userDao.checkPassword(password, user.password);
-    if (!isSame) {
-      return res.status(401).send({
-        errors: [{ param: "Server", msg: "Invalid username or password" }],
+    try {
+      const user = await userDao.getUser(username);
+      if (!user) {
+        return res.status(404).send({
+          errors: [{ param: "Server", msg: "Invalid username or password" }],
+        });
+      }
+      const isSame = await userDao.checkPassword(password, user.password);
+      if (!isSame) {
+        return res.status(401).send({
+          errors: [{ param: "Server", msg: "Invalid username or password" }],
+        });
+      }
+      const token = jsonwebtoken.sign({ user: user.id }, jwtSecret, {
+        expiresIn: expireTime,
+      });
+      res.cookie("token", token, {
+        httpOnly: true,
+        sameSite: true,
+        maxAge: 1000 * expireTime,
+      });
+      return res.json({ id: user.id, username: user.username });
+    } catch (error) {
+      return res.status(401).json(authErrorObj);
+    }
+  }
+  /**
+   * @ROLE STUDENT
+   * no password
+   */
+  if (ROLES.STUDENT === role) { 
+    if (!username) {
+      return res.status(404).send({
+        errors: [{ param: "Server", msg: "Invalid username" }],
       });
     }
-    const token = jsonwebtoken.sign({ user: user.id }, jwtSecret, {
-      expiresIn: expireTime,
-    });
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: true,
-      maxAge: 1000 * expireTime,
-    });
-    return res.json({ id: user.id, username: user.username });
-  } catch (error) {
-    return res.status(401).json(authErrorObj);
+    try {
+      const user = await userDao.getUser(username);
+      if (!user) {
+        return res.status(404).send({
+          errors: [{ param: "Server", msg: "Invalid username" }],
+        });
+      }
+      const token = jsonwebtoken.sign({ user: user.id }, jwtSecret, {
+        expiresIn: expireTime,
+      });
+      res.cookie("token", token, {
+        httpOnly: true,
+        sameSite: true,
+        maxAge: 1000 * expireTime,
+      });
+      return res.json({ id: user.id, username: user.username });
+    } catch (error) {
+      return res.status(401).json(authErrorObj);
+    }
   }
 });
 

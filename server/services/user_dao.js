@@ -20,3 +20,18 @@ exports.getUser = async (username) => {
 exports.checkPassword = async function(enterPassword, hashPassword) {
     return bcrypt.compare(enterPassword, hashPassword);
 }
+
+exports.getUserById = async function (id) {
+    const sql = `SELECT * FROM users where id = ?`;
+    try {
+        let userFound = await db.query(sql, [id]);
+        userFound = userFound.rows[0];
+        if (!userFound) {
+            // throw new Error(`not found any user with this username`)
+            return null;
+        }
+        return new User(userFound.id, userFound.username, userFound.password ,userFound.role);
+    } catch (error) {
+        throw error;   
+    }
+}

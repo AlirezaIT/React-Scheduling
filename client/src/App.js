@@ -65,6 +65,13 @@ class App extends React.Component {
   //     });
   // };
 
+  //  async funciton  {
+  //     API.getPublicTasks()
+  //       .then((studentExams) => this.setState({ studentExams: studentExams }))
+  //       .catch((errorObj) => {
+  //         this.handleErrors(errorObj);
+  //       });
+  //   }
   getStudentExams() {
     API.getPublicTasks()
       .then((studentExams) => this.setState({ studentExams: studentExams }))
