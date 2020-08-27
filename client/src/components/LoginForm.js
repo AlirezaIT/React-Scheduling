@@ -119,7 +119,7 @@ class UserRole extends React.Component {
                             type="text"
                             id="username"
                             name="username"
-                            placeholder="Username"
+                            placeholder="Student ID"
                             value={this.state.username}
                             onChange={this.handleInputChange}
                             required

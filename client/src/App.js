@@ -16,7 +16,7 @@ import { TEACHER } from "./shared/fakeTeacher";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { authErr: "", authUser: "" };
+    this.state = { authErr: "", authUser: "", studentLists: [] };
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
@@ -76,8 +76,8 @@ class App extends React.Component {
   logout = () => {
     return API.userLogout().then(() => {
       this.setState({ authUser: null, authErr: null });
+      this.props.history.push("/login");
     });
-    this.props.history.push("/login");
   };
   login = (username, password, role) => {
     return API.userLogin(username, password, role)
@@ -88,6 +88,16 @@ class App extends React.Component {
       .catch((errorObj) => {
         const err0 = errorObj.errors[0];
         this.setState({ authErr: err0 });
+      });
+  };
+
+  studentLists = () => {
+    return API.studentLists()
+      .then((students) => {
+        this.setState({ studentLists: students });
+      })
+      .catch((errorObj) => {
+        const err = errorObj.errors[0];
       });
   };
 
@@ -107,7 +117,7 @@ class App extends React.Component {
             <Route path="/exam/create" component={CreateExam}></Route>
             <Route path="/home" component={Teacher}></Route>
             <Route path="/login" component={LoginForm}></Route>
-            <Route path="/logout" component={this.logout}></Route>
+            <Route path="/logout"></Route>
           </Switch>
         </Container>
       </AuthContext.Provider>
