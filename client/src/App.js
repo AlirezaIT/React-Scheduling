@@ -1,12 +1,16 @@
 import React from "react";
 import "./App.css";
 import LoginForm from "./components/LoginForm";
-import DataTable from "./components/DataTable";
 import Header from "./components/Header";
-import { Route, Switch, Redirect } from "react-router-dom";
+import CreateExam from "./components/CreateExam";
+import Teacher from "./components/Teacher";
+import API from "./api/API";
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
 import StudentListReservedExams from "./components/StudentListReservedExams";
+
+import { TEACHER } from "./shared/fakeTeacher";
 
 class App extends React.Component {
   constructor(props) {
@@ -15,6 +19,8 @@ class App extends React.Component {
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
+
+      teachers: TEACHER,
     };
   }
 
@@ -45,6 +51,30 @@ class App extends React.Component {
   //   }
   // }
 
+  // login = (username, password, role) => {
+  //   API.userLogin(username, password, role)
+  //     .then((user) => {
+  //       this.setState({ authUser: user, authErr: null });
+  //       this.props.history.push("/addexam");
+  //     })
+  //     .catch((errorObj) => {
+  //       const err0 = errorObj.errors[0];
+  //       this.setState({ authErr: err0, authUser: null });
+  //     });
+  // };
+
+  login = (username, password, role) => {
+    this.state.teachers.map((teacher) => {
+      if (role === "teacher") {
+        if (username === teacher.email && password === teacher.pass) {
+          console.log("teacher");
+          this.setState({ authUser: teacher.name });
+          this.props.history.push("/teacher");
+        }
+      }
+    });
+  };
+
   render() {
     const value = {
       authUser: this.state.authUser,
@@ -56,17 +86,25 @@ class App extends React.Component {
     return (
       <AuthContext.Provider value={value}>
         <Header isNavOpen={this.state.isNavOpen} toggleNav={this.toggleNav} />
-        <Container>
+        <Container fluid>
           <Switch>
             <Route path="/login" component={LoginForm}>
               <Row className="vheight-100 mt-5">
-                {/* <Col sm={4}></Col> */}
-                {/* <Col sm={4} className="below-nav"> */}
                 <LoginForm />
-                {/* {</Col> */}
               </Row>
             </Route>
-            {/* <Redirect from="/" to="/login" /> */}
+
+            <Route path="/teacher/create">
+              <Row className="vheight-100 mt-5">
+                <CreateExam />
+              </Row>
+            </Route>
+            <Route path="/teacher">
+              <Row className="vheight-100 mt-5">
+                <Teacher />
+              </Row>
+            </Route>
+
             <Route>
               <Redirect to="/login" />
             </Route>
@@ -94,4 +132,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);
