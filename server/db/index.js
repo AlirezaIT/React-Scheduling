@@ -1,6 +1,5 @@
-"use strict";
 const sqlite = require("sqlite3").verbose();
-const DB_PATH = "./db/schedules.db";
+const DB_PATH = "./db/oral_final_db.db";
 const db = new sqlite.Database(DB_PATH, (err) => {
   if (err) {
     console.error(err.message);

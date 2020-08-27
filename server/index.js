@@ -1,4 +1,3 @@
-'use strict';
 //import express
 const express = require('express');
 const morgan = require('morgan'); // logging middleware
@@ -20,7 +19,7 @@ app.use(express.json());
 
 // Public Routes
 const publicRoutes = require('./routes/public');
-app.use('/api/public', publicRoutes);
+app.use('/api', publicRoutes);
 app.use(cookieParser());
 
 
@@ -41,7 +40,7 @@ app.use(function (err, req, res, next) {
 
 // AUTHENTICATED REST API endpoints
 const privateRoutes = require('./routes/private');
-app.use('/api/private', privateRoutes);
+app.use('/api', privateRoutes);
 
 //activate server
 app.listen(port, () => console.log(`Server ready on port ${port}`));

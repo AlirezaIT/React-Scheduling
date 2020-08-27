@@ -11,16 +11,18 @@ import {
 } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
+import {ROLES} from '../shared/consts'
 
 class UserRole extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      pass: "",
-      stNO: "",
-      role: "teacher",
+      username: "",
+      password: "",
+      role: ROLES.TEACHER,
       submitted: false,
+      error: "",
+      has_error: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,25 +41,28 @@ class UserRole extends React.Component {
   handleSubmit(event, onLogin) {
     event.preventDefault();
     // console.log();
-    alert(JSON.stringify(this.state));
+    // alert(JSON.stringify(this.state));
     // if (this.state.role === "teacher") {
-    //   onLogin(this.state.email, this.state.pass);
+    //   onLogin(this.state.username, this.state.password);
     // } else console.log("student");
-    onLogin(this.state.email, this.state.pass, this.state.role);
+    onLogin(this.state.username, this.state.password, this.state.role);
+    // this.setState({ submitted: true });
+    // this.setState({
+    //   username: "",
+    //   password: "",
+    //   role: "",
+    // });
+   
 
-    this.setState({ submitted: true });
-    this.setState({
-      email: "",
-      pass: "",
-      stNO: "",
-    });
   }
   render() {
     // if (this.state.submitted) return <Redirect to="/addexam" />;
     return (
       <AuthContext.Consumer>
         {(context) => (
-          <Container fluid>
+          <>{context.authUser && <Redirect to = "/home" />}
+
+          <Container fluid className="center center mt-5">
             <Row>
               <Col md={{ span: 4, offset: 4 }}>
                 <h3> Select your Role: </h3>
@@ -80,15 +85,15 @@ class UserRole extends React.Component {
                     </select>
                   </FormGroup>
 
-                  {this.state.role == "teacher" && (
+                  {this.state.role == ROLES.TEACHER && (
                     <>
                       <FormGroup>
                         <FormControl
-                          type="email"
-                          id="email"
-                          name="email"
-                          placeholder="Email"
-                          value={this.state.email}
+                          type="text"
+                          id="username"
+                          name="username"
+                          placeholder="Username"
+                          value={this.state.username}
                           onChange={this.handleInputChange}
                           required
                           autoFocus
@@ -97,10 +102,10 @@ class UserRole extends React.Component {
                       <FormGroup>
                         <FormControl
                           type="password"
-                          id="pass"
-                          name="pass"
+                          id="password"
+                          name="password"
                           placeholder="Password"
-                          value={this.state.pass}
+                          value={this.state.password}
                           onChange={this.handleInputChange}
                           required
                         />
@@ -108,17 +113,18 @@ class UserRole extends React.Component {
                     </>
                   )}
 
-                  {this.state.role === "student" && (
+                  {this.state.role === ROLES.STUDENT && (
                     <>
                       <FormGroup>
                         <FormControl
                           type="text"
-                          id="stNO"
-                          name="stNO"
-                          placeholder="Student Number"
-                          value={this.state.stNO}
+                          id="username"
+                          name="username"
+                          placeholder="Username"
+                          value={this.state.username}
                           onChange={this.handleInputChange}
                           required
+                          autoFocus
                         />
                       </FormGroup>
                     </>
@@ -136,6 +142,8 @@ class UserRole extends React.Component {
               </Col>
             </Row>
           </Container>
+          </>
+
         )}
       </AuthContext.Consumer>
     );
