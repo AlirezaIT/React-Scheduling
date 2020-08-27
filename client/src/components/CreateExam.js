@@ -31,19 +31,19 @@ class CreateExam extends React.Component {
                   <DataTable
                     classes={["table", "table-bordered"]}
                     header={["name", "age", "family"]}
-                    data={[
-                      {
-                        name: "test5",
-                        age: 20,
-                        family: "aaa",
-                      },
-                      { name: "test12", age: 80 },
-
-                      { name: "test42", age: 65 },
-
-                      { name: "test25", age: 75 },
-                      { name: "test20", age: 30, family: "bbb" },
-                    ]}
+                    data={
+                      [
+                        // {
+                        //   name: "test5",
+                        //   age: 20,
+                        //   family: "aaa",
+                        // },
+                        // { name: "test12", age: 80 },
+                        // { name: "test42", age: 65 },
+                        // { name: "test25", age: 75 },
+                        // { name: "test20", age: 30, family: "bbb" },
+                      ]
+                    }
                   />
                 </Col>
                 <Col md={4}>

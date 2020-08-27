@@ -92,16 +92,18 @@ class App extends React.Component {
                 <LoginForm />
               </Row>
             </Route>
+
+            <Route path="/teacher/create">
+              <Row className="vheight-100 mt-5">
+                <CreateExam />
+              </Row>
+            </Route>
             <Route path="/teacher">
               <Row className="vheight-100 mt-5">
                 <Teacher />
               </Row>
             </Route>
-            <Route path="/create-exam">
-              <Row className="vheight-100 mt-5">
-                <CreateExam />
-              </Row>
-            </Route>
+
             <Route>
               <Redirect to="/login" />
             </Route>

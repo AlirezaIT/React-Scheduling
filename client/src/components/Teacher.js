@@ -1,11 +1,16 @@
 import React from "react";
-import { Row, Col, Form, FormGroup, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Row, Col, Form, FormGroup, Container, Button } from "react-bootstrap";
+import { Link, Route } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 class Teacher extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  handleClick() {
+    alert("Hello");
+  }
+
   render() {
     // const teacher = this.props.teachers.map((teacher) => {
     //   return <div>hi {teacher.name}</div>;
@@ -20,10 +25,11 @@ class Teacher extends React.Component {
                 <Form>
                   <FormGroup>
                     <Link
+                      onClick={this.handleClick}
                       width="80"
                       eventKey="link-1"
                       to={{
-                        pathname: "/create-exam",
+                        pathname: "/teacher/create",
                       }}
                       className="btn btn-primary w-100"
                     >
