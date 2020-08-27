@@ -64,12 +64,16 @@ class App extends React.Component {
 
   login = (username, password, role) => {
     this.state.teachers.map((teacher) => {
-      if (role === "teacher") {
-        if (username === teacher.email && password === teacher.pass) {
-          console.log("teacher");
-          this.setState({ authUser: teacher.name });
-          this.props.history.push("/teacher");
-        }
+      if (
+        role === "teacher" &&
+        username === teacher.email &&
+        password === teacher.pass
+      ) {
+        // if (username === teacher.email && password === teacher.pass) {
+        console.log("teacher");
+        this.setState({ authUser: teacher.name });
+        this.props.history.push("/teacher");
+        // }
       }
     });
   };

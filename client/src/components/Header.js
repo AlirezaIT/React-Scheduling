@@ -14,12 +14,12 @@ const Header = (props) => {
             <Collapse isOpen={props.isNavOpen} navbar>
               <Nav navbar>
                 <NavItem>
-                  <NavLink className="nav-link" to="/home">
+                  <NavLink className="nav-link" to="/teacher">
                     Home
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink className="nav-link" to="/aboutus">
+                  <NavLink className="nav-link" to="/teacher/create">
                     Create Exam
                   </NavLink>
                 </NavItem>

@@ -36,7 +36,6 @@ class Teacher extends React.Component {
                       Create Exam
                     </Link>
                   </FormGroup>
-
                   <FormGroup>
                     <Link
                       to={{
@@ -47,7 +46,6 @@ class Teacher extends React.Component {
                       Execute Exam
                     </Link>
                   </FormGroup>
-
                   <FormGroup>
                     <Link
                       to={{
@@ -55,7 +53,7 @@ class Teacher extends React.Component {
                       }}
                       className="btn btn-primary w-100"
                     >
-                      Report
+                      Show Report
                     </Link>
                   </FormGroup>
 
