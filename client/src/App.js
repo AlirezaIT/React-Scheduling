@@ -1,62 +1,91 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
-import { Form, FormGroup, Col, Label, Input } from "reactstrap";
+import React from "react";
 import "./App.css";
+import LoginForm from "./components/LoginForm";
 import DataTable from "./components/DataTable";
+import Header from "./components/Header";
+import { Route, Switch, Redirect } from "react-router-dom";
+import { AuthContext } from "./auth/AuthContext";
+import { Col, Row, Container } from "react-bootstrap";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: "teacher" };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = { authErr: "", authUser: "" };
+    this.toggleNav = this.toggleNav.bind(this);
+    this.state = {
+      isNavOpen: false,
+    };
   }
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
+  toggleNav() {
+    this.setState({
+      isNavOpen: !this.state.isNavOpen,
+    });
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    // alert("Your Role is: " + this.state.value);
-    console.log(this.state.value);
-  }
+  // componentDidMount() {
+  //   //check if the user is authenticated
+  //   API.isAuthenticated()
+  //     .then((user) => {
+  //       this.setState({ authUser: user });
+  //     })
+  //     .catch((err) => {
+  //       this.setState({ authErr: err.errorObj });
+  //       this.props.history.push("/login");
+  //     });
+  // }
+
+  // handleErrors(err) {
+  //   if (err) {
+  //     if (err.status && err.status === 401) {
+  //       this.setState({ authErr: err.errorObj });
+  //       this.props.history.push("/login");
+  //     }
+  //   }
+  // }
 
   render() {
+    const value = {
+      authUser: this.state.authUser,
+      authErr: this.state.authErr,
+      loginUser: this.login,
+      logoutUser: this.logout,
+    };
+
     return (
-      <div className="container">
-        <div className="col-12">
-          <h3> Select you Role : </h3>
-        </div>
-        <div className="col-12">
-          <Form onSubmit={this.handleSubmit}>
-            <FormGroup row>
-              <select value={this.state.value} onChange={this.handleChange}>
-                <option value="teacher">Teacher</option>
-                <option value="student">Student</option>
-              </select>
+      <AuthContext.Provider value={value}>
+        <Header isNavOpen={this.state.isNavOpen} toggleNav={this.toggleNav} />
+        <Container>
+          <Switch>
+            <Route path="/login" component={LoginForm}>
+              <Row className="vheight-100 mt-5">
+                {/* <Col sm={4}></Col> */}
+                {/* <Col sm={4} className="below-nav"> */}
+                <LoginForm />
+                {/* {</Col> */}
+              </Row>
+            </Route>
+            {/* <Redirect from="/" to="/login" /> */}
+            <Route>
+              <Redirect to="/login" />
+            </Route>
+          </Switch>
+          {/* <LoginForm />; */}
+          <DataTable
+            classes={["table", "table-bordered"]}
+            header={["name", "age"]}
+            data={[
+              { name: "test5", age: 20 },
+              { name: "test12", age: 30 },
 
-              {this.state.value === "teacher" && (
-                <>
-                  {/* <Label htmlFor="email">Email</Label> */}
-                  <Input type="text" id="email" placeholder="Email" />
-                  <Input type="password" id="pass" placeholder="Password" />
-                </>
-              )}
+              { name: "test42", age: 30 },
 
-              {this.state.value === "student" && (
-                <>
-                  <Input type="text" id="stNO" placeholder="Student Number" />
-                </>
-              )}
-
-              <input type="submit" value="Submit" />
-            </FormGroup>
-          </Form>
-          <DataTable classes={['table', 'table-bordered']} header={['name', 'age']} data={[{name: 'test', age: 20}, {name: 'test', age: 20}]}/>
-        </div>
-      </div>
+              { name: "test25", age: 75 },
+              { name: "test20", age: 30 },
+            ]}
+          />
+        </Container>
+      </AuthContext.Provider>
     );
   }
 }

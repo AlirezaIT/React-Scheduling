@@ -1,19 +1,30 @@
-import React from 'react';
+import React from "react";
+import Header from "./Header";
 
-function DataTable({data, header, classes}) {
-
+function DataTable({ data, header, classes }) {
   return (
     <div className="container">
-        <table className={classes ? classes.join(' ') : '' }>
+      {console.log(data)}
+      <table className={classes ? classes.join(" ") : ""}>
         <thead>
-        <tr>
-            {header.map((x, i) => (<th scope="col" key={i}>{x}</th>))}
-        </tr>
+          <tr>
+            {header.map((x, i) => (
+              <th scope="col" key={i}>
+                {x}
+              </th>
+            ))}
+          </tr>
         </thead>
         <tbody>
-            {data.map((x, i) => (<td key={i}>{x[header[i]]}</td>))}
+          {data.map((x, i) => (
+            <tr key={i}>
+              {header.map((l, k) => (
+                <td key={k}>{x[header[k]]}</td>
+              ))}
+            </tr>
+          ))}
         </tbody>
-    </table>
+      </table>
     </div>
   );
 }
