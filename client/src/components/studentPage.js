@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { Table } from "reactstrap";
 import DataTable from "./DataTable";
+import BookingSlots from "./BookingSlots";
 const listExams = [
   {
     title: "web-application",
@@ -62,7 +63,7 @@ class StudentPage extends Component {
     // if (this.state.reserveExams.find((re) => re.date  Date() )
   }
   renderExams() {
-    const { lenght: examCount } = this.state.exams;
+    const { length: examCount } = this.state.exams;
 
     if (examCount === 0) return <p>There are no exams assigned to you</p>;
     return (
@@ -71,7 +72,7 @@ class StudentPage extends Component {
         <table className="table">
           <thead>
             <tr>
-              <th>Exam Tile</th>
+              <th>Exam Title</th>
               <th>Reserve the exam</th>
             </tr>
           </thead>
@@ -79,7 +80,6 @@ class StudentPage extends Component {
             {this.state.exams.map((exam) => (
               <tr key={exam.title}>
                 <td>{exam.title}</td>
-                <td>{exam.examCode}</td>
                 <td>
                   <button
                     className="btn btn-primary btn-sm"
@@ -97,7 +97,7 @@ class StudentPage extends Component {
   }
 
   renderReserveredExams() {
-    const { lenght: countReserved } = this.state.reservedExams;
+    const { length: countReserved } = this.state.reservedExams;
     if (countReserved === 0) return <p>There are no reserved exams </p>;
     return (
       <div>

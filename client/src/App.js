@@ -2,13 +2,14 @@ import React from "react";
 import "./App.css";
 import LoginForm from "./components/LoginForm";
 import DataTable from "./components/DataTable";
-import StudentPage from "./components/studentPage";
+import StudentPage from "./components/StudentPage";
 import Header from "./components/Header";
 import AddExam from "./components/AddExam";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
 import StudentListReservedExams from "./components/StudentListReservedExams";
+import BookingSlots from "./components/BookingSlots";
 
 class App extends React.Component {
   constructor(props) {
@@ -76,6 +77,8 @@ class App extends React.Component {
               <Redirect to="/login" />
             </Route>
           </Switch>
+          <StudentPage />
+
           {/* <LoginForm />; */}
           {/* <DataTable
             classes={["table", "table-bordered"]}
