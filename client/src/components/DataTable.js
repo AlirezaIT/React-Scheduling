@@ -123,3 +123,22 @@ class DataTable extends React.Component {
 }
 
 export default DataTable;
+
+
+
+// example
+{/* <DataTable
+  classes={["table", "table-bordered"]}
+  header={["name", "age", 'remove_btn', 'add_btn', 'absent_checkbox', 'detail_btn', 'course_dropdown', 'teacher_dropdown']}
+  dropdowns={{
+    "course_dropdown": [{name: "course 3", id: "3"}, {name: "course 1", id: "1"}, {name: "course 2", id: "2"}],
+    "teacher_dropdown": [{name: "teacher 3", id: "3"}, {name: "teacher 1", id: "1"}, {name: "teacher 2", id: "2"}],
+  }}
+  data={[
+    { name: "test5", age: 20, remove_btn: `remove`, is_absent: true},
+    { name: "test12", age: 30, remove_btn: `remove`, is_absent: false},
+    { name: "test42", age: 30, remove_btn: `remove`, is_absent: true},
+    { name: "test25", age: 75, remove_btn: `remove`, is_absent: true},
+    { name: "test20", age: 30, remove_btn: `remove`, is_absent: false},
+  ]}
+/> */}

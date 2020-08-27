@@ -8,7 +8,7 @@ class Teacher extends React.Component {
   }
 
   handleClick() {
-    alert("Hello");
+    // alert("Hello");
   }
 
   render() {
@@ -19,7 +19,7 @@ class Teacher extends React.Component {
       <AuthContext.Consumer>
         {(context) => (
           <Container>
-            <h1> Welcome {context.authUser} </h1>
+            <h1> Welcome {context.authUser?.name} </h1>
             <Row>
               <Col md={{ span: 4, offset: 4 }}>
                 <Form>
@@ -29,7 +29,7 @@ class Teacher extends React.Component {
                       width="80"
                       eventKey="link-1"
                       to={{
-                        pathname: "/teacher/create",
+                        pathname: "/exam/create",
                       }}
                       className="btn btn-primary w-100"
                     >

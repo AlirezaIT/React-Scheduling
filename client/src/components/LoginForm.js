@@ -11,16 +11,18 @@ import {
 } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
+import { ROLES } from "../shared/consts";
 
 class UserRole extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      pass: "",
-      stNO: "",
-      role: "teacher",
+      username: "",
+      password: "",
+      role: ROLES.TEACHER,
       submitted: false,
+      error: "",
+      has_error: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,103 +41,107 @@ class UserRole extends React.Component {
   handleSubmit(event, onLogin) {
     event.preventDefault();
     // console.log();
-    alert(JSON.stringify(this.state));
+    // alert(JSON.stringify(this.state));
     // if (this.state.role === "teacher") {
-    //   onLogin(this.state.email, this.state.pass);
+    //   onLogin(this.state.username, this.state.password);
     // } else console.log("student");
-    onLogin(this.state.email, this.state.pass, this.state.role);
-
-    this.setState({ submitted: true });
-    this.setState({
-      email: "",
-      pass: "",
-      stNO: "",
-    });
+    onLogin(this.state.username, this.state.password, this.state.role);
+    // this.setState({ submitted: true });
+    // this.setState({
+    //   username: "",
+    //   password: "",
+    //   role: "",
+    // });
   }
   render() {
     // if (this.state.submitted) return <Redirect to="/addexam" />;
     return (
       <AuthContext.Consumer>
         {(context) => (
-          <Container fluid>
-            <Row>
-              <Col md={{ span: 4, offset: 4 }}>
-                <h3> Select your Role: </h3>
+          <>
+            {context.authUser && <Redirect to="/home" />}
 
-                <Form
-                  method="POST"
-                  onSubmit={(event) =>
-                    this.handleSubmit(event, context.loginUser)
-                  }
-                >
-                  <FormGroup>
-                    <select
-                      className="form-control"
-                      role={this.state.value}
-                      onChange={this.handleInputChange}
-                      name="role"
-                    >
-                      <option value="teacher">Teacher</option>
-                      <option value="student">Student</option>
-                    </select>
-                  </FormGroup>
+            <Container fluid className="center center mt-5">
+              <Row>
+                <Col md={{ span: 4, offset: 4 }}>
+                  <h3> Select your Role: </h3>
 
-                  {this.state.role == "teacher" && (
-                    <>
-                      <FormGroup>
-                        <FormControl
-                          type="email"
-                          id="email"
-                          name="email"
-                          placeholder="Email"
-                          value={this.state.email}
-                          onChange={this.handleInputChange}
-                          required
-                          autoFocus
-                        />
-                      </FormGroup>
-                      <FormGroup>
-                        <FormControl
-                          type="password"
-                          id="pass"
-                          name="pass"
-                          placeholder="Password"
-                          value={this.state.pass}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </>
+                  <Form
+                    method="POST"
+                    onSubmit={(event) =>
+                      this.handleSubmit(event, context.loginUser)
+                    }
+                  >
+                    <FormGroup>
+                      <select
+                        className="form-control"
+                        role={this.state.value}
+                        onChange={this.handleInputChange}
+                        name="role"
+                      >
+                        <option value="teacher">Teacher</option>
+                        <option value="student">Student</option>
+                      </select>
+                    </FormGroup>
+
+                    {this.state.role == ROLES.TEACHER && (
+                      <>
+                        <FormGroup>
+                          <FormControl
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Username"
+                            value={this.state.username}
+                            onChange={this.handleInputChange}
+                            required
+                            autoFocus
+                          />
+                        </FormGroup>
+                        <FormGroup>
+                          <FormControl
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            value={this.state.password}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </>
+                    )}
+
+                    {this.state.role === ROLES.STUDENT && (
+                      <>
+                        <FormGroup>
+                          <FormControl
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Username"
+                            value={this.state.username}
+                            onChange={this.handleInputChange}
+                            required
+                            autoFocus
+                          />
+                        </FormGroup>
+                      </>
+                    )}
+
+                    <FormGroup>
+                      <Button variant="primary" type="submit" color="primary">
+                        Login
+                      </Button>
+                    </FormGroup>
+                  </Form>
+                  {context.authErr && (
+                    <Alert variant="danger">{context.authErr.msg}</Alert>
                   )}
-
-                  {this.state.role === "student" && (
-                    <>
-                      <FormGroup>
-                        <FormControl
-                          type="text"
-                          id="stNO"
-                          name="stNO"
-                          placeholder="Student Number"
-                          value={this.state.stNO}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </>
-                  )}
-
-                  <FormGroup>
-                    <Button variant="primary" type="submit" color="primary">
-                      Login
-                    </Button>
-                  </FormGroup>
-                </Form>
-                {context.authErr && (
-                  <Alert variant="danger">{context.authErr.msg}</Alert>
-                )}
-              </Col>
-            </Row>
-          </Container>
+                </Col>
+              </Row>
+            </Container>
+          </>
         )}
       </AuthContext.Consumer>
     );
