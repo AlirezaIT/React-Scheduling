@@ -8,7 +8,7 @@ const authErrorObj = {
 };
 const jwtSecret = "12345";
 
-router.post("api/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(404).send({
