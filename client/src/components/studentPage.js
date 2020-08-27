@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-
 import { Table } from "reactstrap";
 import DataTable from "./DataTable";
-import BookingSlots from "./BookingSlots";
+import BookingSlot from "./BookingSlot";
+import { Link } from "react-router-dom";
 const listExams = [
   {
     title: "web-application",
@@ -81,12 +81,23 @@ class StudentPage extends Component {
               <tr key={exam.title}>
                 <td>{exam.title}</td>
                 <td>
-                  <button
+                  <Link
+                    onClick={() => this.handleReserve(exam)}
+                    width="40"
+                    eventKey="link-1"
+                    to={{
+                      pathname: "/student/reserve",
+                    }}
+                    className="btn btn-primary w-100"
+                  >
+                    Reserve Exam
+                  </Link>
+                  {/* <button
                     className="btn btn-primary btn-sm"
                     onClick={() => this.handleReserve(exam)}
                   >
                     Reserve
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}

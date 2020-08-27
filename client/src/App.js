@@ -9,9 +9,9 @@ import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
 import StudentListReservedExams from "./components/StudentListReservedExams";
-import BookingSlots from "./components/BookingSlots";
-
 import { TEACHER } from "./shared/fakeTeacher";
+import StudentPage from "./components/StudentPage";
+import BookingSlot from "./components/BookingSlot";
 
 class App extends React.Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class App extends React.Component {
     this.state = { authErr: "", authUser: "" };
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
+      studentExams: [],
       isNavOpen: false,
 
       teachers: TEACHER,
@@ -64,6 +65,14 @@ class App extends React.Component {
   //     });
   // };
 
+  getStudentExams() {
+    API.getPublicTasks()
+      .then((studentExams) => this.setState({ studentExams: studentExams }))
+      .catch((errorObj) => {
+        this.handleErrors(errorObj);
+      });
+  }
+
   login = (username, password, role) => {
     this.state.teachers.map((teacher) => {
       if (role === "teacher") {
@@ -105,12 +114,21 @@ class App extends React.Component {
                 <Teacher />
               </Row>
             </Route>
+            <Route path="/student/reserve">
+              <Row className="vheight-100 mt-5">
+                <BookingSlot />
+              </Row>
+            </Route>
 
+            <Route path="/student">
+              <Row className="vheight-100 mt-5">
+                <StudentPage />
+              </Row>
+            </Route>
             <Route>
               <Redirect to="/login" />
             </Route>
           </Switch>
-          <StudentPage />
 
           {/* <LoginForm />; */}
           {/* <DataTable
