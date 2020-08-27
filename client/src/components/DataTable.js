@@ -1,28 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-import Header from "./Header";
-import { Button } from "react-bootstrap";
-
-function DataTable({ data, header, classes }) {
-  return (
-    <div className="container">
-      {/* {console.log(data)} */}
-      <table className={classes ? classes.join(" ") : ""}>
-        <thead>
-          <tr>
-            {header.map((x, i) => (
-              <th scope="col" key={i}>
-                {x}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((x, i) => (
-            <tr key={i}>
-              {header.map((l, k) => (
-                <td key={k}>{x[header[k]]}</td>
-=======
 
 class DataTable extends React.Component {
   constructor(props) {
@@ -30,29 +6,29 @@ class DataTable extends React.Component {
     this.state = props;
     // ({ data, header, classes })
   }
- 
+
   onClickHandler(row, header) {
     const { data } = this.state;
-    if (header.includes('remove')) {
+    if (header.includes("remove")) {
       this.setState({
-        data: data.filter(x => row.name !== x.name),
+        data: data.filter((x) => row.name !== x.name),
       });
-      console.log('removed');
+      console.log("removed");
     }
-    if (header.includes('add')) {
-      console.log('add');
+    if (header.includes("add")) {
+      console.log("add");
     }
-    if (header.includes('detail')) {
+    if (header.includes("detail")) {
       console.log(row);
-      console.log('detail11111');
+      console.log("detail11111");
     }
   }
   onCheckBoxHandler(e, row, header) {
     const { data } = this.state;
-    const foundItem = data.find(x => x.name === row.name);
-    foundItem.is_absent = !row['is_absent'];
+    const foundItem = data.find((x) => x.name === row.name);
+    foundItem.is_absent = !row["is_absent"];
     this.setState({
-      data: data
+      data: data,
     });
     // database update
   }
@@ -60,7 +36,7 @@ class DataTable extends React.Component {
     console.log(e.target.value);
   }
   render() {
-    const {data, classes, header, dropdowns} = this.state;
+    const { data, classes, header, dropdowns } = this.state;
     return (
       <div className="container">
         {console.log(data)}
@@ -69,9 +45,12 @@ class DataTable extends React.Component {
             <tr>
               {header.map((h, i) => (
                 <th scope="col" key={i}>
-                  {h.includes('btn') ||  h.includes('checkbox') || h.includes('dropdown') ? h.split('_')[0] : h}
+                  {h.includes("btn") ||
+                  h.includes("checkbox") ||
+                  h.includes("dropdown")
+                    ? h.split("_")[0]
+                    : h}
                 </th>
->>>>>>> 6a714ffe94ff21f31e4ae4d0b53032a621b8b348
               ))}
             </tr>
           </thead>
@@ -79,21 +58,59 @@ class DataTable extends React.Component {
             {data.map((row, i) => (
               <tr key={i}>
                 {header.map((h, j) => {
-                  if (h.includes('btn')) {
-                    return <td><button key={i + j} onClick={() => this.onClickHandler(row, h)} className={h.includes('remove') ? 'btn btn-danger' : 'btn btn-success'}>{h.split('_')[0]}</button></td>
-                  } if (h.includes('checkbox')) {
-                    return <td><input type="checkbox" checked={row[`is_${h.split('_')[0]}`]} key={i + j} onChange={(e) => this.onCheckBoxHandler(e, row, h)} className="form-control"/></td>
-                  } else if (h.includes('dropdown')) {
-                    return <td>
-                       <select className="form-control" id="inputState" onChange={(e) => this.onSelectedHandler(e, row, h)} defaultValue="2">
+                  if (h.includes("btn")) {
+                    return (
+                      <td>
+                        <button
+                          key={i + j}
+                          onClick={() => this.onClickHandler(row, h)}
+                          className={
+                            h.includes("remove")
+                              ? "btn btn-danger"
+                              : "btn btn-success"
+                          }
+                        >
+                          {h.split("_")[0]}
+                        </button>
+                      </td>
+                    );
+                  }
+                  if (h.includes("checkbox")) {
+                    return (
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={row[`is_${h.split("_")[0]}`]}
+                          key={i + j}
+                          onChange={(e) => this.onCheckBoxHandler(e, row, h)}
+                          className="form-control"
+                        />
+                      </td>
+                    );
+                  } else if (h.includes("dropdown")) {
+                    return (
+                      <td>
+                        <select
+                          className="form-control"
+                          id="inputState"
+                          onChange={(e) => this.onSelectedHandler(e, row, h)}
+                          defaultValue="2"
+                        >
                           {/* dropdowns = {course_dropdown , teacher_dropdown}  */}
                           {/* h = course_dropdown , teacher_dropdown  */}
-                          {dropdowns[h] && dropdowns[h]['length'] && dropdowns[h].map((d, di) => (<option key={di} value={d.id}>{d.name}</option>))}
-                      </select>
-                    </td>
+                          {dropdowns[h] &&
+                            dropdowns[h]["length"] &&
+                            dropdowns[h].map((d, di) => (
+                              <option key={di} value={d.id}>
+                                {d.name}
+                              </option>
+                            ))}
+                        </select>
+                      </td>
+                    );
                     // return <td><input type="checkbox" checked={row[`is_${h.split('_')[0]}`]} key={i + j} onChange={(e) => this.onCheckBoxHandler(e, row, h)} className="form-control"/></td>
                   } else {
-                    return <td key={i + j}>{row[h]}</td>
+                    return <td key={i + j}>{row[h]}</td>;
                   }
                 })}
               </tr>
