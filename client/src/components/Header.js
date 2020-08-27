@@ -27,7 +27,7 @@ const Header = (props) => {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink className="nav-link" to="/logout">
+                  <NavLink className="nav-link" to="/logout" onClick={() => context.logoutUser()}>
                     Logout
                   </NavLink>
                 </NavItem>

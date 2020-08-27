@@ -109,7 +109,7 @@ class App extends React.Component {
             <Route path="/exam/create"  component={CreateExam}></Route>
             <Route path="/home"  component={Teacher}></Route>
             <Route path="/login" component={LoginForm}></Route>
-            <Route path="/logout" component={this.logout}></Route>
+            <Route path="/logout" ></Route>
           </Switch>
         </Container>
       </AuthContext.Provider>
