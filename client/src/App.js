@@ -1,15 +1,17 @@
 import React from "react";
 import "./App.css";
 import LoginForm from "./components/LoginForm";
-import DataTable from "./components/DataTable";
-import StudentPage from "./components/StudentPage";
 import Header from "./components/Header";
-import AddExam from "./components/AddExam";
-import { Route, Switch, Redirect } from "react-router-dom";
+import CreateExam from "./components/CreateExam";
+import Teacher from "./components/Teacher";
+import API from "./api/API";
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
 import StudentListReservedExams from "./components/StudentListReservedExams";
 import BookingSlots from "./components/BookingSlots";
+
+import { TEACHER } from "./shared/fakeTeacher";
 
 class App extends React.Component {
   constructor(props) {
@@ -18,6 +20,8 @@ class App extends React.Component {
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
+
+      teachers: TEACHER,
     };
   }
 
@@ -48,6 +52,30 @@ class App extends React.Component {
   //   }
   // }
 
+  // login = (username, password, role) => {
+  //   API.userLogin(username, password, role)
+  //     .then((user) => {
+  //       this.setState({ authUser: user, authErr: null });
+  //       this.props.history.push("/addexam");
+  //     })
+  //     .catch((errorObj) => {
+  //       const err0 = errorObj.errors[0];
+  //       this.setState({ authErr: err0, authUser: null });
+  //     });
+  // };
+
+  login = (username, password, role) => {
+    this.state.teachers.map((teacher) => {
+      if (role === "teacher") {
+        if (username === teacher.email && password === teacher.pass) {
+          console.log("teacher");
+          this.setState({ authUser: teacher.name });
+          this.props.history.push("/teacher");
+        }
+      }
+    });
+  };
+
   render() {
     const value = {
       authUser: this.state.authUser,
@@ -67,9 +95,14 @@ class App extends React.Component {
               </Row>
             </Route>
 
-            <Route path="/addexam" component={LoginForm}>
+            <Route path="/teacher/create">
               <Row className="vheight-100 mt-5">
-                <AddExam />
+                <CreateExam />
+              </Row>
+            </Route>
+            <Route path="/teacher">
+              <Row className="vheight-100 mt-5">
+                <Teacher />
               </Row>
             </Route>
 
@@ -102,4 +135,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);
