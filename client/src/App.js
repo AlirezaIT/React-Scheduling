@@ -8,6 +8,7 @@ import API from "./api/API";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
+import StudentListReservedExams from "./components/StudentListReservedExams";
 
 import { TEACHER } from "./shared/fakeTeacher";
 
@@ -108,20 +109,23 @@ class App extends React.Component {
               <Redirect to="/login" />
             </Route>
           </Switch>
-
+          {/* <LoginForm />; */}
           {/* <DataTable
             classes={["table", "table-bordered"]}
-            header={["name", "age", "family"]}
+            header={["name", "age", 'remove_btn', 'add_btn', 'absent_checkbox', 'detail_btn', 'course_dropdown', 'teacher_dropdown']}
+            dropdowns={{
+              "course_dropdown": [{name: "course 3", id: "3"}, {name: "course 1", id: "1"}, {name: "course 2", id: "2"}],
+              "teacher_dropdown": [{name: "teacher 3", id: "3"}, {name: "teacher 1", id: "1"}, {name: "teacher 2", id: "2"}],
+            }}
             data={[
-              { name: "test5", age: 20, family: "aaa" },
-              { name: "test12", age: 80 },
-
-              { name: "test42", age: 65 },
-
-              { name: "test25", age: 75 },
-              { name: "test20", age: 30, family: "bbb" },
+              { name: "test5", age: 20, remove_btn: `remove`, is_absent: true},
+              { name: "test12", age: 30, remove_btn: `remove`, is_absent: false},
+              { name: "test42", age: 30, remove_btn: `remove`, is_absent: true},
+              { name: "test25", age: 75, remove_btn: `remove`, is_absent: true},
+              { name: "test20", age: 30, remove_btn: `remove`, is_absent: false},
             ]}
           /> */}
+          {/* <StudentListReservedExams /> */}
         </Container>
       </AuthContext.Provider>
     );
