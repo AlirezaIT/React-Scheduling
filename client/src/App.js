@@ -87,7 +87,7 @@ class App extends React.Component {
           this.props.history.push("/home");
         } else {
           this.setState({ authUser: user, authErr: null });
-          this.props.history.push("/exam/create");
+          this.props.history.push("/studentPage");
         }
       })
       .catch((errorObj) => {

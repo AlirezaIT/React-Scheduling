@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { movies } from "../services/fakeMovieService";
 import { Table } from "reactstrap";
 import DataTable from "./DataTable";
+import BookingSlot from "./BookingSlot";
+import { Link } from "react-router-dom";
 const listExams = [
   {
     title: "web-application",
@@ -44,15 +45,15 @@ class StudentPage extends Component {
     super(props);
     this.state = {
       exams: listExams,
-      reserveExams: listReserveExams,
+      reservedExams: listReserveExams,
     };
   }
 
   handleCancelReservation = (reserveExam) => {
-    const reserveExams = this.state.reserveExams.filter(
+    const reservedExams = this.state.reservedExams.filter(
       (re) => re.id !== reserveExam.id
     );
-    this.setState({ reserveExams }); //reserveExams = reserveExams
+    this.setState({ reservedExams }); //reserveExams = reserveExams
   };
 
   handleReserve = (exam) => {
@@ -61,38 +62,17 @@ class StudentPage extends Component {
   renderCancel() {
     // if (this.state.reserveExams.find((re) => re.date  Date() )
   }
-  render() {
+  renderExams() {
+    const { length: examCount } = this.state.exams;
+
+    if (examCount === 0) return <p>There are no exams assigned to you</p>;
     return (
       <div>
-        <DataTable
-          classes={["table", "table-bordered"]}
-          header={["ExamTitle", "Reserve"]}
-          data={[
-            {
-              ExamTitle: this.state.exams,
-              Reserve: (
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => this.handleReserve()}
-                >
-                  Reserve
-                </button>
-              ),
-            },
-          ]}
-        />
-      </div>
-    );
-  }
-}
-
-export default StudentPage;
-
-{
-  /* <table className="table">
+        <p>You have {examCount} exams</p>
+        <table className="table">
           <thead>
             <tr>
-              <th>Exam Tile</th>
+              <th>Exam Title</th>
               <th>Reserve the exam</th>
             </tr>
           </thead>
@@ -100,20 +80,39 @@ export default StudentPage;
             {this.state.exams.map((exam) => (
               <tr key={exam.title}>
                 <td>{exam.title}</td>
-                <td>{exam.examCode}</td>
                 <td>
-                  <button
+                  <Link
+                    onClick={() => this.handleReserve(exam)}
+                    width="40"
+                    eventKey="link-1"
+                    to={{
+                      pathname: "/student/reserve",
+                    }}
+                    className="btn btn-primary w-100"
+                  >
+                    Reserve Exam
+                  </Link>
+                  {/* <button
                     className="btn btn-primary btn-sm"
                     onClick={() => this.handleReserve(exam)}
                   >
                     Reserve
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+    );
+  }
 
+  renderReserveredExams() {
+    const { length: countReserved } = this.state.reservedExams;
+    if (countReserved === 0) return <p>There are no reserved exams </p>;
+    return (
+      <div>
+        <p>You have {countReserved} exams</p>
         <table className="table">
           <thead>
             <tr>
@@ -125,16 +124,16 @@ export default StudentPage;
             </tr>
           </thead>
           <tbody>
-            {this.state.reserveExams.map((reserveExam) => (
-              <tr key={reserveExam.id}>
-                <td>{reserveExam.title}</td>
-                <td>{reserveExam.date}</td>
-                <td>{reserveExam.slot}</td>
-                <td>{reserveExam.grade}</td>
+            {this.state.reservedExams.map((reservedExam) => (
+              <tr key={reservedExam.id}>
+                <td>{reservedExam.title}</td>
+                <td>{reservedExam.date}</td>
+                <td>{reservedExam.slot}</td>
+                <td>{reservedExam.grade}</td>
                 <td>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => this.handleCancelReservation(reserveExam)}
+                    onClick={() => this.handleCancelReservation(reservedExam)}
                   >
                     Cancel
                   </button>
@@ -142,5 +141,19 @@ export default StudentPage;
               </tr>
             ))}
           </tbody>
-        </table> */
+        </table>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <div>{this.renderExams()}</div>
+        <div> {this.renderReserveredExams()}</div>
+      </div>
+    );
+  }
 }
+
+export default StudentPage;
