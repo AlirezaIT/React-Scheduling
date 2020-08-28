@@ -10,35 +10,38 @@ const Header = (props) => {
       {(context) => (
         <>
           {context.authUser ? (
-          <>
-          <Navbar light expand="md">
-            <div className="container">
-            <NavbarToggler onClick={props.toggleNav} />
-            <Collapse isOpen={props.isNavOpen} navbar>
-              <Nav navbar>
-                <NavItem>
-                  <NavLink className="nav-link" to="/home">
-                    Home 
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink className="nav-link" to="/exam/create">
-                    Create Exam
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink className="nav-link" to="/logout" onClick={() => context.logoutUser()}>
-                    Logout
-                  </NavLink>
-                </NavItem>
-              </Nav>
-            </Collapse>
-            </div>
-          </Navbar>
-          
-          </>) : (
-          <>
-          </>
+            <>
+              <Navbar light expand="md">
+                <div className="container">
+                  <NavbarToggler onClick={props.toggleNav} />
+                  <Collapse isOpen={props.isNavOpen} navbar>
+                    <Nav navbar>
+                      <NavItem>
+                        <NavLink className="nav-link" to="/home">
+                          Home
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink className="nav-link" to="/exam/create">
+                          Create Exam
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className="nav-link"
+                          to="/logout"
+                          onClick={() => context.logoutUser()}
+                        >
+                          Logout
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                  </Collapse>
+                </div>
+              </Navbar>
+            </>
+          ) : (
+            <></>
           )}
         </>
       )}

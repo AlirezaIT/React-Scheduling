@@ -43,34 +43,49 @@ async function userLogin(username, password, role) {
 
 async function userLogout() {
   return new Promise((resolve, reject) => {
-      fetch(baseURL + '/logout', {
-          method: 'POST',
-      }).then((response) => {
-          if (response.ok) {
-              resolve(null);
-          } else {
-              // analyze the cause of error
-              response.json()
-                  .then((obj) => { reject(obj); }) // error msg in the response body
-                  .catch((err) => { reject({ errors: [{ param: "Application", msg: "Cannot parse server response" }] }) }); // something else
-          }
-      });
+    fetch(baseURL + "/logout", {
+      method: "POST",
+    }).then((response) => {
+      if (response.ok) {
+        resolve(null);
+      } else {
+        // analyze the cause of error
+        response
+          .json()
+          .then((obj) => {
+            reject(obj);
+          }) // error msg in the response body
+          .catch((err) => {
+            reject({
+              errors: [
+                { param: "Application", msg: "Cannot parse server response" },
+              ],
+            });
+          }); // something else
+      }
+    });
   });
 }
 
-async function isAuthenticated(){
+async function isAuthenticated() {
   const response = await fetch(`${baseURL}/verify`);
   const userJson = await response.json();
-  if(response.ok){
-      return userJson;
+  if (response.ok) {
+    return userJson;
   } else {
-      let err = {status: response.status, errObj:userJson};
-      throw err;  // An object with the error coming from the server
+    let err = { status: response.status, errObj: userJson };
+    throw err; // An object with the error coming from the server
   }
+
+  // async function studentLists(){
+  //   return new Promise((resolve, reject)=>{
+  //     fetch(baseURL+ '/')
+  //   }
+  // }
 }
-const API = { 
+const API = {
   userLogin,
   userLogout,
-  isAuthenticated
+  isAuthenticated,
 };
 export default API;

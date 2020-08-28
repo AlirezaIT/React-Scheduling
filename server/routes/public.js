@@ -1,13 +1,42 @@
 const express = require("express");
 const jsonwebtoken = require("jsonwebtoken");
 const userDao = require("../services/user_dao");
-const {ROLES} = require("../utils/consts");
+const teacherDao = require("../services/teacher_dao");
+const studentDao = require("../services/student_dao");
+const { ROLES } = require("../utils/consts");
+const { route } = require("./private");
 const router = express.Router();
 const expireTime = 300; //seconds
 const authErrorObj = {
   errors: [{ param: "Server", msg: "Authorization error" }],
 };
 const jwtSecret = "12345";
+
+router.get("/studentLists", async (req, res) => {
+  try {
+    const lists = await teacherDao.getStudentLists(2);
+    return res.json({ lists });
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
+router.get("/studentExams", async (req, res) => {
+  try {
+    const lists = await studentDao.getStudentExams(2);
+    return res.json({ lists });
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+router.get("/reservedExams", async (req, res) => {
+  try {
+    const lists = await studentDao.getReservedexamsOfStudent(2);
+    return res.json({ lists });
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
 
 router.post("/login", async (req, res) => {
   const { username, password, role } = req.body;
@@ -51,7 +80,7 @@ router.post("/login", async (req, res) => {
    * @ROLE STUDENT
    * no password
    */
-  if (ROLES.STUDENT === role) { 
+  if (ROLES.STUDENT === role) {
     if (!username) {
       return res.status(404).send({
         errors: [{ param: "Server", msg: "Invalid username" }],

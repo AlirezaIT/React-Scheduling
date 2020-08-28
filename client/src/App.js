@@ -9,6 +9,8 @@ import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
 import StudentListReservedExams from "./components/StudentListReservedExams";
+import { ROLES } from "./shared/consts";
+
 import { TEACHER } from "./shared/fakeTeacher";
 import StudentPage from "./components/StudentPage";
 import BookingSlot from "./components/BookingSlot";
@@ -16,7 +18,7 @@ import BookingSlot from "./components/BookingSlot";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { authErr: "", authUser: "" };
+    this.state = { authErr: "", authUser: "", studentLists: [] };
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       studentExams: [],
@@ -31,18 +33,17 @@ class App extends React.Component {
       isNavOpen: !this.state.isNavOpen,
     });
   }
-
-  // componentDidMount() {
-  //   //check if the user is authenticated
-  //   API.isAuthenticated()
-  //     .then((user) => {
-  //       this.setState({ authUser: user });
-  //     })
-  //     .catch((err) => {
-  //       this.setState({ authErr: err.errorObj });
-  //       this.props.history.push("/login");
-  //     });
-  // }
+  componentDidMount() {
+    //check if the user is authenticated
+    API.isAuthenticated()
+      .then((user) => {
+        this.setState({ authUser: user });
+      })
+      .catch((err) => {
+        this.setState({ authErr: err.errorObj });
+        this.props.history.push("/login");
+      });
+  }
 
   // handleErrors(err) {
   //   if (err) {
@@ -52,44 +53,32 @@ class App extends React.Component {
   //     }
   //   }
   // }
-
-  // login = (username, password, role) => {
-  //   API.userLogin(username, password, role)
-  //     .then((user) => {
-  //       this.setState({ authUser: user, authErr: null });
-  //       this.props.history.push("/addexam");
-  //     })
-  //     .catch((errorObj) => {
-  //       const err0 = errorObj.errors[0];
-  //       this.setState({ authErr: err0, authUser: null });
-  //     });
-  // };
-
-  //  async funciton  {
-  //     API.getPublicTasks()
-  //       .then((studentExams) => this.setState({ studentExams: studentExams }))
-  //       .catch((errorObj) => {
-  //         this.handleErrors(errorObj);
-  //       });
-  //   }
-  getStudentExams() {
-    API.getPublicTasks()
-      .then((studentExams) => this.setState({ studentExams: studentExams }))
-      .catch((errorObj) => {
-        this.handleErrors(errorObj);
-      });
-  }
-
-  login = (username, password, role) => {
-    this.state.teachers.map((teacher) => {
-      if (role === "teacher") {
-        if (username === teacher.email && password === teacher.pass) {
-          console.log("teacher");
-          this.setState({ authUser: teacher.name });
-          this.props.history.push("/teacher");
-        }
-      }
+  logout = () => {
+    return API.userLogout().then(() => {
+      this.setState({ authUser: null, authErr: null });
+      this.props.history.push("/login");
     });
+  };
+  login = (username, password, role) => {
+    return API.userLogin(username, password, role)
+      .then((user) => {
+        this.setState({ authUser: user, authErr: null });
+        this.props.history.push("/home");
+      })
+      .catch((errorObj) => {
+        const err0 = errorObj.errors[0];
+        this.setState({ authErr: err0 });
+      });
+  };
+
+  studentLists = () => {
+    return API.studentLists()
+      .then((students) => {
+        this.setState({ studentLists: students });
+      })
+      .catch((errorObj) => {
+        const err = errorObj.errors[0];
+      });
   };
 
   render() {
@@ -105,36 +94,13 @@ class App extends React.Component {
         <Header isNavOpen={this.state.isNavOpen} toggleNav={this.toggleNav} />
         <Container fluid>
           <Switch>
-            <Route path="/login" component={LoginForm}>
-              <Row className="vheight-100 mt-5">
-                <LoginForm />
-              </Row>
-            </Route>
+            <Route path="/exam/create" component={CreateExam}></Route>
+            <Route path="/home" component={Teacher}></Route>
+            <Route path="/login" component={LoginForm}></Route>
 
-            <Route path="/teacher/create">
-              <Row className="vheight-100 mt-5">
-                <CreateExam />
-              </Row>
-            </Route>
-            <Route path="/teacher">
-              <Row className="vheight-100 mt-5">
-                <Teacher />
-              </Row>
-            </Route>
-            <Route path="/student/reserve">
-              <Row className="vheight-100 mt-5">
-                <BookingSlot />
-              </Row>
-            </Route>
-
-            <Route path="/student">
-              <Row className="vheight-100 mt-5">
-                <StudentPage />
-              </Row>
-            </Route>
-            <Route>
-              <Redirect to="/login" />
-            </Route>
+            <Route path="/reservingslot" component={BookingSlot}></Route>
+            <Route path="/student" component={StudentPage}></Route>
+            <Route path="/logout"></Route>
           </Switch>
 
           {/* <LoginForm />; */}
