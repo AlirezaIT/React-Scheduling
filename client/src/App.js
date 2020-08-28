@@ -11,7 +11,9 @@ import { Col, Row, Container } from "react-bootstrap";
 import StudentListReservedExams from "./components/StudentListReservedExams";
 import { ROLES } from "./shared/consts";
 
-// import consts from "../../server/utils/consts";
+// import { TEACHER } from "./shared/fakeTeacher";
+import StudentPage from "./components/studentPage";
+import BookingSlot from "./components/BookingSlot";
 
 class App extends React.Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class App extends React.Component {
     this.state = { authErr: "", authUser: "", studentLists: [] };
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
+      studentExams: [],
       isNavOpen: false,
 
       // teachers: TEACHER,
@@ -41,17 +44,6 @@ class App extends React.Component {
         this.props.history.push("/login");
       });
   }
-  // componentDidMount() {
-  //   //check if the user is authenticated
-  //   API.isAuthenticated()
-  //     .then((user) => {
-  //       this.setState({ authUser: user });
-  //     })
-  //     .catch((err) => {
-  //       this.setState({ authErr: err.errorObj });
-  //       this.props.history.push("/login");
-  //     });
-  // }
 
   // handleErrors(err) {
   //   if (err) {
@@ -61,18 +53,6 @@ class App extends React.Component {
   //     }
   //   }
   // }
-
-  // login = (username, password, role) => {
-  //   API.userLogin(username, password, role)
-  //     .then((user) => {
-  //       this.setState({ authUser: user, authErr: null });
-  //       this.props.history.push("/addexam");
-  //     })
-  //     .catch((errorObj) => {
-  //       const err0 = errorObj.errors[0];
-  //       this.setState({ authErr: err0, authUser: null });
-  //     });
-  // };
   logout = () => {
     return API.userLogout().then(() => {
       this.setState({ authUser: null, authErr: null });
@@ -85,9 +65,10 @@ class App extends React.Component {
         if (user.role === ROLES.TEACHER) {
           this.setState({ authUser: user, authErr: null });
           this.props.history.push("/home");
+          console.log(this.state.authUser);
         } else {
           this.setState({ authUser: user, authErr: null });
-          this.props.history.push("/studentPage");
+          this.props.history.push("/student");
         }
       })
       .catch((errorObj) => {
@@ -122,8 +103,29 @@ class App extends React.Component {
             <Route path="/exam/create" component={CreateExam}></Route>
             <Route path="/home" component={Teacher}></Route>
             <Route path="/login" component={LoginForm}></Route>
+
+            <Route path="/reservingslot" component={BookingSlot}></Route>
+            <Route path="/student" component={StudentPage}></Route>
             <Route path="/logout"></Route>
           </Switch>
+
+          {/* <LoginForm />; */}
+          {/* <DataTable
+            classes={["table", "table-bordered"]}
+            header={["name", "age", 'remove_btn', 'add_btn', 'absent_checkbox', 'detail_btn', 'course_dropdown', 'teacher_dropdown']}
+            dropdowns={{
+              "course_dropdown": [{name: "course 3", id: "3"}, {name: "course 1", id: "1"}, {name: "course 2", id: "2"}],
+              "teacher_dropdown": [{name: "teacher 3", id: "3"}, {name: "teacher 1", id: "1"}, {name: "teacher 2", id: "2"}],
+            }}
+            data={[
+              { name: "test5", age: 20, remove_btn: `remove`, is_absent: true},
+              { name: "test12", age: 30, remove_btn: `remove`, is_absent: false},
+              { name: "test42", age: 30, remove_btn: `remove`, is_absent: true},
+              { name: "test25", age: 75, remove_btn: `remove`, is_absent: true},
+              { name: "test20", age: 30, remove_btn: `remove`, is_absent: false},
+            ]}
+          /> */}
+          {/* <StudentListReservedExams /> */}
         </Container>
       </AuthContext.Provider>
     );

@@ -29,6 +29,14 @@ router.get("/studentExams", async (req, res) => {
     return res.status(401).json(authErrorObj);
   }
 });
+router.get("/reservedExams", async (req, res) => {
+  try {
+    const lists = await studentDao.getReservedexamsOfStudent(2);
+    return res.json({ lists });
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
 
 router.post("/login", async (req, res) => {
   const { username, password, role } = req.body;

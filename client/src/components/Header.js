@@ -3,6 +3,7 @@ import React from "react";
 import { Nav, Navbar, NavbarToggler, Collapse, NavItem } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
+import { ROLES } from "../shared/consts";
 
 const Header = (props) => {
   return (
@@ -41,7 +42,26 @@ const Header = (props) => {
               </Navbar>
             </>
           ) : (
-            <></>
+            <>
+              {/* <Navbar light expand="md">
+                <div className="container">
+                  <NavbarToggler onClick={props.toggleNav} />
+                  <Collapse isOpen={props.isNavOpen} navbar>
+                    <Nav navbar>
+                      <NavItem>
+                        <NavLink
+                          className="nav-link"
+                          to="/logout"
+                          onClick={() => context.logoutUser()}
+                        >
+                          Logout
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                  </Collapse>
+                </div>
+              </Navbar> */}
+            </>
           )}
         </>
       )}
