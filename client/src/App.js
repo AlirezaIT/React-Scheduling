@@ -11,7 +11,7 @@ import { Col, Row, Container } from "react-bootstrap";
 import StudentListReservedExams from "./components/StudentListReservedExams";
 import { ROLES } from "./shared/consts";
 
-import { TEACHER } from "./shared/fakeTeacher";
+// import consts from "../../server/utils/consts";
 
 class App extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class App extends React.Component {
     this.state = {
       isNavOpen: false,
 
-      teachers: TEACHER,
+      // teachers: TEACHER,
     };
   }
 
@@ -82,8 +82,13 @@ class App extends React.Component {
   login = (username, password, role) => {
     return API.userLogin(username, password, role)
       .then((user) => {
-        this.setState({ authUser: user, authErr: null });
-        this.props.history.push("/home");
+        if (user.role === ROLES.TEACHER) {
+          this.setState({ authUser: user, authErr: null });
+          this.props.history.push("/home");
+        } else {
+          this.setState({ authUser: user, authErr: null });
+          this.props.history.push("/exam/create");
+        }
       })
       .catch((errorObj) => {
         const err0 = errorObj.errors[0];

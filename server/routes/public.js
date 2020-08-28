@@ -63,7 +63,11 @@ router.post("/login", async (req, res) => {
         sameSite: true,
         maxAge: 1000 * expireTime,
       });
-      return res.json({ id: user.id, username: user.username });
+      return res.json({
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      });
     } catch (error) {
       return res.status(401).json(authErrorObj);
     }
