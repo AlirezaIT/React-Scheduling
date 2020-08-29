@@ -3,7 +3,6 @@ class Student_Exams {
     if (id) {
       this.id = id;
     }
-    this.id = id;
     this.student_id = student_id;
     this.exam_no = exam_no;
   }

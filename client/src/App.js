@@ -11,20 +11,23 @@ import { Col, Row, Container } from "react-bootstrap";
 import StudentListReservedExams from "./components/StudentListReservedExams";
 import { ROLES } from "./shared/consts";
 
-import { TEACHER } from "./shared/fakeTeacher";
-import StudentPage from "./components/StudentPage";
+// import { TEACHER } from "./shared/fakeTeacher";
+import StudentPage from "./components/studentPage";
 import BookingSlot from "./components/BookingSlot";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { authErr: "", authUser: "", studentLists: [] };
+    // this.state = { authErr: "", authUser: "", studentLists: [] };
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       studentExams: [],
       isNavOpen: false,
+      authErr: "",
+      authUser: "",
+      studentLists: [],
 
-      teachers: TEACHER,
+      // teachers: TEACHER,
     };
   }
 
@@ -43,6 +46,7 @@ class App extends React.Component {
         this.setState({ authErr: err.errorObj });
         this.props.history.push("/login");
       });
+    // this.studentLists();
   }
 
   // handleErrors(err) {
@@ -59,11 +63,18 @@ class App extends React.Component {
       this.props.history.push("/login");
     });
   };
+
   login = (username, password, role) => {
     return API.userLogin(username, password, role)
       .then((user) => {
-        this.setState({ authUser: user, authErr: null });
-        this.props.history.push("/home");
+        if (user.role === ROLES.TEACHER) {
+          this.setState({ authUser: user, authErr: null });
+          this.props.history.push("/home");
+          console.log(this.state.authUser);
+        } else {
+          this.setState({ authUser: user, authErr: null });
+          this.props.history.push("/student");
+        }
       })
       .catch((errorObj) => {
         const err0 = errorObj.errors[0];
@@ -72,13 +83,17 @@ class App extends React.Component {
   };
 
   studentLists = () => {
-    return API.studentLists()
-      .then((students) => {
-        this.setState({ studentLists: students });
-      })
-      .catch((errorObj) => {
-        const err = errorObj.errors[0];
-      });
+    return (
+      API.getStudentLists()
+        // .then((students) => {
+        //   this.setState(() => {
+        //     return { studentLists: students };
+        //   });
+        // })
+        .catch((errorObj) => {
+          const err = errorObj.errors[0];
+        })
+    );
   };
 
   render() {
@@ -94,7 +109,15 @@ class App extends React.Component {
         <Header isNavOpen={this.state.isNavOpen} toggleNav={this.toggleNav} />
         <Container fluid>
           <Switch>
-            <Route path="/exam/create" component={CreateExam}></Route>
+            <Route
+              path="/exam/create"
+              component={() => (
+                <CreateExam
+                  studentLists={this.studentLists}
+                  // studentListsState={this.state.studentLists}
+                />
+              )}
+            ></Route>
             <Route path="/home" component={Teacher}></Route>
             <Route path="/login" component={LoginForm}></Route>
 

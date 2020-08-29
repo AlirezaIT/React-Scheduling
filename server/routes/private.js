@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userDao = require("../services/user_dao");
+const teacherDao = require("../services/teacher_dao");
 
 const authErrorObj = {
   errors: [{ param: "Server", msg: "Authorization error" }],
@@ -14,6 +15,15 @@ router.get("/verify", async (req, res) => {
     res.json({ id: userFound.id, name: userFound.username });
   } catch (err) {
     res.status(401).json(authErrorObj);
+  }
+});
+
+router.get("/studentLists", async (req, res) => {
+  try {
+    const lists = await teacherDao.getStudentLists();
+    return res.json(lists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
   }
 });
 
