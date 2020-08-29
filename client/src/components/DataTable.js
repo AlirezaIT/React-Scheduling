@@ -4,7 +4,7 @@ class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = props;
-    // ({ data, header, classes })
+    // ({ data, header, classes });
   }
 
   onClickHandler(row, header) {
@@ -124,10 +124,9 @@ class DataTable extends React.Component {
 
 export default DataTable;
 
-
-
 // example
-{/* <DataTable
+{
+  /* <DataTable
   classes={["table", "table-bordered"]}
   header={["name", "age", 'remove_btn', 'add_btn', 'absent_checkbox', 'detail_btn', 'course_dropdown', 'teacher_dropdown']}
   dropdowns={{
@@ -141,4 +140,5 @@ export default DataTable;
     { name: "test25", age: 75, remove_btn: `remove`, is_absent: true},
     { name: "test20", age: 30, remove_btn: `remove`, is_absent: false},
   ]}
-/> */}
+/> */
+}

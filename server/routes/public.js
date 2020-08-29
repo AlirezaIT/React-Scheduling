@@ -12,32 +12,6 @@ const authErrorObj = {
 };
 const jwtSecret = "12345";
 
-router.get("/studentLists", async (req, res) => {
-  try {
-    const lists = await teacherDao.getStudentLists(2);
-    return res.json({ lists });
-  } catch (error) {
-    return res.status(401).json(authErrorObj);
-  }
-});
-
-router.get("/studentExams", async (req, res) => {
-  try {
-    const lists = await studentDao.getStudentExams(2);
-    return res.json({ lists });
-  } catch (error) {
-    return res.status(401).json(authErrorObj);
-  }
-});
-router.get("/reservedExams", async (req, res) => {
-  try {
-    const lists = await studentDao.getReservedexamsOfStudent(2);
-    return res.json({ lists });
-  } catch (error) {
-    return res.status(401).json(authErrorObj);
-  }
-});
-
 router.post("/login", async (req, res) => {
   const { username, password, role } = req.body;
   /**
@@ -114,6 +88,24 @@ router.post("/login", async (req, res) => {
 
 router.post("/logout", (req, res) => {
   res.clearCookie("token").end();
+});
+
+router.get("/studentExams", async (req, res) => {
+  try {
+    const lists = await studentDao.getStudentExams(2);
+    return res.json({ lists });
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
+router.get("/reservedExams", async (req, res) => {
+  try {
+    const lists = await studentDao.getReservedexamsOfStudent(2);
+    return res.json({ lists });
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
 });
 
 module.exports = router;

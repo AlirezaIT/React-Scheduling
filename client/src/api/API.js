@@ -76,16 +76,23 @@ async function isAuthenticated() {
     let err = { status: response.status, errObj: userJson };
     throw err; // An object with the error coming from the server
   }
+}
 
-  // async function studentLists(){
-  //   return new Promise((resolve, reject)=>{
-  //     fetch(baseURL+ '/')
-  //   }
+async function getStudentLists() {
+  const response = await fetch(`${baseURL}/studentLists`);
+  return response.json();
+  // if (response.ok) {
+  //   return userJson;
+  // } else {
+  //   let err = { status: response.status, errObj: userJson };
+  //   throw err; // An object with the error coming from the server
   // }
 }
+
 const API = {
   userLogin,
   userLogout,
   isAuthenticated,
+  getStudentLists,
 };
 export default API;

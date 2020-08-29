@@ -3,20 +3,24 @@
 const StudentCourses = require("../models/student_courses");
 const db = require("../db/index");
 
-const createStudentLists = function (row) {
-  return new StudentCourses(row.id, row.course_id, row.student_id);
-};
-
-exports.getStudentLists = async (course_id) => {
-  const sql = `SELECT * FROM student_courses where course_id =?`;
+exports.getStudentLists = async () => {
+  const sql = `SELECT * FROM student_courses`;
   try {
-    let studentLists = await db.query(sql, [course_id]);
-    console.log(studentLists);
-    let lists = studentLists.map((row) => {
-      createStudentLists(row);
+    let studentLists = await db.query(sql, []);
+
+    // if (!studentLists || !studentLists.rows.length) {
+    //   return [];
+    // }
+
+    const listMapped = studentLists.rows.map((StudentList) => {
+      return new StudentCourses(
+        StudentList.id,
+        StudentList.course_id,
+        StudentList.student_id
+      );
     });
 
-    return lists;
+    return listMapped;
   } catch (error) {
     throw error;
   }

@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, FormGroup, Col, Button, Container, Row } from "react-bootstrap";
 import { AuthContext } from "../auth/AuthContext";
+import API from "../api/API";
 import DataTable from "./DataTable";
 import CreateSession from "./CreateSession";
 
@@ -10,9 +11,26 @@ class CreateExam extends React.Component {
 
     this.state = {
       isModalOpen: false,
+      studentLists: [],
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
+
+  async componentDidMount() {
+    const studentLists = await this.props.studentLists();
+    this.setState({
+      studentLists: studentLists,
+    });
+    console.log("student Lists", studentLists);
+  }
+
+  // async componentDidMount() {
+  //   const studentLists = await this.props.studentLists();
+  //   this.setState({
+  //     studentLists: studentLists,
+  //   });
+  //   console.log("student Lists", studentLists);
+  // }
 
   toggleModal() {
     this.setState({
@@ -28,23 +46,57 @@ class CreateExam extends React.Component {
             <Container fluid>
               <Row>
                 <Col md={8}>
-                  <DataTable
+                  {/* <DataTable
                     classes={["table", "table-bordered"]}
                     header={["name", "age", "family"]}
-                    data={
-                      [
-                        // {
-                        //   name: "test5",
-                        //   age: 20,
-                        //   family: "aaa",
-                        // },
-                        // { name: "test12", age: 80 },
-                        // { name: "test42", age: 65 },
-                        // { name: "test25", age: 75 },
-                        // { name: "test20", age: 30, family: "bbb" },
-                      ]
-                    }
-                  />
+                    data={[
+                      // {
+                      //   name: "test5",
+                      //   age: 20,
+                      //   family: "aaa",
+                      // },
+                      // { name: "test12", age: 80 },
+                      // { name: "test42", age: 65 },
+                      // { name: "test25", age: 75 },
+                      // { name: "test20", age: 30, family: "bbb" },
+                      this.state.studentLists,
+                    ]}
+                  /> */}
+
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <td>id</td>
+                        <td>student_id</td>
+                        <td>course_id</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.studentLists.map((studentList) => (
+                        <tr key={studentList.id}>
+                          <td>{studentList.id}</td>
+                          <td>{studentList.student_id}</td>
+                          <td>{studentList.course_id}</td>
+                          <td>
+                            <button className="btn btn-danger btn-sm">
+                              select
+                            </button>
+                          </td>
+                          {/* <td>{reservedExam.grade}</td>
+                          <td> */}
+                          {/* <button
+                              className="btn btn-danger btn-sm"
+                              onClick={() =>
+                                this.handleCancelReservation(reservedExam)
+                              }
+                            >
+                              Cancel
+                            </button> */}
+                          {/* </td> */}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </Col>
                 <Col md={4}>
                   <Form>
