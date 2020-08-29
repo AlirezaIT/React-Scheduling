@@ -37,7 +37,7 @@ exports.getReservedexamsOfStudent = async (student_id) => {
   const sql = `SELECT * FROM exams where booking_status = 1 and student_id =?`;
   try {
     let reservedExams = await db.query(sql, [student_id]);
-    console.log(reservedExams);
+    // console.log(reservedExams);
     let lists = reservedExams.map((row) => {
       listReservedexamsOfStudent(row);
     });
