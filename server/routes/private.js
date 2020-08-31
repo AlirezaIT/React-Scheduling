@@ -19,8 +19,11 @@ router.get("/verify", async (req, res) => {
 });
 
 router.get("/studentLists", async (req, res) => {
+  console.log("sfdsdfsdf", req.user.user);
+  const userId = req.user.user;
+  console.log(userId);
   try {
-    const lists = await teacherDao.getStudentLists();
+    const lists = await teacherDao.getStudentLists(userId);
     return res.json(lists);
   } catch (error) {
     return res.status(401).json(authErrorObj);
