@@ -3,18 +3,18 @@ import { Table } from "reactstrap";
 import DataTable from "./DataTable";
 import BookingSlot from "./BookingSlot";
 import { Link } from "react-router-dom";
-const listExams = [
-  {
-    title: "web-application",
-    examCode: "1010",
-  },
-  {
-    title: "computer architectures",
-  },
-  {
-    title: "network",
-  },
-];
+// const listExams = [
+//   {
+//     title: "web-application",
+//     examCode: "1010",
+//   },
+//   {
+//     title: "computer architectures",
+//   },
+//   {
+//     title: "network",
+//   },
+// ];
 
 const listReserveExams = [
   {
@@ -44,9 +44,18 @@ class StudentPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      exams: listExams,
-      reservedExams: listReserveExams,
+      exams: [],
+      reservedExams: [],
     };
+  }
+
+  async componentDidMount() {
+    const studentExams = await this.props.studentExams();
+    const reservedExams = await this.props.reservedExams();
+    this.setState({
+      exams: studentExams,
+      reservedExams: reservedExams,
+    });
   }
 
   handleCancelReservation = (reserveExam) => {
@@ -78,8 +87,8 @@ class StudentPage extends Component {
           </thead>
           <tbody>
             {this.state.exams.map((exam) => (
-              <tr key={exam.title}>
-                <td>{exam.title}</td>
+              <tr key={exam.id}>
+                <td>{exam.name}</td>
                 <td>
                   <Link
                     onClick={() => this.handleReserve(exam)}
@@ -93,11 +102,11 @@ class StudentPage extends Component {
                     Reserve Exam
                   </Link>
                   {/* <button
-                    className="btn btn-primary btn-sm"
-                    onClick={() => this.handleReserve(exam)}
-                  >
-                    Reserve
-                  </button> */}
+                      className="btn btn-primary btn-sm"
+                      onClick={() => this.handleReserve(exam)}
+                    >
+                      Reserve
+                    </button> */}
                 </td>
               </tr>
             ))}
@@ -118,7 +127,8 @@ class StudentPage extends Component {
             <tr>
               <td>Exam title</td>
               <td>Date</td>
-              <td>Slot</td>
+              <td>Start Time</td>
+              <td>End Time</td>
               <td>Grade</td>
               <td>Cancel the exam</td>
             </tr>
@@ -126,9 +136,10 @@ class StudentPage extends Component {
           <tbody>
             {this.state.reservedExams.map((reservedExam) => (
               <tr key={reservedExam.id}>
-                <td>{reservedExam.title}</td>
+                <td>{reservedExam.name}</td>
                 <td>{reservedExam.date}</td>
-                <td>{reservedExam.slot}</td>
+                <td>{reservedExam.start_time}</td>
+                <td>{reservedExam.end_time}</td>
                 <td>{reservedExam.grade}</td>
                 <td>
                   <button

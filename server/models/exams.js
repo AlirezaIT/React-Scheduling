@@ -16,7 +16,6 @@ class Exams {
     if (id) {
       this.id = id;
     }
-    this.id = id;
     this.exam_no = exam_no;
     this.duration = duration;
     this.start_time = start_time;

@@ -12,7 +12,7 @@ import StudentListReservedExams from "./components/StudentListReservedExams";
 import { ROLES } from "./shared/consts";
 
 // import { TEACHER } from "./shared/fakeTeacher";
-import StudentPage from "./components/studentPage";
+import StudentPage from "./components/StudentPage";
 import BookingSlot from "./components/BookingSlot";
 
 class App extends React.Component {
@@ -21,11 +21,11 @@ class App extends React.Component {
     // this.state = { authErr: "", authUser: "", studentLists: [] };
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
-      studentExams: [],
       isNavOpen: false,
       authErr: "",
       authUser: "",
       studentLists: [],
+      studentExams: [],
 
       // teachers: TEACHER,
     };
@@ -95,6 +95,30 @@ class App extends React.Component {
         })
     );
   };
+  studentExams = () => {
+    return API.getStudentExams()
+      .then((studentExams) => {
+        this.setState(() => {
+          return { studentExams: studentExams };
+        });
+      })
+      .catch((errorObj) => {
+        const err = errorObj.errors[0];
+      });
+  };
+  reservedExams = () => {
+    return (
+      API.getReservedExams()
+        // .then((studentExams) => {
+        //   this.setState(() => {
+        //     return { studentExams: studentExams };
+        //   });
+        // })
+        .catch((errorObj) => {
+          const err = errorObj.errors[0];
+        })
+    );
+  };
 
   render() {
     const value = {
@@ -122,7 +146,16 @@ class App extends React.Component {
             <Route path="/login" component={LoginForm}></Route>
 
             <Route path="/reservingslot" component={BookingSlot}></Route>
-            <Route path="/student" component={StudentPage}></Route>
+            <Route
+              path="/student"
+              component={() => (
+                <StudentPage
+                  studentExams={this.studentExams}
+                  reservedExams={this.reservedExams}
+                  // studentListsState={this.state.studentLists}
+                />
+              )}
+            ></Route>
             <Route path="/logout"></Route>
           </Switch>
 

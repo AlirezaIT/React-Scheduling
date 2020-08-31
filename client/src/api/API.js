@@ -89,10 +89,21 @@ async function getStudentLists() {
   // }
 }
 
+async function getStudentExams() {
+  const response = await fetch(`${baseURL}/studentExams`);
+  return response.json();
+}
+async function getReservedExams() {
+  const response = await fetch(`${baseURL}/reservedExams`);
+  return response.json();
+}
+
 const API = {
   userLogin,
   userLogout,
   isAuthenticated,
   getStudentLists,
+  getStudentExams,
+  getReservedExams,
 };
 export default API;
