@@ -20,8 +20,11 @@ router.get("/verify", async (req, res) => {
 });
 
 router.get("/studentLists", async (req, res) => {
+  console.log("sfdsdfsdf", req.user.user);
+  const userId = req.user.user;
+  console.log(userId);
   try {
-    const lists = await teacherDao.getStudentLists();
+    const lists = await teacherDao.getStudentLists(userId);
     return res.json(lists);
   } catch (error) {
     return res.status(401).json(authErrorObj);
@@ -43,10 +46,35 @@ router.get("/reservedExams", async (req, res) => {
   try {
     const userId = req.user.user;
     const lists = await studentDao.getReservedexamsOfStudent(userId);
+    console.log(lists);
     return res.json(lists);
   } catch (error) {
     return res.status(401).json(authErrorObj);
   }
 });
+router.get("/examSlots/:exam_no", async (req, res) => {
+  try {
+    console.log("request params", req.params);
+    console.log("request query", req.query);
+    const { exam_no } = req.params;
+    const lists = await studentDao.getExamSlots(exam_no);
+    console.log(lists);
+    return res.json(lists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+// router.get("/examSlots", async (req, res) => {
+//   try {
+//     console.log("request params", req.params);
+//     console.log("request query", req.query);
+//     const { exam_no } = req.params;
+//     const lists = await studentDao.getExamSlots(exam_no);
+//     console.log(lists);
+//     return res.json(lists);
+//   } catch (error) {
+//     return res.status(401).json(authErrorObj);
+//   }
+// });
 
 module.exports = router;

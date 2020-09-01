@@ -3,76 +3,34 @@ import { Table } from "reactstrap";
 import DataTable from "./DataTable";
 import BookingSlot from "./BookingSlot";
 import { Link } from "react-router-dom";
-// const listExams = [
-//   {
-//     title: "web-application",
-//     examCode: "1010",
-//   },
-//   {
-//     title: "computer architectures",
-//   },
-//   {
-//     title: "network",
-//   },
-// ];
+import API from "../api/API";
 
-const listReserveExams = [
-  {
-    id: 1,
-    title: "web application",
-    date: "date",
-    slot: "",
-    grade: "20",
-  },
-  {
-    id: 2,
-    title: "netowrk ",
-    date: "date",
-    slot: "",
-    grade: "40",
-  },
-  {
-    id: 3,
-    title: "netowrk ",
-    date: "date",
-    slot: "",
-    grade: "20",
-  },
-  { id: 4, title: "database", date: "date", slot: "", grade: "withrow" },
-];
 class StudentPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      exams: [],
-      reservedExams: [],
-    };
+    this.state = {};
   }
 
-  async componentDidMount() {
-    const studentExams = await this.props.studentExams();
-    const reservedExams = await this.props.reservedExams();
-    this.setState({
-      exams: studentExams,
-      reservedExams: reservedExams,
-    });
+  componentDidMount() {
+    this.props.studentExams();
+    this.props.reservedExams();
   }
 
   handleCancelReservation = (reserveExam) => {
-    const reservedExams = this.state.reservedExams.filter(
+    const reservedExams = this.props.listReservedExams.filter(
       (re) => re.id !== reserveExam.id
     );
     this.setState({ reservedExams }); //reserveExams = reserveExams
   };
 
-  handleReserve = (exam) => {
-    console.log(exam);
+  handleReserve = async (exam) => {
+    await API.getExamSlots(exam.exam_no);
   };
   renderCancel() {
     // if (this.state.reserveExams.find((re) => re.date  Date() )
   }
   renderExams() {
-    const { length: examCount } = this.state.exams;
+    const { length: examCount } = this.props.listStudentExams;
 
     if (examCount === 0) return <p>There are no exams assigned to you</p>;
     return (
@@ -86,7 +44,7 @@ class StudentPage extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.exams.map((exam) => (
+            {this.props.listStudentExams.map((exam) => (
               <tr key={exam.id}>
                 <td>{exam.name}</td>
                 <td>
@@ -117,7 +75,7 @@ class StudentPage extends Component {
   }
 
   renderReserveredExams() {
-    const { length: countReserved } = this.state.reservedExams;
+    const { length: countReserved } = this.props.listReservedExams;
     if (countReserved === 0) return <p>There are no reserved exams </p>;
     return (
       <div>
@@ -134,7 +92,7 @@ class StudentPage extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.reservedExams.map((reservedExam) => (
+            {this.props.listReservedExams.map((reservedExam) => (
               <tr key={reservedExam.id}>
                 <td>{reservedExam.name}</td>
                 <td>{reservedExam.date}</td>

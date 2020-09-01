@@ -97,6 +97,33 @@ async function getReservedExams() {
   const response = await fetch(`${baseURL}/reservedExams`);
   return response.json();
 }
+async function getExamSlots(exam_no) {
+  //request params
+  const response = await fetch(`${baseURL}/examSlots/${exam_no}`);
+  //  {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     exam_no: exam_no,
+  //   }),
+  // });
+  return response.json();
+}
+// async function getExamSlots(exam_no) { //request query
+//   const response = await fetch(`${baseURL}/examSlots?exam_no=${exam_no}`);
+//   //  {
+//   //   method: "POST",
+//   //   headers: {
+//   //     "Content-Type": "application/json",
+//   //   },
+//   //   body: JSON.stringify({
+//   //     exam_no: exam_no,
+//   //   }),
+//   // });
+//   return response.json();
+// }
 
 const API = {
   userLogin,
@@ -105,5 +132,6 @@ const API = {
   getStudentLists,
   getStudentExams,
   getReservedExams,
+  getExamSlots,
 };
 export default API;

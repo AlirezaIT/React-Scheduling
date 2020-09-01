@@ -10,32 +10,29 @@ import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
 import StudentListReservedExams from "./components/StudentListReservedExams";
 import { ROLES } from "./shared/consts";
-
-// import { TEACHER } from "./shared/fakeTeacher";
 import StudentPage from "./components/StudentPage";
 import BookingSlot from "./components/BookingSlot";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = { authErr: "", authUser: "", studentLists: [] };
+
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
       authErr: "",
       authUser: "",
-      studentLists: [],
-      studentExams: [],
-
-      // teachers: TEACHER,
+      teacherStudentLists: [],
+      listStudentExams: [],
+      listReservedExams: [],
     };
   }
 
-  toggleNav() {
+  toggleNav = () => {
     this.setState({
       isNavOpen: !this.state.isNavOpen,
     });
-  }
+  };
   componentDidMount() {
     //check if the user is authenticated
     API.isAuthenticated()
@@ -46,7 +43,6 @@ class App extends React.Component {
         this.setState({ authErr: err.errorObj });
         this.props.history.push("/login");
       });
-    // this.studentLists();
   }
 
   // handleErrors(err) {
@@ -83,41 +79,37 @@ class App extends React.Component {
   };
 
   studentLists = () => {
-    return (
-      API.getStudentLists()
-        // .then((students) => {
-        //   this.setState(() => {
-        //     return { studentLists: students };
-        //   });
-        // })
-        .catch((errorObj) => {
-          const err = errorObj.errors[0];
+    API.getStudentLists()
+      .then((students) =>
+        this.setState({
+          teacherStudentLists: students,
         })
-    );
+      )
+      .catch((errorObj) => {
+        const err = errorObj.errors;
+      });
   };
   studentExams = () => {
-    return API.getStudentExams()
-      .then((studentExams) => {
-        this.setState(() => {
-          return { studentExams: studentExams };
-        });
-      })
+    API.getStudentExams()
+      .then((studentExams) =>
+        this.setState({
+          listStudentExams: studentExams,
+        })
+      )
       .catch((errorObj) => {
-        const err = errorObj.errors[0];
+        const err = errorObj.errors;
       });
   };
   reservedExams = () => {
-    return (
-      API.getReservedExams()
-        // .then((studentExams) => {
-        //   this.setState(() => {
-        //     return { studentExams: studentExams };
-        //   });
-        // })
-        .catch((errorObj) => {
-          const err = errorObj.errors[0];
+    API.getReservedExams()
+      .then((reserveredExams) =>
+        this.setState({
+          listReservedExams: reserveredExams,
         })
-    );
+      )
+      .catch((errorObj) => {
+        const err = errorObj.errors;
+      });
   };
 
   render() {
@@ -133,49 +125,26 @@ class App extends React.Component {
         <Header isNavOpen={this.state.isNavOpen} toggleNav={this.toggleNav} />
         <Container fluid>
           <Switch>
-            <Route
-              path="/exam/create"
-              component={() => (
-                <CreateExam
-                  studentLists={this.studentLists}
-                  // studentListsState={this.state.studentLists}
-                />
-              )}
-            ></Route>
+            <Route path="/exam/create">
+              <CreateExam
+                studentLists={this.studentLists}
+                teacherStudentLists={this.state.teacherStudentLists}
+              />
+            </Route>
             <Route path="/home" component={Teacher}></Route>
             <Route path="/login" component={LoginForm}></Route>
-
             <Route path="/reservingslot" component={BookingSlot}></Route>
-            <Route
-              path="/student"
-              component={() => (
-                <StudentPage
-                  studentExams={this.studentExams}
-                  reservedExams={this.reservedExams}
-                  // studentListsState={this.state.studentLists}
-                />
-              )}
-            ></Route>
+            <Route path="/student">
+              <StudentPage
+                listStudentExams={this.state.listStudentExams} //array
+                listReservedExams={this.state.listReservedExams}
+                studentExams={this.studentExams} //function
+                reservedExams={this.reservedExams}
+                // studentListsState={this.state.studentLists}
+              />
+            </Route>
             <Route path="/logout"></Route>
           </Switch>
-
-          {/* <LoginForm />; */}
-          {/* <DataTable
-            classes={["table", "table-bordered"]}
-            header={["name", "age", 'remove_btn', 'add_btn', 'absent_checkbox', 'detail_btn', 'course_dropdown', 'teacher_dropdown']}
-            dropdowns={{
-              "course_dropdown": [{name: "course 3", id: "3"}, {name: "course 1", id: "1"}, {name: "course 2", id: "2"}],
-              "teacher_dropdown": [{name: "teacher 3", id: "3"}, {name: "teacher 1", id: "1"}, {name: "teacher 2", id: "2"}],
-            }}
-            data={[
-              { name: "test5", age: 20, remove_btn: `remove`, is_absent: true},
-              { name: "test12", age: 30, remove_btn: `remove`, is_absent: false},
-              { name: "test42", age: 30, remove_btn: `remove`, is_absent: true},
-              { name: "test25", age: 75, remove_btn: `remove`, is_absent: true},
-              { name: "test20", age: 30, remove_btn: `remove`, is_absent: false},
-            ]}
-          /> */}
-          {/* <StudentListReservedExams /> */}
         </Container>
       </AuthContext.Provider>
     );

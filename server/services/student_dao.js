@@ -37,6 +37,35 @@ exports.getStudentExams = async (student_id) => {
     throw error;
   }
 };
+exports.getExamSlots = async (exam_no) => {
+  console.log("get slots of specific exams", exam_no);
+  // const sql = `SELECT * FROM student_exams where student_id =?`;
+  const sql = `select * from exams e where exam_no = ?`;
+  try {
+    let examSlots = await db.query(sql, [exam_no]);
+    // console.log(studentExams);
+    let lists = examSlots.rows;
+    // .map((studentExam) => {
+    // return new StudentExams(
+    //   studentExam.id,
+    //   studentExam.student_id,
+    //   studentExam.exam_no
+    //   studentExam.name
+    // );
+    // console.log(rows[0]);
+    //           let obj=[];
+    //           obj.push(rows[0].countVehicle);
+    //           obj.push(exam);
+
+    //           resolve(obj);
+    //   return studentExams;
+    // });
+
+    return lists;
+  } catch (error) {
+    throw error;
+  }
+};
 
 exports.getReservedexamsOfStudent = async (student_id) => {
   console.log("get student id", student_id);

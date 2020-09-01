@@ -36,22 +36,12 @@ class UserRole extends React.Component {
     this.setState({
       [name]: value,
     });
+    // console.log(this.state.username);
   }
 
   handleSubmit(event, onLogin) {
     event.preventDefault();
-    // console.log();
-    // alert(JSON.stringify(this.state));
-    // if (this.state.role === "teacher") {
-    //   onLogin(this.state.username, this.state.password);
-    // } else console.log("student");
     onLogin(this.state.username, this.state.password, this.state.role);
-    // this.setState({ submitted: true });
-    // this.setState({
-    //   username: "",
-    //   password: "",
-    //   role: "",
-    // });
   }
   render() {
     // if (this.state.submitted) return <Redirect to="/addexam" />;
