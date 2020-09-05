@@ -24,6 +24,7 @@ class StudentPage extends Component {
   };
 
   handleReserve = async (exam) => {
+    console.log(exam);
     await API.getExamSlots(exam.exam_no);
   };
   renderCancel() {

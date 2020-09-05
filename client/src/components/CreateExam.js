@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { AuthContext } from "../auth/AuthContext";
 import CreateSession from "./CreateSession";
+import moment from "moment";
 
 class CreateExam extends React.Component {
   constructor(props) {
@@ -18,14 +19,21 @@ class CreateExam extends React.Component {
 
     this.state = {
       isModalOpen: false,
-      studentLists: [],
       checkedCount: 0,
       duration: "",
+      totalNumberOfSlots: 0,
+      slots: [],
+      studentsId: [],
     };
   }
 
   componentDidMount() {
     this.props.studentLists();
+  }
+
+  componentDidUpdate() {
+    console.log(this.state.slots);
+    console.log(this.state.studentsId);
   }
 
   toggleModal = () => {
@@ -34,40 +42,73 @@ class CreateExam extends React.Component {
     });
   };
 
-  onCheckChange = (event) => {
+  onCheckChange = (event, username) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
-    // console.log(value);
     const name = target.name;
 
     this.setState({
       [name]: value,
     });
 
+    // ----- handle the number of Selected Students and Add/Remove StudentNo from the Specific Array
     if (target.type === "checkbox") {
       if (value === true) {
         // access to the previous value by means of prevState
         this.setState((prevState) => {
           return {
-            checkedCount: prevState.checkedCount + 1,
+            checkedCount: prevState.checkedCount + 1, // Add the number of Selected Student
+            studentsId: [...prevState.studentsId, username], // add the studentNO. into the Array
           };
         });
       } else {
+        const index = this.state.studentsId.indexOf(username);
+        console.log(index);
         this.setState((prevState) => {
           return {
-            checkedCount: prevState.checkedCount - 1,
+            checkedCount: prevState.checkedCount - 1, // reduce the number of Selected Student
+            studentsId: this.state.studentsId.filter((_, i) => i !== index), // remove the studentNO. from the Array ---- the _ is sometimes used to represent an unused argument. Here, it's the current item in the array.
           };
         });
       }
     }
+    // ---- END --------------------------------------
   };
 
-  handleCreateSession = (e) => {
+  handleCreateSession = (event) => {
+    event.preventDefault();
     this.toggleModal(); //close modal once it is created;
-    e.preventDefault();
   };
 
-  isCreatedSlotsEnough = (numberOfSlots) => {};
+  // ---------------------------------  function for create Slots
+  slotGenerator = (session) => {
+    const totalDurationExam = session.totalDuration;
+    const slotsForEachSession = totalDurationExam / this.state.duration;
+
+    // ---------------------- Calculate required total number of Slots and setState for the exam
+    this.setState((prevState) => {
+      return {
+        totalNumberOfSlots:
+          prevState.totalNumberOfSlots +
+          totalDurationExam / this.state.duration,
+      };
+    });
+
+    // ------- take the start tiem from object and change it into moment with "h:mmA" format
+    session.startingTime = moment(session.startingTime, "h:mmA");
+
+    // ------------- Generate an Array of Times for each Slot
+    for (let i = 0; i < slotsForEachSession; i++) {
+      const travelTime = session.startingTime
+        .add(this.state.duration, "minutes")
+        .format("hh:mm A");
+      this.setState((prevState) => {
+        return { slots: [...prevState.slots, travelTime] };
+      });
+    }
+    // ------------- End------------------------
+  };
+
   render() {
     return (
       <>
@@ -95,7 +136,12 @@ class CreateExam extends React.Component {
                           <td>
                             <Form.Group controlId="">
                               <Form.Check
-                                onChange={this.onCheckChange}
+                                onChange={(event) =>
+                                  this.onCheckChange(
+                                    event,
+                                    studentList.username
+                                  )
+                                }
                                 type="checkbox"
                                 name="checkbox"
                               />
@@ -108,7 +154,13 @@ class CreateExam extends React.Component {
                   <FormGroup>
                     <FormControl
                       type="text"
-                      value={`The Number Of Selected Students :    ${this.state.checkedCount}`}
+                      value={`The Number of Selected Students :    ${this.state.checkedCount}`}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControl
+                      type="text"
+                      value={`The Number of defined Slots :    ${this.state.totalNumberOfSlots}`}
                     />
                   </FormGroup>
                 </Col>
@@ -132,22 +184,23 @@ class CreateExam extends React.Component {
                         />
                       </Col>
                     </Form.Group>
-
-                    <Button
-                      variant="success"
-                      size="sm"
-                      className="fixed-right-bottom"
-                      onClick={this.toggleModal}
-                    >
-                      Create Session
-                    </Button>
+                    {this.state.duration && (
+                      <Button
+                        variant="success"
+                        size="sm"
+                        className="fixed-right-bottom"
+                        onClick={this.toggleModal}
+                      >
+                        Create Session
+                      </Button>
+                    )}
                   </Form>
                   {this.state.isModalOpen && (
                     <CreateSession
                       isModalOpen={this.state.isModalOpen}
                       toggleModal={this.toggleModal}
                       handleCreateSession={this.handleCreateSession}
-                      isCreatedSlotsEnough={this.isCreatedSlotsEnough}
+                      slotGenerator={this.slotGenerator}
                     />
                   )}
                 </Col>

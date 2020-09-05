@@ -2,10 +2,10 @@ const User = require("../models/user");
 const db = require("../db/index");
 const bcrypt = require("bcrypt");
 
-exports.getUser = async (username) => {
-  const sql = `SELECT * FROM users where username = ?`;
+exports.getUser = async (username, role) => {
+  const sql = `SELECT * FROM users where username = ? and role = ?`;
   try {
-    let userFound = await db.query(sql, [username]);
+    let userFound = await db.query(sql, [username, role]);
     userFound = userFound.rows[0];
     if (!userFound) {
       // throw new Error(`not found any user with this username`)

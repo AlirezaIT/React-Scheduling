@@ -25,7 +25,7 @@ router.post("/login", async (req, res) => {
       });
     }
     try {
-      const user = await userDao.getUser(username);
+      const user = await userDao.getUser(username, role);
       if (!user) {
         return res.status(404).send({
           errors: [{ param: "Server", msg: "Invalid username or password" }],
@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
       });
     }
     try {
-      const user = await userDao.getUser(username);
+      const user = await userDao.getUser(username, role);
       if (!user) {
         return res.status(404).send({
           errors: [{ param: "Server", msg: "Invalid username" }],
@@ -79,7 +79,11 @@ router.post("/login", async (req, res) => {
         sameSite: true,
         maxAge: 1000 * expireTime,
       });
-      return res.json({ id: user.id, username: user.username });
+      return res.json({
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      });
     } catch (error) {
       return res.status(401).json(authErrorObj);
     }

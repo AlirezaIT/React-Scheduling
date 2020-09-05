@@ -32,11 +32,11 @@ class CreateSession extends React.Component {
   };
 
   handleCreateSession = (ev) => {
-    this.props.toggleModal(); //close modal once it is created;
-    let exams = Object.assign({}, this.state);
-    console.log(exams);
-    this.props.isCreatedSlotsEnough(exams);
     ev.preventDefault();
+    this.props.toggleModal(); //close modal once it is created;
+    let session = Object.assign({}, this.state);
+
+    this.props.slotGenerator(session);
   };
   render() {
     return (

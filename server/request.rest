@@ -1,7 +1,7 @@
-GET  http://localhost:3001/api/studentLists
+GET  http://localhost:3001/api/reservedExams
 
 {
-    "userId" : "3"
+    
 }
 
 
