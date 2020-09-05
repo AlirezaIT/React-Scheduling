@@ -31,6 +31,9 @@ class BoookingSlot extends Component {
       slots: listSlots,
     };
   }
+  componentDidMount() {
+    console.log("list Slots :", this.props);
+  }
 
   handlersave = () => {
     console.log("saving");

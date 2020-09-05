@@ -24,6 +24,7 @@ class App extends React.Component {
       teacherStudentLists: [],
       listStudentExams: [],
       listReservedExams: [],
+      listSlots: [],
     };
   }
 
@@ -90,11 +91,13 @@ class App extends React.Component {
   };
   studentExams = () => {
     API.getStudentExams()
-      .then((studentExams) =>
+      .then((studentExams) => {
         this.setState({
           listStudentExams: studentExams,
-        })
-      )
+        });
+        console.log(studentExams);
+      })
+
       .catch((errorObj) => {
         const err = errorObj.errors;
       });
@@ -109,6 +112,16 @@ class App extends React.Component {
       .catch((errorObj) => {
         const err = errorObj.errors;
       });
+  };
+
+  handleReserve = async (exam_no) => {
+    console.log("exam No : ", exam_no);
+    const result = await API.getExamSlots(exam_no);
+    console.log(result);
+    this.setState({
+      listSlots: result,
+    });
+    this.props.history.push(`/student/reserve?exam_no=${exam_no}`);
   };
 
   render() {
@@ -133,7 +146,10 @@ class App extends React.Component {
             <Route path="/home" component={Teacher}></Route>
             <Route path="/login" component={LoginForm}></Route>
             <Route path="/student/reserve">
-              <BookingSlot listSlots={this.state.listSlots} />
+              <BookingSlot
+                listSlots={this.state.listSlots}
+                handleReserve={this.handleReserve}
+              />
             </Route>
             <Route path="/student">
               <StudentPage
@@ -141,6 +157,7 @@ class App extends React.Component {
                 listReservedExams={this.state.listReservedExams}
                 studentExams={this.studentExams} //function
                 reservedExams={this.reservedExams}
+                handleReserve={this.handleReserve}
               />
             </Route>
             <Route path="/logout"></Route>

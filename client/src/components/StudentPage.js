@@ -23,9 +23,9 @@ class StudentPage extends Component {
     this.setState({ reservedExams }); //reserveExams = reserveExams
   };
 
-  handleReserve = async (exam) => {
-    await API.getExamSlots(exam.exam_no);
-  };
+  // handleReserve = async (exam) => {
+  //   await API.getExamSlots(exam.exam_no);
+  // };
   renderCancel() {
     // if (this.state.reserveExams.find((re) => re.date  Date() )
   }
@@ -49,7 +49,7 @@ class StudentPage extends Component {
                 <td>{exam.name}</td>
                 <td>
                   <Link
-                    onClick={() => this.handleReserve(exam)}
+                    onClick={() => this.props.handleReserve(exam.exam_no)}
                     width="40"
                     eventKey="link-1"
                     to={{
