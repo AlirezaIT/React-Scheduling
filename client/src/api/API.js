@@ -91,10 +91,12 @@ async function getStudentLists() {
 
 async function getStudentExams() {
   const response = await fetch(`${baseURL}/studentExams`);
+  console.log("get exams", response);
   return response.json();
 }
 async function getReservedExams() {
   const response = await fetch(`${baseURL}/reservedExams`);
+
   return response.json();
 }
 async function getExamSlots(exam_no) {

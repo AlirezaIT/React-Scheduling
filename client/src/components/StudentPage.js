@@ -50,7 +50,7 @@ class StudentPage extends Component {
                 <td>{exam.name}</td>
                 <td>
                   <Link
-                    onClick={() => this.handleReserve(exam)}
+                    onClick={() => this.props.handleReserve(exam.exam_no)}
                     width="40"
                     eventKey="link-1"
                     to={{
