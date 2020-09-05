@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+
 import * as moment from "moment";
 
 class CreateSession extends React.Component {
@@ -25,8 +25,19 @@ class CreateSession extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    console.log("Selected Date: ", this.state.date);
+  }
+
+  dateChangeHandler = (date, key) => {
+    this.setState({
+      [key]: date,
+    });
+  };
+
   handleInputChange = (event) => {
     const target = event.target;
+
     const value = target.value;
     const name = target.name;
 
@@ -40,6 +51,7 @@ class CreateSession extends React.Component {
     this.props.toggleModal(); //close modal once it is created;
     let session = Object.assign({}, this.state);
 
+    console.log("total Session :", session);
     this.props.slotGenerator(session);
   };
   render() {
@@ -51,13 +63,12 @@ class CreateSession extends React.Component {
         <ModalBody>
           <Form onSubmit={this.handleCreateSession}>
             <FormGroup>
-              <Label htmlFor="date">Date :</Label>
+              <Label htmlFor="date">Date : {"\u00A0"} </Label>
               <DatePicker
+                className="form-control"
                 selected={this.state.date}
-                name="date"
-                value={this.state.date}
-                onChange={(date) => this.handleInputChange(date, "date")}
-                // value={this.state.date}
+                onChange={(date) => this.dateChangeHandler(date, "date")}
+                dateFormat="yyyy/MM/dd"
                 minDate={new Date()}
               />
               {/* <Input

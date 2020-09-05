@@ -101,11 +101,11 @@ class CreateExam extends React.Component {
 
     // ------------- Generate an Array of Times for each Slot
     for (let i = 0; i < slotsForEachSession; i++) {
-      const travelTime = session.startingTime
+      const startTime = session.startingTime
         .add(this.state.duration, "minutes")
         .format("hh:mm A");
       this.setState((prevState) => {
-        return { slots: [...prevState.slots, travelTime] };
+        return { slots: [...prevState.slots, startTime] };
       });
     }
     // ------------- End------------------------
