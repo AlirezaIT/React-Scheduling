@@ -133,14 +133,15 @@ class App extends React.Component {
             </Route>
             <Route path="/home" component={Teacher}></Route>
             <Route path="/login" component={LoginForm}></Route>
-            <Route path="/student/reserve" component={BookingSlot}></Route>
+            <Route path="/student/reserve">
+              <BookingSlot listSlots={this.state.listSlots} />
+            </Route>
             <Route path="/student">
               <StudentPage
                 listStudentExams={this.state.listStudentExams} //array
                 listReservedExams={this.state.listReservedExams}
                 studentExams={this.studentExams} //function
                 reservedExams={this.reservedExams}
-                // studentListsState={this.state.studentLists}
               />
             </Route>
             <Route path="/logout"></Route>
