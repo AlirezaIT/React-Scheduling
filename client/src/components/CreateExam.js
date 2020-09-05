@@ -67,7 +67,9 @@ class CreateExam extends React.Component {
         this.setState((prevState) => {
           return {
             checkedCount: prevState.checkedCount - 1, // reduce the number of Selected Student
-            studentsId: this.state.studentsId.filter((_, i) => i !== index), // remove the studentNO. from the Array ---- the _ is sometimes used to represent an unused argument. Here, it's the current item in the array.
+
+            // the _ is sometimes used to represent an unused argument. Here, it's the current item in the array.
+            studentsId: this.state.studentsId.filter((_, i) => i !== index), // remove the studentNO. from the Array
           };
         });
       }
@@ -80,7 +82,7 @@ class CreateExam extends React.Component {
     this.toggleModal(); //close modal once it is created;
   };
 
-  // ---------------------------------  function for create Slots
+  // ---------------------------------  function for Slots Creation
   slotGenerator = (session) => {
     const totalDurationExam = session.totalDuration;
     const slotsForEachSession = totalDurationExam / this.state.duration;
