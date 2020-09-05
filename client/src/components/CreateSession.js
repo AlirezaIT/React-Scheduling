@@ -10,12 +10,16 @@ import {
   Form,
 } from "reactstrap";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import * as moment from "moment";
+
 class CreateSession extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      date: "",
+      date: moment().toDate(),
       startingTime: "",
       totalDuration: "",
     };
@@ -48,13 +52,21 @@ class CreateSession extends React.Component {
           <Form onSubmit={this.handleCreateSession}>
             <FormGroup>
               <Label htmlFor="date">Date :</Label>
-              <Input
+              <DatePicker
+                selected={this.state.date}
+                name="date"
+                value={this.state.date}
+                onChange={(date) => this.handleInputChange(date, "date")}
+                // value={this.state.date}
+                minDate={new Date()}
+              />
+              {/* <Input
                 type="Date"
                 id="date"
                 name="date"
                 value={this.state.date}
                 onChange={this.handleInputChange}
-              ></Input>
+              ></Input> */}
             </FormGroup>
             <FormGroup>
               <Label htmlFor="startingTime">Starting Time :</Label>

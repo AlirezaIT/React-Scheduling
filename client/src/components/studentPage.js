@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import DataTable from "./DataTable";
+
 import BookingSlot from "./BookingSlot";
 import { Link } from "react-router-dom";
 import API from "../api/API";
