@@ -127,6 +127,19 @@ async function getExamSlots(exam_no) {
 //   return response.json();
 // }
 
+async function reservingSlot(slot_id) {
+  //request params
+  console.log("slot_id in request", slot_id);
+  const response = await fetch(`${baseURL}/examSlots/${slot_id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // body: JSON.stringify({}),
+  });
+  return response.json();
+}
+
 const API = {
   userLogin,
   userLogout,
@@ -135,5 +148,6 @@ const API = {
   getStudentExams,
   getReservedExams,
   getExamSlots,
+  reservingSlot,
 };
 export default API;

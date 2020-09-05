@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import API from "../api/API";
 const listSlots = [
   {
     id: 1,
@@ -28,16 +29,27 @@ class BoookingSlot extends Component {
     super(props);
 
     this.state = {
-      slots: listSlots,
+      selectedSlot: { listSlots },
     };
   }
   componentDidMount() {
-    console.log("list Slots :", this.props);
+    console.log("list Slots******* :", this.props);
   }
 
-  handlersave = () => {
-    console.log("saving");
+  handlerSelect = (slot) => {
+    console.log("details of slot", slot);
+    this.setState({
+      selectedSlot: slot,
+    });
   };
+
+  handlersave = async () => {
+    console.log("content of saving into database", this.state.selectedSlot);
+    const result = await API.reservingSlot(this.state.selectedSlot.id);
+    console.log("result of saving into database", result);
+  };
+  //TODO: checking the  result
+
   render() {
     return (
       <div>
@@ -50,18 +62,18 @@ class BoookingSlot extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.slots.map((slot) => (
+            {this.props.listSlots.map((slot) => (
               <tr key={slot.id}>
                 <td>{slot.date}</td>
-                <td>{slot.Start_time}</td>
+                <td>{slot.start_time}</td>
                 <td>
                   <input
+                    onChange={() => this.handlerSelect(slot)}
                     class="form-check-input"
                     type="radio"
                     name="exampleRadios"
                     id="exampleRadios1"
                     value="option1"
-                    checked
                   />
                 </td>
               </tr>
@@ -70,13 +82,13 @@ class BoookingSlot extends Component {
         </table>
         <row>
           <Link
-            onClick={() => this.handlersave()}
+            onClick={this.handlersave}
             width="40"
             eventKey="link-1"
             to={{
               pathname: "/student/",
             }}
-            className="btn btn-primary w-100"
+            className="btn btn-primary w-30"
           >
             Save
           </Link>
@@ -88,7 +100,7 @@ class BoookingSlot extends Component {
             to={{
               pathname: "/student/",
             }}
-            className="btn btn-danger w-100"
+            className="btn btn-danger w-30"
           >
             Cancel
           </Link>

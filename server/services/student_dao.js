@@ -12,7 +12,7 @@ exports.getStudentExams = async (student_id) => {
   console.log("get student id for students exams", student_id);
   // const sql = `SELECT * FROM student_exams where student_id =?`;
   // const sql = `select se.exam_no,c.name from student_exams se  ,courses c where student_id = ? and se.exam_no = c.id`;
-  const sql = `select distinct c.name from exams e , courses c where c.id = e.course_id and exam_no in (select exam_no from student_exams where student_id = ? and  not EXISTS (select * from exams where student_exams.student_id = exams.student_id and student_exams.exam_no = exams.exam_no and exams.student_id is not null))`;
+  const sql = `select distinct c.name ,exam_no from exams e , courses c where c.id = e.course_id and exam_no in (select exam_no from student_exams where student_id = ? and  not EXISTS (select * from exams where student_exams.student_id = exams.student_id and student_exams.exam_no = exams.exam_no and exams.student_id is not null))`;
   try {
     let studentExams = await db.query(sql, [student_id]);
     // console.log(studentExams);
@@ -75,6 +75,31 @@ exports.getReservedexamsOfStudent = async (student_id) => {
     let reservedExams = await db.query(sql, [student_id]);
     // console.log(reservedExams);
     let lists = reservedExams.rows;
+    // .map((reservedExam) => {
+    //   return new ReservedexamsOfStudent(
+    //     reservedExam.id,
+    //     reservedExam.exam_no,
+    //     reservedExam.start_time,
+    //     reservedExam.course_id,
+    //     reservedExam.date,
+    //     reservedExam.grade
+    //   );
+    // });
+
+    return lists;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.reservingExamSlots = async (slot_id, student_id) => {
+  console.log("get slot id for reserving ", slot_id);
+  console.log("get student id for reserving", student_id);
+  const sql = `UPDATE exams set booking_status = true ,student_id =? where id = ? `;
+  try {
+    let reervedSlot = await db.query(sql, [student_id, slot_id]);
+    // console.log(reservedExams);
+    let lists = reervedSlot.rows;
     // .map((reservedExam) => {
     //   return new ReservedexamsOfStudent(
     //     reservedExam.id,

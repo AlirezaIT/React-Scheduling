@@ -77,4 +77,18 @@ router.get("/examSlots/:exam_no", async (req, res) => {
 //   }
 // });
 
+router.put("/examSlots/:slot_id", async (req, res) => {
+  try {
+    console.log("request params", req.params);
+    console.log("request query", req.query);
+    const user = req.user.user;
+    const { slot_id } = req.params;
+    const lists = await studentDao.reservingExamSlots(slot_id, user);
+    console.log(lists);
+    return res.json(lists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
 module.exports = router;

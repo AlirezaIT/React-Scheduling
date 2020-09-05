@@ -117,7 +117,7 @@ class App extends React.Component {
   handleReserve = async (exam_no) => {
     console.log("exam No : ", exam_no);
     const result = await API.getExamSlots(exam_no);
-    console.log(result);
+    console.log("gigiliiii", result);
     this.setState({
       listSlots: result,
     });

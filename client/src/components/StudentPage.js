@@ -55,7 +55,7 @@ class StudentPage extends Component {
                     to={{
                       pathname: "/student/reserve",
                     }}
-                    className="btn btn-primary w-100"
+                    className="btn btn-primary w-50"
                   >
                     Reserve Exam
                   </Link>
