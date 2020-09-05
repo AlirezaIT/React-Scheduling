@@ -8,7 +8,6 @@ import API from "./api/API";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container } from "react-bootstrap";
-import StudentListReservedExams from "./components/StudentListReservedExams";
 import { ROLES } from "./shared/consts";
 import StudentPage from "./components/StudentPage";
 import BookingSlot from "./components/BookingSlot";
@@ -133,14 +132,15 @@ class App extends React.Component {
             </Route>
             <Route path="/home" component={Teacher}></Route>
             <Route path="/login" component={LoginForm}></Route>
-            <Route path="/reservingslot" component={BookingSlot}></Route>
+            <Route path="/student/reserve">
+              <BookingSlot listSlots={this.state.listSlots} />
+            </Route>
             <Route path="/student">
               <StudentPage
                 listStudentExams={this.state.listStudentExams} //array
                 listReservedExams={this.state.listReservedExams}
                 studentExams={this.studentExams} //function
                 reservedExams={this.reservedExams}
-                // studentListsState={this.state.studentLists}
               />
             </Route>
             <Route path="/logout"></Route>

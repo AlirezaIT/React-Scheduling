@@ -11,7 +11,8 @@ const ReservedexamsOfStudent = require("../models/exams");
 exports.getStudentExams = async (student_id) => {
   console.log("get student id for students exams", student_id);
   // const sql = `SELECT * FROM student_exams where student_id =?`;
-  const sql = `select se.exam_no,c.name from student_exams se  ,courses c where student_id = ? and se.exam_no = c.id`;
+  // const sql = `select se.exam_no,c.name from student_exams se  ,courses c where student_id = ? and se.exam_no = c.id`;
+  const sql = `select distinct c.name from exams e , courses c where c.id = e.course_id and exam_no in (select exam_no from student_exams where student_id = ? and  not EXISTS (select * from exams where student_exams.student_id = exams.student_id and student_exams.exam_no = exams.exam_no and exams.student_id is not null))`;
   try {
     let studentExams = await db.query(sql, [student_id]);
     // console.log(studentExams);
