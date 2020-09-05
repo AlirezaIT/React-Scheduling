@@ -8,6 +8,7 @@ import {
   Row,
   Table,
   FormControl,
+  Alert,
 } from "react-bootstrap";
 import { AuthContext } from "../auth/AuthContext";
 import CreateSession from "./CreateSession";
@@ -19,11 +20,19 @@ class CreateExam extends React.Component {
 
     this.state = {
       isModalOpen: false,
-      checkedCount: 0,
+      totalNumberOfStudents: 0,
       duration: "",
       totalNumberOfSlots: 0,
-      slots: [],
+      disabledInputDuration: false,
+      startStopTime: [],
       studentsId: [],
+      payload: {
+        studentIds: [],
+        date: "",
+        totalDuration: "",
+        durationTime: [], // contains the whole start and end time of slots
+        startTime: "",
+      },
     };
   }
 
@@ -32,13 +41,14 @@ class CreateExam extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log(this.state.slots);
+    console.log(this.state.startStopTime);
     console.log(this.state.studentsId);
   }
 
   toggleModal = () => {
     this.setState({
       isModalOpen: !this.state.isModalOpen,
+      disabledInputDuration: true,
     });
   };
 
@@ -57,16 +67,15 @@ class CreateExam extends React.Component {
         // access to the previous value by means of prevState
         this.setState((prevState) => {
           return {
-            checkedCount: prevState.checkedCount + 1, // Add the number of Selected Student
+            totalNumberOfStudents: prevState.totalNumberOfStudents + 1, // Add the number of Selected Student
             studentsId: [...prevState.studentsId, username], // add the studentNO. into the Array
           };
         });
       } else {
         const index = this.state.studentsId.indexOf(username);
-        console.log(index);
         this.setState((prevState) => {
           return {
-            checkedCount: prevState.checkedCount - 1, // reduce the number of Selected Student
+            totalNumberOfStudents: prevState.totalNumberOfStudents - 1, // reduce the number of Selected Student
 
             // the _ is sometimes used to represent an unused argument. Here, it's the current item in the array.
             studentsId: this.state.studentsId.filter((_, i) => i !== index), // remove the studentNO. from the Array
@@ -74,7 +83,7 @@ class CreateExam extends React.Component {
         });
       }
     }
-    // ---- END --------------------------------------
+    // ---------------------------------- END --------------------------------------
   };
 
   handleCreateSession = (event) => {
@@ -82,7 +91,7 @@ class CreateExam extends React.Component {
     this.toggleModal(); //close modal once it is created;
   };
 
-  // ---------------------------------  function for Slots Creation
+  // ---------------------------------  function for Slots Creation --------------------------------------------------
   slotGenerator = (session) => {
     const totalDurationExam = session.totalDuration;
     const slotsForEachSession = totalDurationExam / this.state.duration;
@@ -97,18 +106,33 @@ class CreateExam extends React.Component {
     });
 
     // ------- take the start tiem from object and change it into moment with "h:mmA" format
-    session.startingTime = moment(session.startingTime, "h:mmA");
+    let temp = moment(session.startingTime, "h:mmA"); // in order to prevent issue, set temp variable instead of working with object per sei
 
-    // ------------- Generate an Array of Times for each Slot
+    const startStopTime = []; // array for pushing the start and end time of slots
+
+    // ------------------------ Generate an Array of start and end times for each Slot --------------------------------------
     for (let i = 0; i < slotsForEachSession; i++) {
-      const startTime = session.startingTime
+      const endTime = temp
         .add(this.state.duration, "minutes")
         .format("hh:mm A");
-      this.setState((prevState) => {
-        return { slots: [...prevState.slots, startTime] };
+
+      const startTime = temp
+        .subtract(this.state.duration, "minutes")
+        .format("hh:mm A");
+
+      temp = temp.add(this.state.duration, "minutes"); // change the session start time
+
+      startStopTime.push({
+        start_time: startTime,
+        end_time: endTime,
       });
     }
-    // ------------- End------------------------
+
+    this.setState({
+      startStopTime,
+    });
+
+    // ------------------------ End function (slotGenerator) for Slots Creation --------------------------------
   };
 
   render() {
@@ -156,7 +180,7 @@ class CreateExam extends React.Component {
                   <FormGroup>
                     <FormControl
                       type="text"
-                      value={`The Number of Selected Students :    ${this.state.checkedCount}`}
+                      value={`The Number of Selected Students :    ${this.state.totalNumberOfStudents}`}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -181,21 +205,70 @@ class CreateExam extends React.Component {
                           type="text"
                           name="duration"
                           placeholder="Duration"
+                          disabled={this.state.disabledInputDuration}
                           required
                           autoFocus
                         />
                       </Col>
                     </Form.Group>
-                    {this.state.duration && (
+
+                    <FormGroup>
                       <Button
-                        variant="success"
+                        variant="info"
                         size="sm"
                         className="fixed-right-bottom"
                         onClick={this.toggleModal}
+                        disabled={this.state.duration ? false : true}
                       >
                         Create Session
                       </Button>
+                    </FormGroup>
+
+                    {/* {this.state.totalNumberOfStudents &&
+                    this.state.totalNumberOfSlots &&
+                    this.state.totalNumberOfSlots >=
+                      this.state.totalNumberOfStudents ? ( */}
+                    <FormGroup>
+                      <Button
+                        variant="info"
+                        size="sm"
+                        className="fixed-right-bottom"
+                        onClick={this.toggleModal}
+                        disabled={
+                          this.state.totalNumberOfStudents &&
+                          this.state.totalNumberOfSlots &&
+                          this.state.totalNumberOfSlots >=
+                            this.state.totalNumberOfStudents
+                            ? false
+                            : true
+                        }
+                      >
+                        Save Exam
+                      </Button>
+                    </FormGroup>
+                    {this.state.totalNumberOfSlots >=
+                    this.state.totalNumberOfStudents ? (
+                      <></>
+                    ) : (
+                      <Alert variant="danger" dismissible>
+                        <Alert.Heading>ERROR!</Alert.Heading>
+                        <p>
+                          The Number Of Slots are lower than the Number Of
+                          Students. <br />
+                          Please Create Slots
+                        </p>
+                      </Alert>
+                      // <p style="warning">
+                      //   The Number Of Slots are lower than the Number Of
+                      //   Students
+                      // </p>
                     )}
+                    {/* ) : (
+                      <p>
+                        Choose the right number of slots and Students before
+                        Saving
+                      </p> */}
+                    {/* )} */}
                   </Form>
                   {this.state.isModalOpen && (
                     <CreateSession
