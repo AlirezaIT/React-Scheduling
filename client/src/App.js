@@ -94,6 +94,10 @@ class App extends React.Component {
       });
   };
 
+  redirectPage = (redirect) => {
+    this.props.history.push(`/${redirect}`);
+  };
+
   //***------------------------functions related to StudentPage AND BookingSlots components----------------***
 
   //------------------------calling the API function for getting the array of assaigned exams
@@ -157,7 +161,7 @@ class App extends React.Component {
               <CreateExam
                 studentLists={this.studentLists}
                 teacherStudentLists={this.state.teacherStudentLists}
-                saveExamHandler={this.saveExamHandler}
+                redirectPage={this.redirectPage}
               />
             </Route>
             <Route path="/home" component={Teacher}></Route>

@@ -61,7 +61,19 @@ exports.insertIntoExams = async ({
   const sql = `INSERT INTO exams(exam_no, duration, start_time, end_time, booking_status, course_id, teacher_id , date , student_id, grade, is_absent) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
   console.log(sql);
   try {
-    let studentLists = await db.query(sql, [exam_no, duration, start_time, end_time, booking_status, course_id, teacher_id, date, student_id, grade, is_absent]);
+    let studentLists = await db.query(sql, [
+      exam_no,
+      duration,
+      start_time,
+      end_time,
+      booking_status,
+      course_id,
+      teacher_id,
+      date,
+      student_id,
+      grade,
+      is_absent,
+    ]);
     console.log(sql);
     // if (!studentLists || !studentLists.rows.length) {
     //   return [];

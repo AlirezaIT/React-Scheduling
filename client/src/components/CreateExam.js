@@ -46,13 +46,6 @@ class CreateExam extends React.Component {
     this.props.studentLists();
   }
 
-  componentDidUpdate() {
-    // console.log(this.state.startStopTime);
-    // console.log(this.state.payload);
-    // console.log(this.state.studentsId);
-    // console.log("gigiglllliiii", this.state);
-  }
-
   toggleModal = () => {
     this.setState({
       isModalOpen: !this.state.isModalOpen,
@@ -147,9 +140,7 @@ class CreateExam extends React.Component {
     sessions[this.state.lastSession] = startStopTime;
     console.log(sessions);
     this.setState({
-      // session[`${this.state.lastSession}`] : startStopTime,
       sessions: { ...sessions },
-      // session[1] : startStopTime,
       lastSession: this.state.lastSession + 1,
     });
     console.log(this.state);
@@ -165,17 +156,13 @@ class CreateExam extends React.Component {
           studentIds: this.state.studentsId,
           totalDuration: this.state.duration,
           durationTime: this.state.sessions,
-          // startTime: this.state.startTime,
         },
       },
       async () => {
-        // console.log(this.state.payload);
         const result = await API.saveExam(this.state.payload);
       }
     );
-    // const result = await API.saveExam(this.state.payload);
-    // console.log("mY ReSulT : ", result);
-    // this.props.saveExamHandler(this.state.payLoad);
+    this.props.redirectPage("home");
   };
 
   render() {
@@ -207,10 +194,7 @@ class CreateExam extends React.Component {
                             <Form.Group controlId="">
                               <Form.Check
                                 onChange={(event) =>
-                                  this.onCheckChange(
-                                    event,
-                                    studentList.id
-                                  )
+                                  this.onCheckChange(event, studentList.id)
                                 }
                                 type="checkbox"
                                 name="checkbox"
@@ -240,12 +224,6 @@ class CreateExam extends React.Component {
                           disabled={this.state.disabledInputDuration}
                           required
                           autoFocus
-                          theme={{
-                            colors: {
-                              primary: "green",
-                              underlineColor: "transparent",
-                            },
-                          }}
                         />
                       </Col>
                     </Form.Group>
