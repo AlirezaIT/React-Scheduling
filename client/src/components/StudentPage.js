@@ -4,7 +4,7 @@ import DataTable from "./DataTable";
 import BookingSlot from "./BookingSlot";
 import { Link } from "react-router-dom";
 import API from "../api/API";
-
+import moment from "moment";
 class StudentPage extends Component {
   constructor(props) {
     super(props);
@@ -16,23 +16,38 @@ class StudentPage extends Component {
     this.props.reservedExams();
   }
 
-  handleCancelReservation = (reserveExam) => {
-    const reservedExams = this.props.listReservedExams.filter(
-      (re) => re.id !== reserveExam.id
-    );
-    this.setState({ reservedExams }); //reserveExams = reserveExams
+  handleCancelReservation = async (reservedExam) => {
+    console.log("cancelling", reservedExam);
+    const result = await API.cancelExam(reservedExam);
+    console.log("gigiliiii", result);
+    // const reservedExams = this.props.listReservedExams.filter(
+    //   (re) => re.id !== reserveExam.id
+    // );
+    // this.setState({ reservedExams }); //reserveExams = reserveExams
   };
 
   // handleReserve = async (exam) => {
   //   await API.getExamSlots(exam.exam_no);
   // };
-  renderCancel() {
+  renderCancelButton(reservedExam) {
+    console.log("aaaaaaaaa", reservedExam);
+    if (moment().isSameOrAfter(reservedExam.date))
+      return <p>Can not Cancel the exam</p>;
     // if (this.state.reserveExams.find((re) => re.date  Date() )
+    return (
+      <button
+        className="btn btn-danger btn-sm"
+        onClick={() => this.handleCancelReservation(reservedExam)}
+      >
+        Cancel
+      </button>
+    );
   }
   renderExams() {
     const { length: examCount } = this.props.listStudentExams;
 
-    if (examCount === 0) return <p>There are no exams assigned to you</p>;
+    if (examCount === 0)
+      return <p> Ooops There are no exams assigned to you to reserve !!!!!</p>;
     return (
       <div>
         <p>You have {examCount} exams</p>
@@ -100,12 +115,13 @@ class StudentPage extends Component {
                 <td>{reservedExam.end_time}</td>
                 <td>{reservedExam.grade}</td>
                 <td>
-                  <button
+                  {this.renderCancelButton(reservedExam)}
+                  {/* <button
                     className="btn btn-danger btn-sm"
                     onClick={() => this.handleCancelReservation(reservedExam)}
                   >
                     Cancel
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}
