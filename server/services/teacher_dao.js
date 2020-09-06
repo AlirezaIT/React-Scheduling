@@ -32,3 +32,40 @@ exports.getStudentLists = async (userId) => {
     throw error;
   }
 };
+
+exports.getLastExamNo = async (userId) => {
+  const sql = `select exam_no from exams ORDER by exam_no DESC Limit 1`;
+  console.log(sql);
+  try {
+    let studentLists = await db.query(sql, []);
+    console.log(sql);
+    // if (!studentLists || !studentLists.rows.length) {
+    //   return [];
+    // }
+
+    const lastExamNo = studentLists.rows[0];
+
+    return lastExamNo;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.insertIntoExams = async (lastExamNo) => {
+  const sql = `INSERT INTO exams(exam_no, duration, start_time, end_time , booking_status' +
+  ',course_id   ,teacher_id , date , student_id, grade, is_absent) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
+  console.log(sql);
+  try {
+    let studentLists = await db.query(sql, [lastExamNo]);
+    console.log(sql);
+    // if (!studentLists || !studentLists.rows.length) {
+    //   return [];
+    // }
+
+    const lastExamNo = studentLists.rows[0];
+
+    return lastExamNo;
+  } catch (error) {
+    throw error;
+  }
+};

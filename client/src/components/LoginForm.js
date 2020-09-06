@@ -40,6 +40,7 @@ class UserRole extends React.Component {
   }
 
   handleSubmit(event, onLogin) {
+    console.log(this.state.username, this.state.password, this.state.role);
     event.preventDefault();
     onLogin(this.state.username, this.state.password, this.state.role);
   }

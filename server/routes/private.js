@@ -13,7 +13,7 @@ router.get("/verify", async (req, res) => {
   try {
     const userId = req.user && req.user.user;
     const userFound = await userDao.getUserById(userId);
-    res.json({ id: userFound.id, name: userFound.username });
+    res.json({ id: userFound.id, name: userFound.name });
   } catch (err) {
     res.status(401).json(authErrorObj);
   }
@@ -27,6 +27,14 @@ router.get("/studentLists", async (req, res) => {
   } catch (error) {
     return res.status(401).json(authErrorObj);
   }
+});
+
+router.post("/saveExam", async (req, res) => {
+  console.log(req.body);
+  const payload = req.body;
+  const lastExamNo = await teacherDao.getLastExamNo();
+
+  const result = await teacherDao.insertIntoExams(lastExamNo, payload);
 });
 
 router.get("/studentExams", async (req, res) => {

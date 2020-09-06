@@ -1,7 +1,8 @@
-GET  http://localhost:3001/api/studentLists
+post  http://localhost:3001/api/login
 
 {
-    "userId" : "3"
+    "username" : "1000",
+    "role"  : "teacher"  
 }
 
 

@@ -11,7 +11,7 @@ async function userLogin(username, password, role) {
         username: username,
         password: password,
         role: role,
-        role: role,
+        // role: role,
       }),
     })
       .then((response) => {
@@ -79,14 +79,32 @@ async function isAuthenticated() {
 }
 
 async function getStudentLists() {
-  const response = await fetch(`${baseURL}/studentLists`);
+  try {
+    const response = await fetch(`${baseURL}/studentLists`);
+    // if (response.status === 200) {
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (e) {
+    console.log("Error", e);
+    throw e;
+  }
+}
+
+async function saveExam(payLoad) {
+  console.log("In API Client", payLoad);
+  console.log("Json Stingfy", JSON.stringify(payLoad));
+  const response = await fetch(`${baseURL}/saveExam`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payLoad }),
+  });
+  console.log("save exams", response);
   return response.json();
-  // if (response.ok) {
-  //   return userJson;
-  // } else {
-  //   let err = { status: response.status, errObj: userJson };
-  //   throw err; // An object with the error coming from the server
-  // }
 }
 
 //---------------StudentPage and BookingSlots API FUNCTIONS
@@ -95,10 +113,12 @@ async function getStudentExams() {
   const response = await fetch(`${baseURL}/studentExams`);
   return response.json();
 }
+
 async function getReservedExams() {
   const response = await fetch(`${baseURL}/reservedExams`);
   return response.json();
 }
+
 async function getExamSlots(exam_no) {
   const response = await fetch(`${baseURL}/examSlots/${exam_no}`);
   return response.json();
@@ -113,6 +133,7 @@ async function reservingSlot(slot_id) {
   });
   return response.json();
 }
+
 async function cancelExam(reservedExam) {
   const response = await fetch(
     `${baseURL}/deleteExamSlots/${reservedExam.id}?exam_no=${reservedExam.exam_no}`,
@@ -131,6 +152,7 @@ const API = {
   userLogout,
   isAuthenticated,
   getStudentLists,
+  saveExam,
   getStudentExams,
   getReservedExams,
   getExamSlots,

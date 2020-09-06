@@ -19,8 +19,6 @@ class App extends React.Component {
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
-      authErr: "",
-      authUser: "",
       teacherStudentLists: [],
       listStudentExams: [], //assaigned exams to the student
       listReservedExams: [], //reserved exam and its slot's details
@@ -40,9 +38,13 @@ class App extends React.Component {
         this.setState({ authUser: user });
       })
       .catch((err) => {
-        this.setState({ authErr: err.errorObj });
         this.props.history.push("/login");
+        this.setState({ authErr: err.errorObj });
       });
+  }
+
+  componentDidUpdate() {
+    console.log("asdfasdfasdf", this.state.payLoad);
   }
 
   // handleErrors(err) {
@@ -66,10 +68,11 @@ class App extends React.Component {
         if (user.role === ROLES.TEACHER) {
           this.setState({ authUser: user, authErr: null });
           this.props.history.push("/home");
-          console.log(this.state.authUser);
-        } else {
+          // console.log(this.state.authUser);
+        } else if (user.role === ROLES.STUDENT) {
           this.setState({ authUser: user, authErr: null });
           this.props.history.push("/student");
+          // console.log(this.state.authUser);
         }
       })
       .catch((errorObj) => {
@@ -78,11 +81,12 @@ class App extends React.Component {
       });
   };
 
+  // get the List of Students for a authorized Teacher
   studentLists = () => {
     API.getStudentLists()
       .then((students) =>
         this.setState({
-          teacherStudentLists: students,
+          teacherStudentLists: students || [],
         })
       )
       .catch((errorObj) => {
@@ -153,6 +157,7 @@ class App extends React.Component {
               <CreateExam
                 studentLists={this.studentLists}
                 teacherStudentLists={this.state.teacherStudentLists}
+                saveExamHandler={this.saveExamHandler}
               />
             </Route>
             <Route path="/home" component={Teacher}></Route>

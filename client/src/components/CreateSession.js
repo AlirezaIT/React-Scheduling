@@ -8,21 +8,37 @@ import {
   Input,
   FormGroup,
   Form,
+  Alert,
 } from "reactstrap";
+
+import DatePicker from "react-datepicker";
+
+import * as moment from "moment";
 
 class CreateSession extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      date: "",
+      date: moment().toDate(),
       startingTime: "",
       totalDuration: "",
     };
   }
 
+  componentDidUpdate() {
+    console.log("Selected Date: ", this.state.date);
+  }
+
+  dateChangeHandler = (date, key) => {
+    this.setState({
+      [key]: date,
+    });
+  };
+
   handleInputChange = (event) => {
     const target = event.target;
+
     const value = target.value;
     const name = target.name;
 
@@ -32,11 +48,13 @@ class CreateSession extends React.Component {
   };
 
   handleCreateSession = (ev) => {
-    this.props.toggleModal(); //close modal once it is created;
-    let exams = Object.assign({}, this.state);
-    console.log(exams);
-    this.props.isCreatedSlotsEnough(exams);
     ev.preventDefault();
+    this.props.toggleModal(); //close modal once it is created;
+    let session = Object.assign({}, this.state);
+
+    // console.log("total Session :", session);
+
+    this.props.slotGenerator(session);
   };
   render() {
     return (
@@ -47,14 +65,21 @@ class CreateSession extends React.Component {
         <ModalBody>
           <Form onSubmit={this.handleCreateSession}>
             <FormGroup>
-              <Label htmlFor="date">Date :</Label>
-              <Input
+              <Label htmlFor="date">Date : {"\u00A0"} </Label>
+              <DatePicker
+                className="form-control"
+                selected={this.state.date}
+                onChange={(date) => this.dateChangeHandler(date, "date")}
+                dateFormat="yyyy/MM/dd"
+                minDate={new Date()}
+              />
+              {/* <Input
                 type="Date"
                 id="date"
                 name="date"
                 value={this.state.date}
                 onChange={this.handleInputChange}
-              ></Input>
+              ></Input> */}
             </FormGroup>
             <FormGroup>
               <Label htmlFor="startingTime">Starting Time :</Label>
@@ -64,6 +89,7 @@ class CreateSession extends React.Component {
                 name="startingTime"
                 value={this.state.startingTime}
                 onChange={this.handleInputChange}
+                required
               ></Input>
             </FormGroup>
             <FormGroup>
@@ -74,11 +100,19 @@ class CreateSession extends React.Component {
                 name="totalDuration"
                 value={this.state.totalDuration}
                 onChange={this.handleInputChange}
+                required
               ></Input>
             </FormGroup>
-            <Button type="submit" value="submit" color="primary">
-              Create
-            </Button>
+
+            {this.state.totalDuration % this.props.duration == 0 ? (
+              <Button type="submit" value="submit" color="primary">
+                Create
+              </Button>
+            ) : (
+              <Alert variant="info">
+                <p>This Number must be multiple of "duration of each Slot"</p>
+              </Alert>
+            )}
           </Form>
         </ModalBody>
       </Modal>
