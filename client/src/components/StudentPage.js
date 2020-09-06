@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
-import DataTable from "./DataTable";
-import BookingSlot from "./BookingSlot";
+
 import { Link } from "react-router-dom";
 import API from "../api/API";
 import moment from "moment";
+
+//STUDENT SEGMENT
 class StudentPage extends Component {
   constructor(props) {
     super(props);
@@ -12,12 +12,30 @@ class StudentPage extends Component {
   }
 
   componentDidMount() {
-    this.props.studentExams();
-    this.props.reservedExams();
+    this.props.studentExams(); //calling this function to get data of assigned exam to student from the database after login
+    this.props.reservedExams(); //calling this function to get data of student's reserved exam from the database after login
   }
 
+  //----------------Conditional rendering of "cancel button"
+
+  renderCancelButton(reservedExam) {
+    //passed reserved exam object to this funciton to cancel
+    if (moment().isSameOrAfter(reservedExam.date))
+      //checking the current date is sameOrafter of exam date or not
+      return <p>Not possible to cancel the exam</p>; // show this msg instead of button
+    return (
+      <button
+        className="btn btn-danger btn-sm"
+        onClick={() => this.handleCancelReservation(reservedExam)} //calling handler and pass the single reservedexam object
+      >
+        Cancel
+      </button>
+    );
+  }
+
+  //----------------handler of "cancel button"-------------------
   handleCancelReservation = async (reservedExam) => {
-    console.log("cancelling", reservedExam);
+    // console.log("cancelling", reservedExam);
     const result = await API.cancelExam(reservedExam);
     const listStudentExams = this.state.listStudentExams.filter(
       (e) => e.exam_no !== reservedExam.exam_no
@@ -29,38 +47,16 @@ class StudentPage extends Component {
     );
     this.props.updateState("listStudentExams", listStudentExams);
     this.props.updateState("listReservedExams", listReservedExams);
-    // this.setState({
-    //   listStudentExams: studentExams,
-    // });
-    console.log("gigiliiii", result);
-    // const reservedExams = this.props.listReservedExams.filter(
-    //   (re) => re.id !== reserveExam.id
-    // );
-    // this.setState({ reservedExams }); //reserveExams = reserveExams
+    console.log("result of canceling", result);
   };
 
-  // handleReserve = async (exam) => {
-  //   await API.getExamSlots(exam.exam_no);
-  // };
-  renderCancelButton(reservedExam) {
-    console.log("aaaaaaaaa", reservedExam);
-    if (moment().isSameOrAfter(reservedExam.date))
-      return <p>Can not Cancel the exam</p>;
-    // if (this.state.reserveExams.find((re) => re.date  Date() )
-    return (
-      <button
-        className="btn btn-danger btn-sm"
-        onClick={() => this.handleCancelReservation(reservedExam)}
-      >
-        Cancel
-      </button>
-    );
-  }
+  //----------------Conditional rendering of list of availabe exams for student-------------------
   renderExams() {
-    const { length: examCount } = this.props.listStudentExams;
+    const { length: examCount } = this.props.listStudentExams; //checking the length of listStudentexams array
 
     if (examCount === 0)
-      return <p> Ooops There are no exams assigned to you to reserve !!!!!</p>;
+      //if length of array is zero,the below <p> will render instead of table
+      return <p> Ooops There are no exams assigned to you to reserve !!!!!</p>; //
     return (
       <div>
         <p>You have {examCount} exams</p>
@@ -77,22 +73,16 @@ class StudentPage extends Component {
                 <td>{exam.name}</td>
                 <td>
                   <Link
-                    onClick={() => this.props.handleReserve(exam.exam_no)}
+                    onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
                     width="40"
                     eventKey="link-1"
                     to={{
-                      pathname: "/student/reserve",
+                      pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
                     }}
                     className="btn btn-primary w-50"
                   >
                     Reserve Exam
                   </Link>
-                  {/* <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => this.handleReserve(exam)}
-                    >
-                      Reserve
-                    </button> */}
                 </td>
               </tr>
             ))}
@@ -102,8 +92,10 @@ class StudentPage extends Component {
     );
   }
 
+  //----------------Conditional rendering of list of Reserved exams and it's slot for student-------------------
+
   renderReserveredExams() {
-    const { length: countReserved } = this.props.listReservedExams;
+    const { length: countReserved } = this.props.listReservedExams; // checking the length of listReservedExams array that contains list of exams that student has already reserved.
     if (countReserved === 0) return <p>There are no reserved exams </p>;
     return (
       <div>
@@ -127,15 +119,8 @@ class StudentPage extends Component {
                 <td>{reservedExam.start_time}</td>
                 <td>{reservedExam.end_time}</td>
                 <td>{reservedExam.grade}</td>
-                <td>
-                  {this.renderCancelButton(reservedExam)}
-                  {/* <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => this.handleCancelReservation(reservedExam)}
-                  >
-                    Cancel
-                  </button> */}
-                </td>
+                <td>{this.renderCancelButton(reservedExam)}</td>
+                {/* calling the conditional rendering function of button  */}
               </tr>
             ))}
           </tbody>
@@ -147,8 +132,10 @@ class StudentPage extends Component {
   render() {
     return (
       <div>
-        <div>{this.renderExams()}</div>
-        <div> {this.renderReserveredExams()}</div>
+        <div>{this.renderExams()}</div>{" "}
+        {/*calling the conditional rendering function of showing list availabe exams which are assainged to the student  */}
+        <div> {this.renderReserveredExams()}</div>{" "}
+        {/*calling the conditional rendering function of showing list reserved exams which are registered by student  */}
       </div>
     );
   }

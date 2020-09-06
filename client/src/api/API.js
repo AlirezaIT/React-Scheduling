@@ -89,70 +89,40 @@ async function getStudentLists() {
   // }
 }
 
+//---------------StudentPage and BookingSlots API FUNCTIONS
+
 async function getStudentExams() {
   const response = await fetch(`${baseURL}/studentExams`);
-  console.log("get exams", response);
   return response.json();
 }
 async function getReservedExams() {
   const response = await fetch(`${baseURL}/reservedExams`);
-
   return response.json();
 }
 async function getExamSlots(exam_no) {
-  //request params
   const response = await fetch(`${baseURL}/examSlots/${exam_no}`);
-  //  {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     exam_no: exam_no,
-  //   }),
-  // });
   return response.json();
 }
-// async function getExamSlots(exam_no) { //request query
-//   const response = await fetch(`${baseURL}/examSlots?exam_no=${exam_no}`);
-//   //  {
-//   //   method: "POST",
-//   //   headers: {
-//   //     "Content-Type": "application/json",
-//   //   },
-//   //   body: JSON.stringify({
-//   //     exam_no: exam_no,
-//   //   }),
-//   // });
-//   return response.json();
-// }
 
 async function reservingSlot(slot_id) {
-  //request params
-  console.log("slot_id in request", slot_id);
   const response = await fetch(`${baseURL}/examSlots/${slot_id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    // body: JSON.stringify({}),
   });
   return response.json();
 }
 async function cancelExam(reservedExam) {
-  //request params
-  console.log("$%$%$%$%$%", reservedExam);
   const response = await fetch(
-    `${baseURL}/examSlotss/${reservedExam.id}?exam_no=${reservedExam.exam_no}`,
+    `${baseURL}/deleteExamSlots/${reservedExam.id}?exam_no=${reservedExam.exam_no}`,
     {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify({}),
     }
   );
-  console.log("qwqwqwqw", response);
   return response.json();
 }
 

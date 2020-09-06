@@ -22,9 +22,9 @@ class App extends React.Component {
       authErr: "",
       authUser: "",
       teacherStudentLists: [],
-      listStudentExams: [],
-      listReservedExams: [],
-      listSlots: [],
+      listStudentExams: [], //assaigned exams to the student
+      listReservedExams: [], //reserved exam and its slot's details
+      listSlots: [], //availabe slots related to the specific exam
     };
   }
 
@@ -89,40 +89,47 @@ class App extends React.Component {
         const err = errorObj.errors;
       });
   };
+
+  //***------------------------functions related to StudentPage AND BookingSlots components----------------***
+
+  //------------------------calling the API function for getting the array of assaigned exams
   studentExams = () => {
     API.getStudentExams()
       .then((studentExams) => {
+        //getting the array of assaigned exams's details from API'S function (exam_no ,name) and storing into listStudentExams Array
         this.setState({
           listStudentExams: studentExams,
         });
-        console.log(studentExams);
       })
-
       .catch((errorObj) => {
         const err = errorObj.errors;
       });
   };
+  //------------------------calling the API function for getting the array of reserved exams
   reservedExams = () => {
     API.getReservedExams()
-      .then((reserveredExams) =>
+      .then((reservedExams) => {
+        //getting the array of reserved exams's details from API'S function (full details) and storing into listReservedExams Array
         this.setState({
-          listReservedExams: reserveredExams,
-        })
-      )
+          listReservedExams: reservedExams,
+        });
+      })
       .catch((errorObj) => {
         const err = errorObj.errors;
       });
   };
 
+  //------------------------after clicking the reserve button in StudentPage component using this is handler function, and it's calling the API function for getting the array of specific exam's slots and passing the exam_no to the API function
+
   handleReserve = async (exam_no) => {
-    console.log("exam No : ", exam_no);
-    const result = await API.getExamSlots(exam_no);
-    console.log("gigiliiii", result);
+    const result = await API.getExamSlots(exam_no); //passing the exam number (exam_no) and get the array of objects, contains the details of slots related to that exam number
     this.setState({
       listSlots: result,
     });
     this.props.history.push(`/student/reserve?exam_no=${exam_no}`);
   };
+
+  //------------------------using this function inorder to update the arrays in studentPage components
   updateState = async (key, array) => {
     this.setState({
       [key]: array,
@@ -158,9 +165,9 @@ class App extends React.Component {
             </Route>
             <Route path="/student">
               <StudentPage
-                listStudentExams={this.state.listStudentExams} //array
+                listStudentExams={this.state.listStudentExams}
                 listReservedExams={this.state.listReservedExams}
-                studentExams={this.studentExams} //function
+                studentExams={this.studentExams}
                 reservedExams={this.reservedExams}
                 handleReserve={this.handleReserve}
                 updateState={this.updateState}

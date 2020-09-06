@@ -1,55 +1,33 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import API from "../api/API";
-const listSlots = [
-  {
-    id: 1,
-    date: "20200824",
-    Start_time: "10:10",
-  },
-  {
-    id: 2,
-    date: "20200824",
-    Start_time: "10:20",
-  },
-  {
-    id: 3,
-    date: "20200824",
-    Start_time: "10:30",
-  },
-  {
-    id: 4,
-    date: "20200824",
-    Start_time: "10:40",
-  },
-];
+import { FormGroup } from "reactstrap";
 
+//SHOWING THE EXAM'S SLOT IN THIS PAGE
 class BoookingSlot extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedSlot: { listSlots },
+      selectedSlot: {},
     };
-  }
-  componentDidMount() {
-    console.log("list Slots******* :", this.props);
   }
 
   handlerSelect = (slot) => {
-    console.log("details of slot", slot);
+    //get details in object form of selected slot and store into selectedSlot
+
     this.setState({
       selectedSlot: slot,
     });
   };
 
   handlersave = async () => {
-    console.log("content of saving into database", this.state.selectedSlot);
-    const result = await API.reservingSlot(this.state.selectedSlot.id);
-    console.log("result of saving into database", result);
+    //saving (PUT) selectedSlot object into database
+    const result = await API.reservingSlot(this.state.selectedSlot.id); //passing only the slot's ID to Api
+    console.log("saving into database", result);
   };
-  //TODO: checking the  result
 
+  //---------------------rendering the list of availabe slot and saving and cenceling button -------------------
   render() {
     return (
       <div>
@@ -81,24 +59,30 @@ class BoookingSlot extends Component {
           </tbody>
         </table>
         <row>
-          <Link
-            onClick={this.handlersave}
-            width="40"
-            eventKey="link-1"
-            to={{
-              pathname: "/student/",
-            }}
-            className="btn btn-primary w-30"
-          >
-            Save
-          </Link>
+          {this.state.selectedSlot ? (
+            <FormGroup>
+              <Link
+                onClick={this.handlersave} //reference to handlersave function
+                width="40"
+                eventKey="link-1"
+                to={{
+                  pathname: "/student/",
+                }}
+                className="btn btn-primary w-30"
+              >
+                Save
+              </Link>
+            </FormGroup>
+          ) : (
+            <></>
+          )}
         </row>
         <row>
           <Link
             width="40"
             eventKey="link-1"
             to={{
-              pathname: "/student/",
+              pathname: "/student/", //back to the student main page by clicking cancel button
             }}
             className="btn btn-danger w-30"
           >
