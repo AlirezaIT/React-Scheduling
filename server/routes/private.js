@@ -1,4 +1,5 @@
 const express = require("express");
+const moment = require('moment');
 const router = express.Router();
 const userDao = require("../services/user_dao");
 const teacherDao = require("../services/teacher_dao");
@@ -13,7 +14,7 @@ router.get("/verify", async (req, res) => {
   try {
     const userId = req.user && req.user.user;
     const userFound = await userDao.getUserById(userId);
-    res.json({ id: userFound.id, name: userFound.name });
+    res.json({ id: userFound.id, name: userFound.name, course_id: userFound.course_id });
   } catch (err) {
     res.status(401).json(authErrorObj);
   }
@@ -30,11 +31,38 @@ router.get("/studentLists", async (req, res) => {
 });
 
 router.post("/saveExam", async (req, res) => {
-  console.log(req.body);
-  const payload = req.body;
-  const lastExamNo = await teacherDao.getLastExamNo();
+  const userInfo = await userDao.getUserById(req.user.user);
+  const {payLoad} = req.body;
+  let lastExamNo = await teacherDao.getLastExamNo();
+  lastExamNo++;
+  // create student exam
+  for (let index = 0; index < payLoad.studentIds.length; index++) {
+    const studentId = payLoad.studentIds[index];
+    await teacherDao.createStudentExam(studentId, lastExamNo);
+  }
+  // create exam slot
+  for (const key in payLoad.durationTime) {
+    if (payLoad.durationTime.hasOwnProperty(key)) {
+      const slots = payLoad.durationTime[key];
+      for (let index = 0; index < slots.length; index++) {
+        const slot = slots[index];
+        await teacherDao.insertIntoExams({
+          exam_no: lastExamNo,
+          duration: payLoad.totalDuration,
+          start_time: slot.start_time,
+          end_time: slot.end_time,
+          booking_status: false,
+          course_id: userInfo.course_id,
+          teacher_id: userInfo.id,
+          date: moment(payLoad.date).format('YYYY-MM-DD'),
+          student_id: null,
+          grade: null,
+          is_absent: true,
+        });
+      }
+    }
+  }
 
-  const result = await teacherDao.insertIntoExams(lastExamNo, payload);
 });
 
 router.get("/studentExams", async (req, res) => {

@@ -1,5 +1,5 @@
 class User {
-  constructor(id, username, password, role, name) {
+  constructor(id, username, password, role, name, course_id) {
     if (id) {
       this.id = id;
     }
@@ -7,6 +7,7 @@ class User {
     this.password = password;
     this.role = role;
     this.name = name;
+    this.course_id = course_id;
   }
 }
 module.exports = User;

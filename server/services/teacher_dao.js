@@ -43,20 +43,31 @@ exports.getLastExamNo = async (userId) => {
     //   return [];
     // }
 
-    const lastExamNo = studentLists.rows[0];
+    const result = studentLists.rows[0];
 
-    return lastExamNo;
+    return result.exam_no;
   } catch (error) {
     throw error;
   }
 };
 
-exports.insertIntoExams = async (lastExamNo) => {
-  const sql = `INSERT INTO exams(exam_no, duration, start_time, end_time , booking_status' +
-  ',course_id   ,teacher_id , date , student_id, grade, is_absent) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
+exports.insertIntoExams = async ({
+  exam_no,
+  duration,
+  start_time,
+  end_time,
+  booking_status = false,
+  course_id,
+  teacher_id,
+  date,
+  student_id = null,
+  grade = null,
+  is_absent = false,
+}) => {
+  const sql = `INSERT INTO exams(exam_no, duration, start_time, end_time, booking_status, course_id, teacher_id , date , student_id, grade, is_absent) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
   console.log(sql);
   try {
-    let studentLists = await db.query(sql, [lastExamNo]);
+    let studentLists = await db.query(sql, [exam_no, duration, start_time, end_time, booking_status, course_id, teacher_id, date, student_id, grade, is_absent]);
     console.log(sql);
     // if (!studentLists || !studentLists.rows.length) {
     //   return [];
@@ -65,6 +76,15 @@ exports.insertIntoExams = async (lastExamNo) => {
     const lastExamNo = studentLists.rows[0];
 
     return lastExamNo;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.createStudentExam = async (student_id, exam_no) => {
+  const sql = `INSERT INTO student_exams(student_id, exam_no) VALUES(?,?)`;
+  try {
+    await db.query(sql, [student_id, exam_no]);
   } catch (error) {
     throw error;
   }
