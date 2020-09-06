@@ -63,6 +63,7 @@ class StudentPage extends Component {
           <thead>
             <tr>
               <th>Exam Title</th>
+              <th>Exam Number</th>
               <th>Reserve the exam</th>
             </tr>
           </thead>
@@ -70,6 +71,7 @@ class StudentPage extends Component {
             {this.props.listStudentExams.map((exam) => (
               <tr key={exam.id}>
                 <td>{exam.name}</td>
+                <td>{exam.exam_no}</td>
                 <td>
                   <Link
                     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam

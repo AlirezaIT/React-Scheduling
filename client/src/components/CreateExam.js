@@ -162,7 +162,6 @@ class CreateExam extends React.Component {
         const result = await API.saveExam(this.state.payload);
       }
     );
-    this.props.redirectPage("home");
   };
 
   render() {
