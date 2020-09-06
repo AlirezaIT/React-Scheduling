@@ -148,6 +148,22 @@ async function reservingSlot(slot_id) {
   });
   return response.json();
 }
+async function cancelExam(reservedExam) {
+  //request params
+  console.log("$%$%$%$%$%", reservedExam);
+  const response = await fetch(
+    `${baseURL}/examSlotss/${reservedExam.id}?exam_no=${reservedExam.exam_no}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify({}),
+    }
+  );
+  console.log("qwqwqwqw", response);
+  return response.json();
+}
 
 const API = {
   userLogin,
@@ -158,5 +174,6 @@ const API = {
   getReservedExams,
   getExamSlots,
   reservingSlot,
+  cancelExam,
 };
 export default API;
