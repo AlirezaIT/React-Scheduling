@@ -23,6 +23,13 @@ class App extends React.Component {
       listStudentExams: [],
       listReservedExams: [],
       listSlots: [],
+      payload: {
+        studentIds: [],
+        date: "",
+        totalDuration: "",
+        durationTime: [], // contains the whole start and end time of slots
+        startTime: "",
+      },
     };
   }
 
@@ -41,6 +48,10 @@ class App extends React.Component {
         this.props.history.push("/login");
         this.setState({ authErr: err.errorObj });
       });
+  }
+
+  componentDidUpdate() {
+    console.log("asdfasdfasdf", this.state.payLoad);
   }
 
   // handleErrors(err) {
@@ -88,6 +99,15 @@ class App extends React.Component {
       .catch((errorObj) => {
         const err = errorObj.errors;
       });
+  };
+
+  // This is a function that be called in CreateExam Component
+  saveExamHandler = (payLoad) => {
+    this.setState({
+      paylod: payLoad,
+    });
+    console.log(payLoad);
+    this.props.history.push("/home");
   };
 
   studentExams = () => {
@@ -142,6 +162,7 @@ class App extends React.Component {
               <CreateExam
                 studentLists={this.studentLists}
                 teacherStudentLists={this.state.teacherStudentLists}
+                saveExamHandler={this.saveExamHandler}
               />
             </Route>
             <Route path="/home" component={Teacher}></Route>

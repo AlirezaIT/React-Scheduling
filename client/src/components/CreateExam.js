@@ -46,9 +46,10 @@ class CreateExam extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log(this.state.startStopTime);
-    console.log(this.state.studentsId);
-    console.log("gigiglllliiii", this.state);
+    // console.log(this.state.startStopTime);
+    console.log(this.state.payload);
+    // console.log(this.state.studentsId);
+    // console.log("gigiglllliiii", this.state);
   }
 
   toggleModal = () => {
@@ -99,11 +100,14 @@ class CreateExam extends React.Component {
 
   // ---------------------------------  function for Slots Creation --------------------------------------------------
   slotGenerator = (session) => {
-    // this.setState({
-    //   startTime: session.totalDuration,
-    //   totalDuration: session.startingTime,
-    // });
     const totalDurationExam = session.totalDuration;
+    const startingTime = session.startingTime;
+    const date = session.date;
+    this.setState({
+      startTime: startingTime,
+      totalDuration: totalDurationExam,
+      date,
+    });
     const slotsForEachSession = totalDurationExam / this.state.duration;
 
     // ---------------------- Calculate required total number of Slots and setState for the exam
@@ -151,17 +155,22 @@ class CreateExam extends React.Component {
     // ------------------------ End function (slotGenerator) for Slots Creation --------------------------------
   };
 
-  // saveExamHandler = () => {
-  //   this.setState({
-  //     payload: {
-  //       date: this.state.date,
-  //       studentIds: [],
-  //       totalDuration,
-  //       durationTime,
-  //       startTime: session.startingTime,
-  //     },
-  //   });
-  // };
+  // -------------------------- save the Exam and return to /home, Pass the PAYLOAD with all required INFO ---------------------------
+  saveExamHandler = () => {
+    this.setState({
+      payload: {
+        date: this.state.date,
+        studentIds: this.state.studentsId,
+        totalDuration: this.state.totalDuration,
+        durationTime: this.state.sessions,
+        startTime: this.state.startTime,
+      },
+    });
+    // console.log(this.state.payload);
+    let payLoad = this.state.payload;
+    console.log(payLoad);
+    // this.props.saveExamHandler(this.state.payLoad);
+  };
 
   render() {
     return (
@@ -206,7 +215,7 @@ class CreateExam extends React.Component {
                       ))}
                     </tbody>
                   </Table>
-                  <FormGroup>
+                  {/* <FormGroup>
                     <FormControl
                       type="text"
                       value={`The Number of Selected Students :    ${this.state.totalNumberOfStudents}`}
@@ -217,7 +226,7 @@ class CreateExam extends React.Component {
                       type="text"
                       value={`The Number of defined Slots :    ${this.state.totalNumberOfSlots}`}
                     />
-                  </FormGroup>
+                  </FormGroup> */}
                 </Col>
                 <Col md={4} className="mt-5">
                   <Form>
@@ -237,17 +246,35 @@ class CreateExam extends React.Component {
                           disabled={this.state.disabledInputDuration}
                           required
                           autoFocus
+                          theme={{
+                            colors: {
+                              primary: "green",
+                              underlineColor: "transparent",
+                            },
+                          }}
                         />
                       </Col>
                     </Form.Group>
-
+                    <FormGroup>
+                      <FormControl
+                        type="text"
+                        value={`The Number of Selected Students :    ${this.state.totalNumberOfStudents}`}
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControl
+                        type="text"
+                        value={`The Number of defined Slots :    ${this.state.totalNumberOfSlots}`}
+                      />
+                    </FormGroup>
                     <FormGroup>
                       <Button
                         variant="info"
                         size="sm"
                         className="fixed-right-bottom"
                         onClick={this.toggleModal}
-                        disabled={this.state.duration ? false : true}
+                        // disabled={this.state.duration ? false : true}
+                        disabled={!this.state.duration}
                       >
                         Create Session
                       </Button>
@@ -264,12 +291,12 @@ class CreateExam extends React.Component {
                         className="fixed-right-bottom"
                         onClick={this.saveExamHandler}
                         disabled={
-                          this.state.totalNumberOfStudents &&
-                          this.state.totalNumberOfSlots &&
-                          this.state.totalNumberOfSlots >=
+                          !this.state.totalNumberOfStudents ||
+                          !this.state.totalNumberOfSlots ||
+                          !(
+                            this.state.totalNumberOfSlots >=
                             this.state.totalNumberOfStudents
-                            ? false
-                            : true
+                          )
                         }
                       >
                         Save Exam
