@@ -38,14 +38,8 @@ exports.getLastExamNo = async (userId) => {
   console.log(sql);
   try {
     let studentLists = await db.query(sql, []);
-    console.log(sql);
-    // if (!studentLists || !studentLists.rows.length) {
-    //   return [];
-    // }
-
     const result = studentLists.rows[0];
-
-    return result.exam_no;
+    return result ? result.exam_no : 1;
   } catch (error) {
     throw error;
   }

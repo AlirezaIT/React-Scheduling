@@ -57,7 +57,7 @@ router.post("/saveExam", async (req, res) => {
           date: moment(payLoad.date).format('YYYY-MM-DD'),
           student_id: null,
           grade: null,
-          is_absent: true,
+          is_absent: false,
         });
       }
     }
