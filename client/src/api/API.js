@@ -93,6 +93,22 @@ async function getStudentLists() {
   }
 }
 
+async function saveExam(payLoad) {
+  console.log("In API Client", payLoad);
+  console.log("Json Stingfy", JSON.stringify(payLoad));
+  const response = await fetch(`${baseURL}/saveExam`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payLoad }),
+  });
+  console.log("save exams", response);
+  return response.json();
+}
+
+// ---------------------------
+
 async function getStudentExams() {
   const response = await fetch(`${baseURL}/studentExams`);
   console.log("get exams", response);
@@ -168,6 +184,7 @@ const API = {
   userLogout,
   isAuthenticated,
   getStudentLists,
+  saveExam,
   getStudentExams,
   getReservedExams,
   getExamSlots,

@@ -31,6 +31,14 @@ router.get("/studentLists", async (req, res) => {
   }
 });
 
+router.post("/saveExam", async (req, res) => {
+  console.log(req.body);
+  const payload = req.body;
+  const lastExamNo = await teacherDao.getLastExamNo();
+
+  const result = await teacherDao.insertIntoExams(lastExamNo, payload);
+});
+
 router.get("/studentExams", async (req, res) => {
   try {
     console.log(req.user.user);

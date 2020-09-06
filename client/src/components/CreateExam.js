@@ -14,6 +14,7 @@ import { AuthContext } from "../auth/AuthContext";
 import CreateSession from "./CreateSession";
 import moment from "moment";
 import { Redirect } from "react-router-dom";
+import API from "../api/API";
 
 class CreateExam extends React.Component {
   constructor(props) {
@@ -156,19 +157,24 @@ class CreateExam extends React.Component {
   };
 
   // -------------------------- save the Exam and return to /home, Pass the PAYLOAD with all required INFO ---------------------------
-  saveExamHandler = () => {
-    this.setState({
-      payload: {
-        date: this.state.date,
-        studentIds: this.state.studentsId,
-        totalDuration: this.state.totalDuration,
-        durationTime: this.state.sessions,
-        startTime: this.state.startTime,
+  saveExamHandler = async () => {
+    this.setState(
+      {
+        payload: {
+          date: this.state.date,
+          studentIds: this.state.studentsId,
+          totalDuration: this.state.duration,
+          durationTime: this.state.sessions,
+          // startTime: this.state.startTime,
+        },
       },
-    });
-    // console.log(this.state.payload);
-    let payLoad = this.state.payload;
-    console.log(payLoad);
+      async () => {
+        // console.log(this.state.payload);
+        const result = await API.saveExam(this.state.payload);
+      }
+    );
+    // const result = await API.saveExam(this.state.payload);
+    // console.log("mY ReSulT : ", result);
     // this.props.saveExamHandler(this.state.payLoad);
   };
 
