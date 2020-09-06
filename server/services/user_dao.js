@@ -17,7 +17,8 @@ exports.getUser = async (username, role) => {
       userFound.username,
       userFound.password,
       userFound.role,
-      userFound.name
+      userFound.name,
+      userFound.course_id,
     );
   } catch (error) {
     throw error;
@@ -42,7 +43,8 @@ exports.getUserById = async function (id) {
       userFound.username,
       userFound.password,
       userFound.role,
-      userFound.name
+      userFound.name,
+      userFound.course_id,
     );
   } catch (error) {
     throw error;

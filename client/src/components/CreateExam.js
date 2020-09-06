@@ -60,7 +60,7 @@ class CreateExam extends React.Component {
     });
   };
 
-  onCheckChange = (event, username) => {
+  onCheckChange = (event, studentId) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
@@ -76,11 +76,11 @@ class CreateExam extends React.Component {
         this.setState((prevState) => {
           return {
             totalNumberOfStudents: prevState.totalNumberOfStudents + 1, // Add the number of Selected Student
-            studentsId: [...prevState.studentsId, username], // add the studentNO. into the Array
+            studentsId: [...prevState.studentsId, studentId], // add the studentNO. into the Array
           };
         });
       } else {
-        const index = this.state.studentsId.indexOf(username);
+        const index = this.state.studentsId.indexOf(studentId);
         this.setState((prevState) => {
           return {
             totalNumberOfStudents: prevState.totalNumberOfStudents - 1, // reduce the number of Selected Student
@@ -209,7 +209,7 @@ class CreateExam extends React.Component {
                                 onChange={(event) =>
                                   this.onCheckChange(
                                     event,
-                                    studentList.username
+                                    studentList.id
                                   )
                                 }
                                 type="checkbox"
