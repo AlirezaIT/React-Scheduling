@@ -1,9 +1,12 @@
 const express = require("express");
 const jsonwebtoken = require("jsonwebtoken");
 const userDao = require("../services/user_dao");
-const {ROLES} = require("../utils/consts");
+const teacherDao = require("../services/teacher_dao");
+const studentDao = require("../services/student_dao");
+const { ROLES } = require("../utils/consts");
+const { route } = require("./private");
 const router = express.Router();
-const expireTime = 300; //seconds
+const expireTime = 1000; //seconds
 const authErrorObj = {
   errors: [{ param: "Server", msg: "Authorization error" }],
 };
@@ -42,7 +45,11 @@ router.post("/login", async (req, res) => {
         sameSite: true,
         maxAge: 1000 * expireTime,
       });
-      return res.json({ id: user.id, username: user.username });
+      return res.json({
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      });
     } catch (error) {
       return res.status(401).json(authErrorObj);
     }
@@ -51,7 +58,7 @@ router.post("/login", async (req, res) => {
    * @ROLE STUDENT
    * no password
    */
-  if (ROLES.STUDENT === role) { 
+  if (ROLES.STUDENT === role) {
     if (!username) {
       return res.status(404).send({
         errors: [{ param: "Server", msg: "Invalid username" }],
