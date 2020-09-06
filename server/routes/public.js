@@ -6,7 +6,7 @@ const studentDao = require("../services/student_dao");
 const { ROLES } = require("../utils/consts");
 const { route } = require("./private");
 const router = express.Router();
-const expireTime = 300; //seconds
+const expireTime = 1000; //seconds
 const authErrorObj = {
   errors: [{ param: "Server", msg: "Authorization error" }],
 };

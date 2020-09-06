@@ -8,7 +8,7 @@ import moment from "moment";
 class StudentPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = this.props;
   }
 
   componentDidMount() {
@@ -19,6 +19,19 @@ class StudentPage extends Component {
   handleCancelReservation = async (reservedExam) => {
     console.log("cancelling", reservedExam);
     const result = await API.cancelExam(reservedExam);
+    const listStudentExams = this.state.listStudentExams.filter(
+      (e) => e.exam_no !== reservedExam.exam_no
+    );
+    listStudentExams.push({ ...reservedExam });
+    let listReservedExams = this.state.listReservedExams;
+    listReservedExams = listReservedExams.filter(
+      (e) => e.id !== reservedExam.id
+    );
+    this.props.updateState("listStudentExams", listStudentExams);
+    this.props.updateState("listReservedExams", listReservedExams);
+    // this.setState({
+    //   listStudentExams: studentExams,
+    // });
     console.log("gigiliiii", result);
     // const reservedExams = this.props.listReservedExams.filter(
     //   (re) => re.id !== reserveExam.id

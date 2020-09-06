@@ -123,6 +123,11 @@ class App extends React.Component {
     });
     this.props.history.push(`/student/reserve?exam_no=${exam_no}`);
   };
+  updateState = async (key, array) => {
+    this.setState({
+      [key]: array,
+    });
+  };
 
   render() {
     const value = {
@@ -158,6 +163,7 @@ class App extends React.Component {
                 studentExams={this.studentExams} //function
                 reservedExams={this.reservedExams}
                 handleReserve={this.handleReserve}
+                updateState={this.updateState}
               />
             </Route>
             <Route path="/logout"></Route>

@@ -116,3 +116,26 @@ exports.reservingExamSlots = async (slot_id, student_id) => {
     throw error;
   }
 };
+exports.cancelingExamSlots = async (slot_id) => {
+  console.log("get slot id for canceling ", slot_id);
+  const sql = `UPDATE exams set booking_status = "false" ,student_id = null where id = ? `;
+  try {
+    let reervedSlot = await db.query(sql, [slot_id]);
+    // console.log(reservedExams);
+    let lists = reervedSlot.rows;
+    // .map((reservedExam) => {
+    //   return new ReservedexamsOfStudent(
+    //     reservedExam.id,
+    //     reservedExam.exam_no,
+    //     reservedExam.start_time,
+    //     reservedExam.course_id,
+    //     reservedExam.date,
+    //     reservedExam.grade
+    //   );
+    // });
+
+    return lists;
+  } catch (error) {
+    throw error;
+  }
+};
