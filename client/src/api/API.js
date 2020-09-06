@@ -81,7 +81,8 @@ async function isAuthenticated() {
 async function getStudentLists() {
   try {
     const response = await fetch(`${baseURL}/studentLists`);
-    if (response.status === 200) {
+    // if (response.status === 200) {
+    if (response.ok) {
       return response.json();
     } else {
       return [];
@@ -90,12 +91,6 @@ async function getStudentLists() {
     console.log("Error", e);
     throw e;
   }
-  // if (response.ok) {
-  //   return userJson;
-  // } else {
-  //   let err = { status: response.status, errObj: userJson };
-  //   throw err; // An object with the error coming from the server
-  // }
 }
 
 async function getStudentExams() {
@@ -103,11 +98,13 @@ async function getStudentExams() {
   console.log("get exams", response);
   return response.json();
 }
+
 async function getReservedExams() {
   const response = await fetch(`${baseURL}/reservedExams`);
 
   return response.json();
 }
+
 async function getExamSlots(exam_no) {
   //request params
   const response = await fetch(`${baseURL}/examSlots/${exam_no}`);
@@ -148,6 +145,7 @@ async function reservingSlot(slot_id) {
   });
   return response.json();
 }
+
 async function cancelExam(reservedExam) {
   //request params
   console.log("$%$%$%$%$%", reservedExam);

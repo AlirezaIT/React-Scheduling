@@ -215,18 +215,6 @@ class CreateExam extends React.Component {
                       ))}
                     </tbody>
                   </Table>
-                  {/* <FormGroup>
-                    <FormControl
-                      type="text"
-                      value={`The Number of Selected Students :    ${this.state.totalNumberOfStudents}`}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <FormControl
-                      type="text"
-                      value={`The Number of defined Slots :    ${this.state.totalNumberOfSlots}`}
-                    />
-                  </FormGroup> */}
                 </Col>
                 <Col md={4} className="mt-5">
                   <Form>
@@ -302,6 +290,7 @@ class CreateExam extends React.Component {
                         Save Exam
                       </Button>
                     </FormGroup>
+
                     {this.state.totalNumberOfSlots >=
                     this.state.totalNumberOfStudents ? (
                       <></>
