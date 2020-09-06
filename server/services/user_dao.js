@@ -11,11 +11,13 @@ exports.getUser = async (username, role) => {
       // throw new Error(`not found any user with this username`)
       return null;
     }
+
     return new User(
       userFound.id,
       userFound.username,
       userFound.password,
-      userFound.role
+      userFound.role,
+      userFound.name
     );
   } catch (error) {
     throw error;
@@ -39,7 +41,8 @@ exports.getUserById = async function (id) {
       userFound.id,
       userFound.username,
       userFound.password,
-      userFound.role
+      userFound.role,
+      userFound.name
     );
   } catch (error) {
     throw error;

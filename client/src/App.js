@@ -19,8 +19,6 @@ class App extends React.Component {
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
-      authErr: "",
-      authUser: "",
       teacherStudentLists: [],
       listStudentExams: [],
       listReservedExams: [],
@@ -40,8 +38,8 @@ class App extends React.Component {
         this.setState({ authUser: user });
       })
       .catch((err) => {
-        this.setState({ authErr: err.errorObj });
         this.props.history.push("/login");
+        this.setState({ authErr: err.errorObj });
       });
   }
 
@@ -66,11 +64,11 @@ class App extends React.Component {
         if (user.role === ROLES.TEACHER) {
           this.setState({ authUser: user, authErr: null });
           this.props.history.push("/home");
-          console.log(this.state.authUser);
+          // console.log(this.state.authUser);
         } else if (user.role === ROLES.STUDENT) {
           this.setState({ authUser: user, authErr: null });
           this.props.history.push("/student");
-          console.log(this.state.authUser);
+          // console.log(this.state.authUser);
         }
       })
       .catch((errorObj) => {
@@ -79,17 +77,19 @@ class App extends React.Component {
       });
   };
 
+  // get the List of Students for a authorized Teacher
   studentLists = () => {
     API.getStudentLists()
       .then((students) =>
         this.setState({
-          teacherStudentLists: students,
+          teacherStudentLists: students || [],
         })
       )
       .catch((errorObj) => {
         const err = errorObj.errors;
       });
   };
+
   studentExams = () => {
     API.getStudentExams()
       .then((studentExams) => {
@@ -118,7 +118,7 @@ class App extends React.Component {
   handleReserve = async (exam_no) => {
     console.log("exam No : ", exam_no);
     const result = await API.getExamSlots(exam_no);
-    console.log(result);
+    console.log("gigiliiii", result);
     this.setState({
       listSlots: result,
     });

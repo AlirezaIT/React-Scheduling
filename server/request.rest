@@ -1,7 +1,8 @@
-GET  http://localhost:3001/api/reservedExams
+post  http://localhost:3001/api/login
 
 {
-    
+    "username" : "1000",
+    "role"  : "teacher"  
 }
 
 

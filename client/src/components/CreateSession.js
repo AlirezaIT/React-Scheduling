@@ -8,6 +8,7 @@ import {
   Input,
   FormGroup,
   Form,
+  Alert,
 } from "reactstrap";
 
 import DatePicker from "react-datepicker";
@@ -51,7 +52,8 @@ class CreateSession extends React.Component {
     this.props.toggleModal(); //close modal once it is created;
     let session = Object.assign({}, this.state);
 
-    console.log("total Session :", session);
+    // console.log("total Session :", session);
+
     this.props.slotGenerator(session);
   };
   render() {
@@ -87,6 +89,7 @@ class CreateSession extends React.Component {
                 name="startingTime"
                 value={this.state.startingTime}
                 onChange={this.handleInputChange}
+                required
               ></Input>
             </FormGroup>
             <FormGroup>
@@ -97,11 +100,19 @@ class CreateSession extends React.Component {
                 name="totalDuration"
                 value={this.state.totalDuration}
                 onChange={this.handleInputChange}
+                required
               ></Input>
             </FormGroup>
-            <Button type="submit" value="submit" color="primary">
-              Create
-            </Button>
+
+            {this.state.totalDuration % this.props.duration == 0 ? (
+              <Button type="submit" value="submit" color="primary">
+                Create
+              </Button>
+            ) : (
+              <Alert variant="info">
+                <p>This Number must be multiple of "duration of each Slot"</p>
+              </Alert>
+            )}
           </Form>
         </ModalBody>
       </Modal>

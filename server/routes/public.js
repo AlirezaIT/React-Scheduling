@@ -49,6 +49,7 @@ router.post("/login", async (req, res) => {
         id: user.id,
         username: user.username,
         role: user.role,
+        name: user.name,
       });
     } catch (error) {
       return res.status(401).json(authErrorObj);

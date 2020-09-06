@@ -20,6 +20,7 @@ class Teacher extends React.Component {
         {(context) => (
           <Container>
             <h1> Welcome {context.authUser?.name} </h1>
+
             <Row>
               <Col md={{ span: 4, offset: 4 }}>
                 <Form>

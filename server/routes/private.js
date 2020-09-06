@@ -13,7 +13,7 @@ router.get("/verify", async (req, res) => {
   try {
     const userId = req.user && req.user.user;
     const userFound = await userDao.getUserById(userId);
-    res.json({ id: userFound.id, name: userFound.username });
+    res.json({ id: userFound.id, name: userFound.name });
   } catch (err) {
     res.status(401).json(authErrorObj);
   }
@@ -76,5 +76,19 @@ router.get("/examSlots/:exam_no", async (req, res) => {
 //     return res.status(401).json(authErrorObj);
 //   }
 // });
+
+router.put("/examSlots/:slot_id", async (req, res) => {
+  try {
+    console.log("request params", req.params);
+    console.log("request query", req.query);
+    const user = req.user.user;
+    const { slot_id } = req.params;
+    const lists = await studentDao.reservingExamSlots(slot_id, user);
+    console.log(lists);
+    return res.json(lists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
 
 module.exports = router;

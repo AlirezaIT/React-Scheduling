@@ -13,6 +13,7 @@ import {
 import { AuthContext } from "../auth/AuthContext";
 import CreateSession from "./CreateSession";
 import moment from "moment";
+import { Redirect } from "react-router-dom";
 
 class CreateExam extends React.Component {
   constructor(props) {
@@ -26,6 +27,10 @@ class CreateExam extends React.Component {
       disabledInputDuration: false,
       startStopTime: [],
       studentsId: [],
+      startTime: "",
+      totalDuration: "",
+      sessions: {},
+      lastSession: 1,
       payload: {
         studentIds: [],
         date: "",
@@ -43,6 +48,7 @@ class CreateExam extends React.Component {
   componentDidUpdate() {
     console.log(this.state.startStopTime);
     console.log(this.state.studentsId);
+    console.log("gigiglllliiii", this.state);
   }
 
   toggleModal = () => {
@@ -93,6 +99,10 @@ class CreateExam extends React.Component {
 
   // ---------------------------------  function for Slots Creation --------------------------------------------------
   slotGenerator = (session) => {
+    // this.setState({
+    //   startTime: session.totalDuration,
+    //   totalDuration: session.startingTime,
+    // });
     const totalDurationExam = session.totalDuration;
     const slotsForEachSession = totalDurationExam / this.state.duration;
 
@@ -128,18 +138,37 @@ class CreateExam extends React.Component {
       });
     }
 
+    let sessions = { ...this.state.sessions };
+    sessions[this.state.lastSession] = startStopTime;
+    console.log(sessions);
     this.setState({
-      startStopTime,
+      // session[`${this.state.lastSession}`] : startStopTime,
+      sessions: { ...sessions },
+      // session[1] : startStopTime,
+      lastSession: this.state.lastSession + 1,
     });
-
+    console.log(this.state);
     // ------------------------ End function (slotGenerator) for Slots Creation --------------------------------
   };
 
+  // saveExamHandler = () => {
+  //   this.setState({
+  //     payload: {
+  //       date: this.state.date,
+  //       studentIds: [],
+  //       totalDuration,
+  //       durationTime,
+  //       startTime: session.startingTime,
+  //     },
+  //   });
+  // };
+
   render() {
     return (
-      <>
-        <AuthContext.Consumer>
-          {(context) => (
+      <AuthContext.Consumer>
+        {(context) => (
+          <>
+            {context.authUser === null && <Redirect to="/login"></Redirect>}
             <Container fluid>
               <Row>
                 <Col md={8}>
@@ -154,7 +183,7 @@ class CreateExam extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.props.teacherStudentLists.map((studentList) => (
+                      {this.props.teacherStudentLists?.map((studentList) => (
                         <tr key={studentList.id}>
                           <td>{studentList.id}</td>
                           <td>{studentList.username}</td>
@@ -233,7 +262,7 @@ class CreateExam extends React.Component {
                         variant="info"
                         size="sm"
                         className="fixed-right-bottom"
-                        onClick={this.toggleModal}
+                        onClick={this.saveExamHandler}
                         disabled={
                           this.state.totalNumberOfStudents &&
                           this.state.totalNumberOfSlots &&
@@ -250,25 +279,15 @@ class CreateExam extends React.Component {
                     this.state.totalNumberOfStudents ? (
                       <></>
                     ) : (
-                      <Alert variant="danger" dismissible>
+                      <Alert variant="danger">
                         <Alert.Heading>ERROR!</Alert.Heading>
                         <p>
                           The Number Of Slots are lower than the Number Of
                           Students. <br />
-                          Please Create Slots
+                          Please Create more Slots.
                         </p>
                       </Alert>
-                      // <p style="warning">
-                      //   The Number Of Slots are lower than the Number Of
-                      //   Students
-                      // </p>
                     )}
-                    {/* ) : (
-                      <p>
-                        Choose the right number of slots and Students before
-                        Saving
-                      </p> */}
-                    {/* )} */}
                   </Form>
                   {this.state.isModalOpen && (
                     <CreateSession
@@ -276,14 +295,15 @@ class CreateExam extends React.Component {
                       toggleModal={this.toggleModal}
                       handleCreateSession={this.handleCreateSession}
                       slotGenerator={this.slotGenerator}
+                      duration={this.state.duration}
                     />
                   )}
                 </Col>
               </Row>
             </Container>
-          )}
-        </AuthContext.Consumer>
-      </>
+          </>
+        )}
+      </AuthContext.Consumer>
     );
   }
 }
