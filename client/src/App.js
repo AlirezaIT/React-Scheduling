@@ -23,13 +23,6 @@ class App extends React.Component {
       listStudentExams: [],
       listReservedExams: [],
       listSlots: [],
-      payload: {
-        studentIds: [],
-        date: "",
-        totalDuration: "",
-        durationTime: [], // contains the whole start and end time of slots
-        startTime: "",
-      },
     };
   }
 
@@ -99,15 +92,6 @@ class App extends React.Component {
       .catch((errorObj) => {
         const err = errorObj.errors;
       });
-  };
-
-  // This is a function that be called in CreateExam Component
-  saveExamHandler = (payLoad) => {
-    this.setState({
-      paylod: payLoad,
-    });
-    console.log(payLoad);
-    this.props.history.push("/home");
   };
 
   studentExams = () => {

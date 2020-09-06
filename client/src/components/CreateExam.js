@@ -47,7 +47,7 @@ class CreateExam extends React.Component {
 
   componentDidUpdate() {
     // console.log(this.state.startStopTime);
-    console.log(this.state.payload);
+    // console.log(this.state.payload);
     // console.log(this.state.studentsId);
     // console.log("gigiglllliiii", this.state);
   }
