@@ -298,7 +298,7 @@ class CreateExam extends React.Component {
                       toggleModal={this.toggleModal}
                       handleCreateSession={this.handleCreateSession}
                       slotGenerator={this.slotGenerator}
-                      duration={this.state.duration}
+                      duration={this.state.duration} // use to calculate the multiple of Total Duration
                     />
                   )}
                 </Col>

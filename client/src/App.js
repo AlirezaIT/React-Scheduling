@@ -84,7 +84,7 @@ class App extends React.Component {
       });
   };
 
-  // get the List of Students for a authorized Teacher
+  //------- get the List of Students for an authorized Teacher ---- used in CreateExam Component
   studentLists = () => {
     API.getStudentLists()
       .then((students) =>
