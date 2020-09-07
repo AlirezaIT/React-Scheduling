@@ -17,17 +17,31 @@ const Header = (props) => {
                   <NavbarToggler onClick={props.toggleNav} />
                   <Collapse isOpen={props.isNavOpen} navbar>
                     <Nav navbar>
-                      {context.authUser.role === "teacher" && (
+                      {context.authUser.role === ROLES.TEACHER && (
                         <NavItem>
                           <NavLink className="nav-link" to="/home">
                             Home
                           </NavLink>
                         </NavItem>
                       )}
-                      {context.authUser.role === "teacher" && (
+                      {context.authUser.role === ROLES.TEACHER && (
                         <NavItem>
                           <NavLink className="nav-link" to="/exam/create">
                             Create Exam
+                          </NavLink>
+                        </NavItem>
+                      )}
+                      {context.authUser.role === ROLES.TEACHER && (
+                        <NavItem>
+                          <NavLink className="nav-link" to="/home">
+                            Execute Exam
+                          </NavLink>
+                        </NavItem>
+                      )}
+                      {context.authUser.role === ROLES.TEACHER && (
+                        <NavItem>
+                          <NavLink className="nav-link" to="/home">
+                            Show Report
                           </NavLink>
                         </NavItem>
                       )}
@@ -46,26 +60,7 @@ const Header = (props) => {
               </Navbar>
             </>
           ) : (
-            <>
-              {/* <Navbar light expand="md">
-                <div className="container">
-                  <NavbarToggler onClick={props.toggleNav} />
-                  <Collapse isOpen={props.isNavOpen} navbar>
-                    <Nav navbar>
-                      <NavItem>
-                        <NavLink
-                          className="nav-link"
-                          to="/logout"
-                          onClick={() => context.logoutUser()}
-                        >
-                          Logout
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </Collapse>
-                </div>
-              </Navbar> */}
-            </>
+            <></>
           )}
         </>
       )}

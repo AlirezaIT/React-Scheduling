@@ -12,14 +12,13 @@ class Teacher extends React.Component {
   }
 
   render() {
-    // const teacher = this.props.teachers.map((teacher) => {
-    //   return <div>hi {teacher.name}</div>;
-    // });
     return (
       <AuthContext.Consumer>
         {(context) => (
           <Container>
-            <h1> Welcome {context.authUser?.name} </h1>
+            <h2 className="mt-5 , mb-5">
+              Welcome Prof. {context.authUser?.name}{" "}
+            </h2>
 
             <Row>
               <Col md={{ span: 4, offset: 4 }}>

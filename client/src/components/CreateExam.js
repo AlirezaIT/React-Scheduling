@@ -9,7 +9,6 @@ import {
   Table,
   FormControl,
   Alert,
-  Modal,
 } from "react-bootstrap";
 import { AuthContext } from "../auth/AuthContext";
 import CreateSession from "./CreateSession";
@@ -34,6 +33,7 @@ class CreateExam extends React.Component {
       totalDuration: "",
       sessions: {},
       lastSession: 1,
+      // final Object which is sent to Server
       payload: {
         studentIds: [],
         date: "",
@@ -183,7 +183,6 @@ class CreateExam extends React.Component {
                     <thead>
                       <tr>
                         <th>#</th>
-                        {/* <th>student_id</th> */}
                         <th>Student Number</th>
                         <th>Student Name</th>
                         <th>Select</th>
