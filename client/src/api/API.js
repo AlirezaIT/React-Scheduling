@@ -142,6 +142,19 @@ async function getTeacherSlots(exam_no) {
   }
 }
 
+// ------------------------------------- Update the grade in proper table
+
+async function updateGrade(payLoad) {
+  const response = await fetch(`${baseURL}/updateGrade`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payLoad }),
+  });
+  return response.json();
+}
+
 //---------------StudentPage and BookingSlots API FUNCTIONS
 
 async function getStudentExams() {
@@ -190,6 +203,7 @@ const API = {
   saveExam,
   getExamLists,
   getTeacherSlots,
+  updateGrade,
   getStudentExams,
   getReservedExams,
   getExamSlots,

@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { AuthContext } from "../auth/AuthContext";
 import { Redirect, Link } from "react-router-dom";
+import API from "../api/API";
 
 class ShowSlots extends React.Component {
   constructor(props) {
@@ -53,13 +54,18 @@ class ShowSlots extends React.Component {
     }
   };
 
-  saveExamHandler = () => {
-    this.setState({
-      payload: {
-        grades: this.state.grade,
-        examIds: this.state.examId,
+  saveExamHandler = async () => {
+    this.setState(
+      {
+        payload: {
+          grades: this.state.grade,
+          examIds: this.state.examId,
+        },
       },
-    });
+      async () => {
+        const result = await API.updateGrade(this.state.payload);
+      }
+    );
   };
 
   render() {

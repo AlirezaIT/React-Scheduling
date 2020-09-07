@@ -101,6 +101,22 @@ router.get("/teacherExamSlots/:exam_no", async (req, res) => {
   }
 });
 
+router.put("/updateGrade", async (req, res) => {
+  try {
+    const { payLoad } = req.body;
+    console.log(payLoad);
+    for (let index = 0; index < payLoad.examIds.length; index++) {
+      const examId = payLoad.examIds[index];
+      const grade = payLoad.grades[index];
+      await teacherDao.updateGrade(examId, grade);
+    }
+    // const lists = await teacherDao.updateGrade(slot_id, user);
+    // return res.json(lists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
 // ==================================== API EndPoints for Students ======================================== //
 
 router.get("/studentExams", async (req, res) => {

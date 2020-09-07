@@ -131,7 +131,7 @@ exports.getExamSlots = async (userId) => {
 };
 
 exports.getTeacherSlots = async (userId, exam_no) => {
-  const sql = `SELECT * from exams e , users u WHERE e.student_id = u.id and  teacher_id = ?  and exam_no = ? and student_id is not NULL`;
+  const sql = `SELECT e.id,e.exam_no,e.duration,e.start_time,e.end_time,e.date,e.grade,u.username,u.name from exams e , users u WHERE e.student_id = u.id and teacher_id = ?  and exam_no = ? and student_id is not NULL`;
   console.log(sql);
   try {
     let slotLists = await db.query(sql, [userId, exam_no]);
@@ -142,6 +142,15 @@ exports.getTeacherSlots = async (userId, exam_no) => {
     // }
 
     return slotLists.rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.updateGrade = async (examId, grade) => {
+  const sql = `UPDATE exams set grade = ? where id = ? `;
+  try {
+    let result = await db.query(sql, [grade, examId]);
   } catch (error) {
     throw error;
   }
