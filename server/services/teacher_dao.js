@@ -95,3 +95,28 @@ exports.createStudentExam = async (student_id, exam_no) => {
     throw error;
   }
 };
+
+exports.getFinalResultReport = async (userId) => {
+  // const sql = `select * from exams where teacher_id =? and grade is not null`;
+  const sql = `select e.id,e.exam_no,e.start_time,e.end_time, c.name,e.date,u.username,e.grade,e.is_absent from exams e ,users u ,courses c where e.course_id=c.id and e.student_id=u.id and e.teacher_id =? and e.grade is not null `;
+  try {
+    let resultReport = await db.query(sql, [userId]);
+    let result = resultReport.rows;
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+exports.getStudentNotBooked = async (userId) => {
+  // const sql = `select * from exams where teacher_id =? and grade is not null`;
+  const sql = `select se.id,exam_no,student_id , name,username from student_exams se, users u where se.student_id = u.id and student_id  not in  (select student_id from exams where teacher_id =? and student_id is not null)
+  `;
+
+  try {
+    let resultReport = await db.query(sql, [userId]);
+    let result = resultReport.rows;
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};

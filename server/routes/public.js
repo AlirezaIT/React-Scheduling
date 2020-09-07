@@ -83,6 +83,7 @@ router.post("/login", async (req, res) => {
       return res.json({
         id: user.id,
         username: user.username,
+        name: user.name,
         role: user.role,
       });
     } catch (error) {

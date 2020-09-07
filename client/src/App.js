@@ -11,6 +11,7 @@ import { Col, Row, Container } from "react-bootstrap";
 import { ROLES } from "./shared/consts";
 import StudentPage from "./components/StudentPage";
 import BookingSlot from "./components/BookingSlot";
+import ShowReport from "./components/ShowReport";
 
 class App extends React.Component {
   constructor(props) {
@@ -24,6 +25,8 @@ class App extends React.Component {
       listStudentExams: [], //assaigned exams to the student
       listReservedExams: [], //reserved exam and its slot's details
       listSlots: [], //availabe slots related to the specific exam
+      fullReports: [], //showing the final report of exams and grade
+      listStudentsNotBooked: [], //contain the list of students details that not booked the exam
     };
   }
 
@@ -92,6 +95,33 @@ class App extends React.Component {
           teacherStudentLists: students || [],
         })
       )
+      .catch((errorObj) => {
+        const err = errorObj.errors;
+      });
+  };
+
+  //***------------------------functions related to Teacher Report page----------------***
+
+  finalResultReport = () => {
+    API.getFinalResultReport()
+      .then((details) => {
+        //getting the array of assaigned exams's details from API'S function (exam_no ,name) and storing into listStudentExams Array
+        this.setState({
+          fullReports: details,
+        });
+      })
+      .catch((errorObj) => {
+        const err = errorObj.errors;
+      });
+  };
+  studentNotBooked = () => {
+    API.getstudentNotBooked()
+      .then((details) => {
+        //getting the array of assaigned exams's details from API'S function (exam_no ,name) and storing into listStudentExams Array
+        this.setState({
+          listStudentsNotBooked: details,
+        });
+      })
       .catch((errorObj) => {
         const err = errorObj.errors;
       });
@@ -168,6 +198,14 @@ class App extends React.Component {
             </Route>
             <Route path="/home" component={Teacher}></Route>
             <Route path="/login" component={LoginForm}></Route>
+            <Route path="/exam/showreport">
+              <ShowReport
+                fullReports={this.state.fullReports}
+                finalResultReport={this.finalResultReport}
+                studentNotBooked={this.studentNotBooked}
+                listStudentsNotBooked={this.state.listStudentsNotBooked}
+              />
+            </Route>
             <Route path="/student/reserve">
               <BookingSlot
                 listSlots={this.state.listSlots}

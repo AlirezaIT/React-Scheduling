@@ -69,6 +69,26 @@ router.post("/saveExam", async (req, res) => {
   }
 });
 
+router.get("/exam/getFullreport", async (req, res) => {
+  try {
+    const userId = req.user.user;
+    const lists = await teacherDao.getFinalResultReport(userId);
+    console.log("FinalResultReport", lists);
+    return res.json(lists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+router.get("/exam/getStudentNotBooked", async (req, res) => {
+  try {
+    const userId = req.user.user;
+    const lists = await teacherDao.getStudentNotBooked(userId);
+    console.log("zzzzzz", lists);
+    return res.json(lists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
 router.get("/studentExams", async (req, res) => {
   try {
     const userId = req.user.user;
