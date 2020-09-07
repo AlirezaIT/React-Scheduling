@@ -3,6 +3,7 @@ import "./App.css";
 import LoginForm from "./components/LoginForm";
 import Header from "./components/Header";
 import CreateExam from "./components/CreateExam";
+import ExecuteExam from "./components/ExecuteExam";
 import Teacher from "./components/Teacher";
 import API from "./api/API";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
@@ -20,6 +21,7 @@ class App extends React.Component {
     this.state = {
       isNavOpen: false,
       teacherStudentLists: [],
+      examLists: [],
       role: "",
       listStudentExams: [], //assaigned exams to the student
       listReservedExams: [], //reserved exam and its slot's details
@@ -97,6 +99,19 @@ class App extends React.Component {
       });
   };
 
+  //------- get the List of Exams for an authorized Teacher ---- used in ExecuteExam Component
+  examLists = () => {
+    API.getExamLists()
+      .then((exams) =>
+        this.setState({
+          examLists: exams || [],
+        })
+      )
+      .catch((errorObj) => {
+        const err = errorObj.errors;
+      });
+  };
+
   //***------------------------functions related to StudentPage AND BookingSlots components----------------***
 
   //------------------------calling the API function for getting the array of assaigned exams
@@ -164,6 +179,12 @@ class App extends React.Component {
               <CreateExam
                 studentLists={this.studentLists}
                 teacherStudentLists={this.state.teacherStudentLists}
+              />
+            </Route>
+            <Route path="/exam/execute">
+              <ExecuteExam
+                getExamtLists={this.examLists}
+                examLists={this.state.examLists}
               />
             </Route>
             <Route path="/home" component={Teacher}></Route>

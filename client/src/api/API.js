@@ -78,6 +78,7 @@ async function isAuthenticated() {
   }
 }
 
+// ------------- fetch the list of Students form DB for CreateExam Component
 async function getStudentLists() {
   try {
     const response = await fetch(`${baseURL}/studentLists`);
@@ -87,12 +88,13 @@ async function getStudentLists() {
     } else {
       return [];
     }
-  } catch (e) {
-    console.log("Error", e);
-    throw e;
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
   }
 }
 
+// ------------- Save slots for an exams into DB
 async function saveExam(payLoad) {
   console.log("In API Client", payLoad);
   console.log("Json Stingfy", JSON.stringify(payLoad));
@@ -105,6 +107,22 @@ async function saveExam(payLoad) {
   });
   console.log("save exams", response);
   return response.json();
+}
+
+// ------------- fetch the list of Exams form DB for ExecuteExam Component
+async function getExamLists() {
+  try {
+    const response = await fetch(`${baseURL}/examLists`);
+    console.log(response);
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
+  }
 }
 
 //---------------StudentPage and BookingSlots API FUNCTIONS
@@ -153,6 +171,7 @@ const API = {
   isAuthenticated,
   getStudentLists,
   saveExam,
+  getExamLists,
   getStudentExams,
   getReservedExams,
   getExamSlots,

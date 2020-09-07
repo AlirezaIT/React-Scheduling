@@ -69,6 +69,18 @@ router.post("/saveExam", async (req, res) => {
   }
 });
 
+router.get("/examLists", async (req, res) => {
+  const userId = req.user.user;
+  try {
+    const examLists = await teacherDao.getExamtLists(userId);
+    return res.json(examLists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
+// ==================================== API EndPoints for Students ======================================== //
+
 router.get("/studentExams", async (req, res) => {
   try {
     const userId = req.user.user;

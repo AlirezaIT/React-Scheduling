@@ -95,3 +95,31 @@ exports.createStudentExam = async (student_id, exam_no) => {
     throw error;
   }
 };
+
+exports.getExamtLists = async (userId) => {
+  const sql = `SELECT DISTINCT exam_no, date from exams WHERE teacher_id = ? `;
+  console.log(sql);
+  try {
+    let examLists = await db.query(sql, [userId]);
+    console.log(sql);
+    console.log(examLists);
+    // if (!studentLists || !studentLists.rows.length) {
+    //   return [];
+    // }
+
+    // const student_lists = studentLists.rows;
+
+    // student_lists = studentLists.rows.map((StudentList) => {
+
+    // return new student_lists(
+    //   StudentList.id,
+    //   StudentList.username,
+    //   StudentList.name
+    // );
+    // });
+
+    return examLists.rows;
+  } catch (error) {
+    throw error;
+  }
+};
