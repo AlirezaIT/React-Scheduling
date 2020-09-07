@@ -164,6 +164,10 @@ class App extends React.Component {
               <CreateExam
                 studentLists={this.studentLists}
                 teacherStudentLists={this.state.teacherStudentLists}
+<<<<<<< HEAD
+=======
+                saveExamHandler={this.saveExamHandler}
+>>>>>>> 84e496e05d6610e6a662e31edc09f2901dbf055d
               />
             </Route>
             <Route path="/home" component={Teacher}></Route>

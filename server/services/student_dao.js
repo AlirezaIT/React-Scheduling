@@ -15,7 +15,7 @@ exports.getStudentExams = async (student_id) => {
   }
 };
 exports.getExamSlots = async (exam_no) => {
-  const sql = `select * from exams e where exam_no = ? and booking_status ="false"`;
+  const sql = `select * from exams e where exam_no = ? and booking_status =0`;
   try {
     let examSlots = await db.query(sql, [exam_no]);
 
@@ -39,7 +39,7 @@ exports.getReservedexamsOfStudent = async (student_id) => {
 };
 
 exports.reservingExamSlots = async (slot_id, student_id) => {
-  const sql = `UPDATE exams set booking_status = true ,student_id =? where id = ? `;
+  const sql = `UPDATE exams set booking_status = 1 ,student_id =? where id = ? `;
   try {
     let reervedSlot = await db.query(sql, [student_id, slot_id]);
 
@@ -51,7 +51,7 @@ exports.reservingExamSlots = async (slot_id, student_id) => {
   }
 };
 exports.cancelingExamSlots = async (slot_id) => {
-  const sql = `UPDATE exams set booking_status = "false" ,student_id = null where id = ? `;
+  const sql = `UPDATE exams set booking_status = 0 ,student_id = null where id = ? `;
   try {
     let reervedSlot = await db.query(sql, [slot_id]);
     let lists = reervedSlot.rows;

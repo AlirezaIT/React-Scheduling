@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import API from "../api/API";
 import { FormGroup } from "reactstrap";
 
@@ -10,14 +10,16 @@ class BoookingSlot extends Component {
 
     this.state = {
       selectedSlot: {},
+      buttonDisabled: true,
     };
   }
 
-  handlerSelect = (slot) => {
+  handlerSelect = async (slot) => {
     //get details in object form of selected slot and store into selectedSlot
 
-    this.setState({
+    await this.setState({
       selectedSlot: slot,
+      buttonDisabled: false,
     });
   };
 
@@ -25,10 +27,14 @@ class BoookingSlot extends Component {
     //saving (PUT) selectedSlot object into database
     const result = await API.reservingSlot(this.state.selectedSlot.id); //passing only the slot's ID to Api
     console.log("saving into database", result);
+    this.setState({ redirect: true });
   };
 
   //---------------------rendering the list of availabe slot and saving and cenceling button -------------------
   render() {
+    if (this.state.redirect) {
+      return <Redirect push to="/student" />;
+    }
     return (
       <div>
         <table className="table">
@@ -59,23 +65,24 @@ class BoookingSlot extends Component {
           </tbody>
         </table>
         <row>
-          {this.state.selectedSlot ? (
-            <FormGroup>
-              <Link
-                onClick={this.handlersave} //reference to handlersave function
-                width="40"
-                eventKey="link-1"
-                to={{
-                  pathname: "/student/",
-                }}
-                className="btn btn-primary w-30"
-              >
-                Save
-              </Link>
-            </FormGroup>
-          ) : (
-            <></>
-          )}
+          {/* <Link
+                  onClick={this.handlersave} //reference to handlersave function
+                  width="40"
+                  eventKey="link-1"
+                  to={{
+                    pathname: "/student/",
+                  }}
+                  className="btn btn-primary w-30"
+                >
+                  Save
+                </Link> */}
+          <button
+            onClick={this.handlersave}
+            disabled={this.state.buttonDisabled}
+            className="btn btn-primary w-30  "
+          >
+            Save
+          </button>
         </row>
         <row>
           <Link
