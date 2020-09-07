@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import { Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import API from "../api/API";
 import moment from "moment";
-
+import { AuthContext } from "../auth/AuthContext";
 //STUDENT SEGMENT
 class StudentPage extends Component {
   constructor(props) {
@@ -50,6 +51,25 @@ class StudentPage extends Component {
   };
 
   //----------------Conditional rendering of list of availabe exams for student-------------------
+  // renderLink() {
+  //   this.props.listStudentExams.map((exam) => {
+  //     console.log("for link ", exam);
+  //     if (moment().isSameOrBefore(exam.date)) return <p>Absent</p>;
+  //     // return (
+  //     //   <Button
+  //     //     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
+  //     //     width="40"
+  //     //     eventKey="link-1"
+  //     //     to={{
+  //     //       pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
+  //     //     }}
+  //     //     className="btn btn-primary w-50"
+  //     //   >
+  //     //     Reserve Exam
+  //     //   </Button>
+  //     //   );
+  //   });
+  // }
   renderExams() {
     const { length: examCount } = this.props.listStudentExams; //checking the length of listStudentexams array
 
@@ -58,7 +78,7 @@ class StudentPage extends Component {
       return <p> Ooops There are no exams assigned to you to reserve !!!!!</p>; //
     return (
       <div>
-        <p>You have {examCount} exams</p>
+        <p>There are {examCount} exams assigned to you</p>
         <table className="table">
           <thead>
             <tr>
@@ -73,6 +93,7 @@ class StudentPage extends Component {
                 <td>{exam.name}</td>
                 <td>{exam.exam_no}</td>
                 <td>
+                  {/* <div>{this.renderLink()}</div> */}
                   <Link
                     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
                     width="40"
@@ -100,7 +121,7 @@ class StudentPage extends Component {
     if (countReserved === 0) return <p>There are no reserved exams </p>;
     return (
       <div>
-        <p>You have {countReserved} exams</p>
+        <p>You have {countReserved} reserved exams</p>
         <table className="table">
           <thead>
             <tr>
@@ -132,12 +153,21 @@ class StudentPage extends Component {
 
   render() {
     return (
-      <div>
-        <div>{this.renderExams()}</div>{" "}
-        {/*calling the conditional rendering function of showing list availabe exams which are assainged to the student  */}
-        <div> {this.renderReserveredExams()}</div>{" "}
-        {/*calling the conditional rendering function of showing list reserved exams which are registered by student  */}
-      </div>
+      <AuthContext.Consumer>
+        {(context) => (
+          <Container>
+            <h2 className="mt-5 , mb-5">
+              Welcome Student. {context.authUser?.name}{" "}
+            </h2>
+            <div>
+              <div>{this.renderExams()}</div>{" "}
+              {/*calling the conditional rendering function of showing list availabe exams which are assainged to the student  */}
+              <div> {this.renderReserveredExams()}</div>{" "}
+              {/*calling the conditional rendering function of showing list reserved exams which are registered by student  */}
+            </div>
+          </Container>
+        )}
+      </AuthContext.Consumer>
     );
   }
 }

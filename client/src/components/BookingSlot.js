@@ -11,6 +11,7 @@ class BoookingSlot extends Component {
     this.state = {
       selectedSlot: {},
       buttonDisabled: true,
+      mounted: false,
     };
   }
 
@@ -35,6 +36,7 @@ class BoookingSlot extends Component {
     if (this.state.redirect) {
       return <Redirect push to="/student" />;
     }
+    // console.log("asad", this.props.listSlots);
     return (
       <div>
         <table className="table">

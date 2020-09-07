@@ -154,6 +154,18 @@ async function updateGrade(payLoad) {
   });
   return response.json();
 }
+//---------------Teacher report page API FUNCTIONS
+
+async function getFinalResultReport() {
+  console.log("gereftam");
+  const response = await fetch(`${baseURL}/exam/getFullreport`);
+  return response.json();
+}
+async function getstudentNotBooked() {
+  console.log("gereftam2");
+  const response = await fetch(`${baseURL}/exam/getStudentNotBooked`);
+  return response.json();
+}
 
 //---------------StudentPage and BookingSlots API FUNCTIONS
 
@@ -209,5 +221,7 @@ const API = {
   getExamSlots,
   reservingSlot,
   cancelExam,
+  getFinalResultReport,
+  getstudentNotBooked,
 };
 export default API;
