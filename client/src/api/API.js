@@ -125,6 +125,23 @@ async function getExamLists() {
   }
 }
 
+// ------------- fetch the list of slots form DB for ShowSlots Component
+async function getTeacherSlots(exam_no) {
+  console.log(exam_no);
+  try {
+    const response = await fetch(`${baseURL}/teacherExamSlots/${exam_no}`);
+    console.log(response);
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
+  }
+}
+
 //---------------StudentPage and BookingSlots API FUNCTIONS
 
 async function getStudentExams() {
@@ -172,6 +189,7 @@ const API = {
   getStudentLists,
   saveExam,
   getExamLists,
+  getTeacherSlots,
   getStudentExams,
   getReservedExams,
   getExamSlots,

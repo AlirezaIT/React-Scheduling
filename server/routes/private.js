@@ -79,6 +79,28 @@ router.get("/examLists", async (req, res) => {
   }
 });
 
+router.get("/examSlots", async (req, res) => {
+  const userId = req.user.user;
+  try {
+    const examSlots = await teacherDao.getExamtSlots(userId);
+    return res.json(examSlots);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
+router.get("/teacherExamSlots/:exam_no", async (req, res) => {
+  const userId = req.user.user;
+  try {
+    const { exam_no } = req.params;
+    const slotLists = await teacherDao.getTeacherSlots(userId, exam_no);
+
+    return res.json(slotLists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
 // ==================================== API EndPoints for Students ======================================== //
 
 router.get("/studentExams", async (req, res) => {

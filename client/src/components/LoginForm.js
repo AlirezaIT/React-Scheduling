@@ -66,7 +66,7 @@ class UserRole extends React.Component {
                     <FormGroup>
                       <select
                         className="form-control"
-                        role={this.state.value}
+                        role={this.state.role}
                         onChange={this.handleInputChange}
                         name="role"
                       >

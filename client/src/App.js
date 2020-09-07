@@ -4,6 +4,7 @@ import LoginForm from "./components/LoginForm";
 import Header from "./components/Header";
 import CreateExam from "./components/CreateExam";
 import ExecuteExam from "./components/ExecuteExam";
+import ShowSlots from "./components/ShowSlots";
 import Teacher from "./components/Teacher";
 import API from "./api/API";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
@@ -21,7 +22,8 @@ class App extends React.Component {
     this.state = {
       isNavOpen: false,
       teacherStudentLists: [],
-      examLists: [],
+      examLists: [], // contains tle list of Exams for teacher for ShowSlots Component
+      teacherSlots: [], // contains the list Of Slots for specific exam for ExecuteExam Component
       role: "",
       listStudentExams: [], //assaigned exams to the student
       listReservedExams: [], //reserved exam and its slot's details
@@ -112,6 +114,20 @@ class App extends React.Component {
       });
   };
 
+  //------- get the List of Slots for Specific exam number ---- used in ShowSlots Component
+  getTeacherSlots = (exam_no) => {
+    console.log(exam_no);
+    API.getTeacherSlots(exam_no)
+      .then((slots) =>
+        this.setState({
+          teacherSlots: slots || [],
+        })
+      )
+      .catch((errorObj) => {
+        const err = errorObj.errors;
+      });
+  };
+
   //***------------------------functions related to StudentPage AND BookingSlots components----------------***
 
   //------------------------calling the API function for getting the array of assaigned exams
@@ -185,6 +201,14 @@ class App extends React.Component {
               <ExecuteExam
                 getExamtLists={this.examLists}
                 examLists={this.state.examLists}
+                getTeacherSlots={this.getTeacherSlots}
+                teacherSlots={this.state.teacherSlots}
+              />
+            </Route>
+            <Route path="/exams/slots">
+              <ShowSlots
+                getTeacherSlots={this.getTeacherSlots}
+                teacherSlots={this.state.teacherSlots}
               />
             </Route>
             <Route path="/home" component={Teacher}></Route>

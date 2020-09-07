@@ -107,18 +107,41 @@ exports.getExamtLists = async (userId) => {
     //   return [];
     // }
 
-    // const student_lists = studentLists.rows;
+    return examLists.rows;
+  } catch (error) {
+    throw error;
+  }
+};
 
-    // student_lists = studentLists.rows.map((StudentList) => {
-
-    // return new student_lists(
-    //   StudentList.id,
-    //   StudentList.username,
-    //   StudentList.name
-    // );
-    // });
+exports.getExamSlots = async (userId) => {
+  const sql = `SELECT * from exams WHERE teacher_id = ?  and exam_no = ? `;
+  console.log(sql);
+  try {
+    let examLists = await db.query(sql, [userId]);
+    console.log(sql);
+    console.log(examLists);
+    // if (!studentLists || !studentLists.rows.length) {
+    //   return [];
+    // }
 
     return examLists.rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.getTeacherSlots = async (userId, exam_no) => {
+  const sql = `SELECT * from exams e , users u WHERE e.student_id = u.id and  teacher_id = ?  and exam_no = ? and student_id is not NULL`;
+  console.log(sql);
+  try {
+    let slotLists = await db.query(sql, [userId, exam_no]);
+    console.log(sql);
+    console.log(slotLists);
+    // if (!studentLists || !studentLists.rows.length) {
+    //   return [];
+    // }
+
+    return slotLists.rows;
   } catch (error) {
     throw error;
   }

@@ -22,6 +22,10 @@ class ExecuteExam extends React.Component {
     this.props.getExamtLists();
   }
 
+  executeExamHandler = (exam_no) => {
+    this.props.getTeacherSlots(exam_no);
+  };
+
   render() {
     return (
       <AuthContext.Consumer>
@@ -49,10 +53,12 @@ class ExecuteExam extends React.Component {
                           <td>
                             <Form.Group controlId="">
                               <Link
-                                // onChange={(event) =>
-                                //   this.onCheckChange(event, studentList.id)
-                                // }
-
+                                onClick={() =>
+                                  this.executeExamHandler(examList.exam_no)
+                                }
+                                to={{
+                                  pathname: "/exams/slots",
+                                }}
                                 name="execute"
                                 className="btn btn-primary"
                               >
