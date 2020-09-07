@@ -20,6 +20,7 @@ class App extends React.Component {
     this.state = {
       isNavOpen: false,
       teacherStudentLists: [],
+      role: "",
       listStudentExams: [], //assaigned exams to the student
       listReservedExams: [], //reserved exam and its slot's details
       listSlots: [], //availabe slots related to the specific exam
@@ -43,10 +44,6 @@ class App extends React.Component {
       });
   }
 
-  componentDidUpdate() {
-    console.log("asdfasdfasdf", this.state.payLoad);
-  }
-
   // handleErrors(err) {
   //   if (err) {
   //     if (err.status && err.status === 401) {
@@ -68,11 +65,17 @@ class App extends React.Component {
         if (user.role === ROLES.TEACHER) {
           this.setState({ authUser: user, authErr: null });
           this.props.history.push("/home");
-          // console.log(this.state.authUser);
+          // console.log(this.state.authUser.name);
+          this.setState({
+            role: this.state.authUser.role,
+          });
         } else if (user.role === ROLES.STUDENT) {
           this.setState({ authUser: user, authErr: null });
           this.props.history.push("/student");
           // console.log(this.state.authUser);
+          this.setState({
+            role: this.state.authUser.role,
+          });
         }
       })
       .catch((errorObj) => {
@@ -92,10 +95,6 @@ class App extends React.Component {
       .catch((errorObj) => {
         const err = errorObj.errors;
       });
-  };
-
-  redirectPage = (redirect) => {
-    this.props.history.push(`/${redirect}`);
   };
 
   //***------------------------functions related to StudentPage AND BookingSlots components----------------***
@@ -154,14 +153,17 @@ class App extends React.Component {
 
     return (
       <AuthContext.Provider value={value}>
-        <Header isNavOpen={this.state.isNavOpen} toggleNav={this.toggleNav} />
+        <Header
+          isNavOpen={this.state.isNavOpen}
+          toggleNav={this.toggleNav}
+          role={this.state.role}
+        />
         <Container fluid>
           <Switch>
             <Route path="/exam/create">
               <CreateExam
                 studentLists={this.studentLists}
                 teacherStudentLists={this.state.teacherStudentLists}
-                redirectPage={this.redirectPage}
               />
             </Route>
             <Route path="/home" component={Teacher}></Route>

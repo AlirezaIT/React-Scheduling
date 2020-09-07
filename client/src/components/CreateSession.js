@@ -26,10 +26,6 @@ class CreateSession extends React.Component {
     };
   }
 
-  componentDidUpdate() {
-    console.log("Selected Date: ", this.state.date);
-  }
-
   dateChangeHandler = (date, key) => {
     this.setState({
       [key]: date,

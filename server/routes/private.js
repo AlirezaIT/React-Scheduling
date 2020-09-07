@@ -1,5 +1,5 @@
 const express = require("express");
-const moment = require('moment');
+const moment = require("moment");
 const router = express.Router();
 const userDao = require("../services/user_dao");
 const teacherDao = require("../services/teacher_dao");
@@ -14,7 +14,12 @@ router.get("/verify", async (req, res) => {
   try {
     const userId = req.user && req.user.user;
     const userFound = await userDao.getUserById(userId);
-    res.json({ id: userFound.id, name: userFound.name, course_id: userFound.course_id });
+    res.json({
+      id: userFound.id,
+      name: userFound.name,
+      course_id: userFound.course_id,
+      role: userFound.role,
+    });
   } catch (err) {
     res.status(401).json(authErrorObj);
   }
@@ -32,7 +37,7 @@ router.get("/studentLists", async (req, res) => {
 
 router.post("/saveExam", async (req, res) => {
   const userInfo = await userDao.getUserById(req.user.user);
-  const {payLoad} = req.body;
+  const { payLoad } = req.body;
   let lastExamNo = await teacherDao.getLastExamNo();
   lastExamNo++;
   // create student exam
@@ -54,7 +59,7 @@ router.post("/saveExam", async (req, res) => {
           booking_status: false,
           course_id: userInfo.course_id,
           teacher_id: userInfo.id,
-          date: moment(payLoad.date).format('YYYY-MM-DD'),
+          date: moment(payLoad.date).format("YYYY-MM-DD"),
           student_id: null,
           grade: null,
           is_absent: false,
@@ -62,7 +67,6 @@ router.post("/saveExam", async (req, res) => {
       }
     }
   }
-
 });
 
 router.get("/studentExams", async (req, res) => {

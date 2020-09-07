@@ -9,6 +9,7 @@ import {
   Table,
   FormControl,
   Alert,
+  Modal,
 } from "react-bootstrap";
 import { AuthContext } from "../auth/AuthContext";
 import CreateSession from "./CreateSession";
@@ -21,6 +22,7 @@ class CreateExam extends React.Component {
     super(props);
 
     this.state = {
+      examHasBeenCreated: false,
       isModalOpen: false,
       totalNumberOfStudents: 0,
       duration: "",
@@ -151,6 +153,7 @@ class CreateExam extends React.Component {
   saveExamHandler = async () => {
     this.setState(
       {
+        examHasBeenCreated: true,
         payload: {
           date: this.state.date,
           studentIds: this.state.studentsId,
@@ -162,10 +165,12 @@ class CreateExam extends React.Component {
         const result = await API.saveExam(this.state.payload);
       }
     );
-    this.props.redirectPage("home");
   };
 
   render() {
+    if (this.state.examHasBeenCreated) {
+      return <Redirect to="/home" />;
+    }
     return (
       <AuthContext.Consumer>
         {(context) => (
@@ -251,7 +256,6 @@ class CreateExam extends React.Component {
                         Create Session
                       </Button>
                     </FormGroup>
-
                     {/* {this.state.totalNumberOfStudents &&
                     this.state.totalNumberOfSlots &&
                     this.state.totalNumberOfSlots >=

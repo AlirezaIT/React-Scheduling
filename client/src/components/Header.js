@@ -17,16 +17,20 @@ const Header = (props) => {
                   <NavbarToggler onClick={props.toggleNav} />
                   <Collapse isOpen={props.isNavOpen} navbar>
                     <Nav navbar>
-                      <NavItem>
-                        <NavLink className="nav-link" to="/home">
-                          Home
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink className="nav-link" to="/exam/create">
-                          Create Exam
-                        </NavLink>
-                      </NavItem>
+                      {context.authUser.role === "teacher" && (
+                        <NavItem>
+                          <NavLink className="nav-link" to="/home">
+                            Home
+                          </NavLink>
+                        </NavItem>
+                      )}
+                      {context.authUser.role === "teacher" && (
+                        <NavItem>
+                          <NavLink className="nav-link" to="/exam/create">
+                            Create Exam
+                          </NavLink>
+                        </NavItem>
+                      )}
                       <NavItem>
                         <NavLink
                           className="nav-link"
