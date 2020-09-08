@@ -38,6 +38,7 @@ router.get("/studentLists", async (req, res) => {
 router.post("/saveExam", async (req, res) => {
   const userInfo = await userDao.getUserById(req.user.user);
   const { payLoad } = req.body;
+  console.log(payLoad);
   let lastExamNo = await teacherDao.getLastExamNo();
   lastExamNo++;
   // create student exam
@@ -59,7 +60,7 @@ router.post("/saveExam", async (req, res) => {
           booking_status: false,
           course_id: userInfo.course_id,
           teacher_id: userInfo.id,
-          date: moment(payLoad.date).format("YYYY-MM-DD"),
+          date: moment(slot.date).format("YYYY-MM-DD"),
           student_id: null,
           grade: null,
           is_absent: false,
