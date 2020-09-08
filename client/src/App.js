@@ -19,7 +19,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.toggleNav = this.toggleNav.bind(this);
+    // this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
       teacherStudentLists: [],
@@ -222,6 +222,8 @@ class App extends React.Component {
         />
         <Container fluid>
           <Switch>
+            <Route path="/home" component={Teacher}></Route>
+            <Route path="/login" component={LoginForm}></Route>
             <Route path="/exam/create">
               <CreateExam
                 studentLists={this.studentLists}
@@ -240,10 +242,9 @@ class App extends React.Component {
               <ShowSlots
                 getTeacherSlots={this.getTeacherSlots}
                 teacherSlots={this.state.teacherSlots}
+                length={this.state.teacherSlots.length}
               />
             </Route>
-            <Route path="/home" component={Teacher}></Route>
-            <Route path="/login" component={LoginForm}></Route>
             <Route path="/exam/showreport">
               <ShowReport
                 fullReports={this.state.fullReports}

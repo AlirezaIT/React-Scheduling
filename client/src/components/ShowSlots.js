@@ -17,6 +17,8 @@ class ShowSlots extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      registerGrades: false,
+      count: 0,
       grade: [],
       examId: [],
       payload: {
@@ -25,8 +27,9 @@ class ShowSlots extends React.Component {
       },
     };
   }
-
   componentDidUpdate() {
+    console.log(this.state.count);
+    console.log(this.props.length);
     console.log(this.state);
   }
 
@@ -36,19 +39,20 @@ class ShowSlots extends React.Component {
     const name = target.name;
     // ====================== in order to prevent duplication grade into array
     const index = this.state.examId.indexOf(exam_id);
-    let grades = this.state.grade;
+    let grades = this.state.grade; // without {...this.state.grade}
 
-    if (index !== -1 && value !== "none") {
+    if (index !== -1 && value !== "") {
       grades[index] = value;
 
       this.setState({
         grade: grades,
       });
-    } else if (value !== "none") {
+    } else if (value !== "") {
       this.setState((prevState) => {
         return {
           examId: [...prevState.examId, exam_id],
           grade: [...prevState.grade, value],
+          count: this.state.count + 1,
         };
       });
     }
@@ -110,12 +114,12 @@ class ShowSlots extends React.Component {
                                 value={this.state.value}
                                 size="sm"
                                 className="form-control "
+                                name="grade"
                                 onChange={(event) =>
                                   this.handleInputChange(teacherSlot.id, event)
                                 }
-                                name="grade"
                               >
-                                <option value="none">none</option>
+                                <option value="">Select Option</option>
                                 <option value="fail">Fail</option>
                                 <option value="withdraw">Withdraw</option>
                                 <option value="absent">Absent</option>
@@ -149,6 +153,7 @@ class ShowSlots extends React.Component {
                       type="submit"
                       color="primary"
                       onClick={this.saveExamHandler}
+                      disabled={this.state.count !== this.props.length}
                     >
                       Save Grades
                     </Button>
