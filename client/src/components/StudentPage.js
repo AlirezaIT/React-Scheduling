@@ -16,11 +16,28 @@ class StudentPage extends Component {
     this.props.reservedExams(); //calling this function to get data of student's reserved exam from the database after login
   }
 
+  gradeConversion(grade) {
+    let value = grade;
+    switch (value) {
+      case -1:
+        return (value = "Fail");
+      case -2:
+        return (value = "Withdraw");
+      case -3:
+        return (value = "Absent");
+      default:
+        return (value = grade);
+    }
+  }
+
   //----------------Conditional rendering of "cancel button"
 
   renderCancelButton(reservedExam) {
     //passed reserved exam object to this funciton to cancel
-    if (moment().isSameOrAfter(reservedExam.date))
+    if (
+      moment().isSameOrAfter(reservedExam.date) ||
+      reservedExam.grade !== null
+    )
       //checking the current date is sameOrafter of exam date or not
       return <p>Not possible to cancel the exam</p>; // show this msg instead of button
     return (
@@ -35,8 +52,7 @@ class StudentPage extends Component {
 
   //----------------handler of "cancel button"-------------------
   handleCancelReservation = async (reservedExam) => {
-    // console.log("cancelling", reservedExam);
-    const result = await API.cancelExam(reservedExam);
+    await API.cancelExam(reservedExam);
     const listStudentExams = this.props.listStudentExams.filter(
       (e) => e.exam_no !== reservedExam.exam_no
     );
@@ -47,7 +63,6 @@ class StudentPage extends Component {
     );
     this.props.updateState("listStudentExams", listStudentExams);
     this.props.updateState("listReservedExams", listReservedExams);
-    console.log("result of canceling", result);
   };
 
   renderExams() {
@@ -123,7 +138,8 @@ class StudentPage extends Component {
                 <td>{reservedExam.date}</td>
                 <td>{reservedExam.start_time}</td>
                 <td>{reservedExam.end_time}</td>
-                <td>{reservedExam.grade}</td>
+                {/* <td>{reservedExam.grade}</td> */}
+                <td>{this.gradeConversion(reservedExam.grade)}</td>
                 <td>{this.renderCancelButton(reservedExam)}</td>
                 {/* calling the conditional rendering function of button  */}
               </tr>

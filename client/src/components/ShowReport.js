@@ -11,6 +11,20 @@ class ShowReport extends Component {
     this.props.studentNotBooked();
   }
 
+  gradeConversion(grade) {
+    let value = grade;
+    switch (value) {
+      case -1:
+        return (value = "Fail");
+      case -2:
+        return (value = "Withdraw");
+      case -3:
+        return (value = "Absent");
+      default:
+        return (value = grade);
+    }
+  }
+
   renderFinalResult() {
     // const { length: examCount } = this.props.listStudentExams; //checking the length of listStudentexams array
 
@@ -42,7 +56,7 @@ class ShowReport extends Component {
                 <td>{exam.end_time}</td>
                 <td>{exam.date}</td>
                 <td>{exam.username}</td>
-                <td>{exam.grade}</td>
+                <td>{this.gradeConversion(exam.grade)}</td>
                 {/* <td>{exam.is_absent}</td> */}
                 <td>
                   {/* <Link

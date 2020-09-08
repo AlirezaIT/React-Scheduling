@@ -15,11 +15,6 @@ class BoookingSlot extends Component {
     };
   }
   componentDidMount() {
-    console.log("choghlar", window.location.href);
-    this.props.handleReserve(window.location.href.split("=")[1]);
-  }
-
-  componentDidMount() {
     this.props.handleReserve(window.location.href.split("=")[1]);
   }
 
@@ -34,8 +29,8 @@ class BoookingSlot extends Component {
 
   handlersave = async () => {
     //saving (PUT) selectedSlot object into database
-    const result = await API.reservingSlot(this.state.selectedSlot.id); //passing only the slot's ID to Api
-    console.log("saving into database", result);
+    await API.reservingSlot(this.state.selectedSlot.id); //passing only the slot's ID to Api
+
     this.setState({ redirect: true });
   };
 
@@ -44,7 +39,7 @@ class BoookingSlot extends Component {
     if (this.state.redirect) {
       return <Redirect push to="/student" />;
     }
-    // console.log("asad", this.props.listSlots);
+
     return (
       <div>
         <table className="table">

@@ -1,18 +1,9 @@
 import React from "react";
-import {
-  Form,
-  Col,
-  Container,
-  Row,
-  Table,
-  FormGroup,
-  FormControl,
-  Button,
-} from "react-bootstrap";
+import { Col, Container, Row, Table, FormGroup, Button } from "react-bootstrap";
 // import * as QueryString from "query-string";
 
 import { AuthContext } from "../auth/AuthContext";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import API from "../api/API";
 
 class ShowSlots extends React.Component {
@@ -39,7 +30,7 @@ class ShowSlots extends React.Component {
     const target = event.target;
 
     let value = target.value;
-    const name = target.name;
+    // const name = target.name;
 
     // ====================== in order to prevent duplication grade into array
     const index = this.state.examId.indexOf(exam_id);
@@ -78,7 +69,7 @@ class ShowSlots extends React.Component {
         return {
           examId: [...prevState.examId, exam_id],
           grade: [...prevState.grade, value],
-          counter: this.state.counter++,
+          counter: this.state.counter + 1,
         };
       });
     }
@@ -94,7 +85,7 @@ class ShowSlots extends React.Component {
         },
       },
       async () => {
-        const result = await API.updateGrade(this.state.payload);
+        await API.updateGrade(this.state.payload);
       }
     );
   };

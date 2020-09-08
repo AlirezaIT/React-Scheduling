@@ -38,7 +38,7 @@ router.get("/studentLists", async (req, res) => {
 router.post("/saveExam", async (req, res) => {
   const userInfo = await userDao.getUserById(req.user.user);
   const { payLoad } = req.body;
-  console.log(payLoad);
+
   let lastExamNo = await teacherDao.getLastExamNo();
   lastExamNo++;
   // create student exam
@@ -83,7 +83,7 @@ router.get("/exam/getFullreport", async (req, res) => {
   try {
     const userId = req.user.user;
     const lists = await teacherDao.getFinalResultReport(userId);
-    console.log("FinalResultReport", lists);
+
     return res.json(lists);
   } catch (error) {
     return res.status(401).json(authErrorObj);
@@ -104,7 +104,7 @@ router.get("/exam/getStudentNotBooked", async (req, res) => {
   try {
     const userId = req.user.user;
     const lists = await teacherDao.getStudentNotBooked(userId);
-    console.log("zzzzzz", lists);
+
     return res.json(lists);
   } catch (error) {
     return res.status(401).json(authErrorObj);
@@ -126,7 +126,7 @@ router.get("/teacherExamSlots/:exam_no", async (req, res) => {
 router.put("/updateGrade", async (req, res) => {
   try {
     const { payLoad } = req.body;
-    console.log(payLoad);
+
     for (let index = 0; index < payLoad.examIds.length; index++) {
       const examId = payLoad.examIds[index];
       const grade = payLoad.grades[index];

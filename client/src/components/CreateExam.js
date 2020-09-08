@@ -7,7 +7,6 @@ import {
   Container,
   Row,
   Table,
-  FormControl,
   Alert,
 } from "react-bootstrap";
 import { AuthContext } from "../auth/AuthContext";
@@ -23,7 +22,6 @@ class CreateExam extends React.Component {
     this.state = {
       examHasBeenCreated: false,
       isModalOpen: false,
-      disableButton: true,
       totalNumberOfStudents: 0,
       duration: "",
       totalNumberOfSlots: 0,
@@ -35,7 +33,6 @@ class CreateExam extends React.Component {
       sessions: {},
       dates: {},
       lastSession: 1,
-      lastSession1: 1,
       // final Object which is sent to Server
       payload: {
         studentIds: [],
@@ -49,10 +46,6 @@ class CreateExam extends React.Component {
 
   componentDidMount() {
     this.props.studentLists();
-  }
-
-  componentDidUpdate() {
-    console.log(this.state.payload);
   }
 
   toggleModal = () => {
@@ -103,7 +96,6 @@ class CreateExam extends React.Component {
 
   // ---------------------------------  function for Slots Creation --------------------------------------------------
   slotGenerator = (session) => {
-    console.log({ session });
     const totalDurationExam = session.totalDuration;
     const startingTime = session.startingTime;
     const date = session.date;
@@ -129,7 +121,7 @@ class CreateExam extends React.Component {
 
     const startStopTime = []; // array for pushing the start and end time of slots
 
-    // ------------------------ Generate an Array of start and end times for each Slot --------------------------------------
+    // -------------- Generate an Array of start and end times for each Slot by Means of LOOP -------------------------
     for (let i = 0; i < slotsForEachSession; i++) {
       const endTime = temp
         .add(this.state.duration, "minutes")
@@ -172,7 +164,7 @@ class CreateExam extends React.Component {
         },
       },
       async () => {
-        const result = await API.saveExam(this.state.payload);
+        await API.saveExam(this.state.payload);
       }
     );
   };
@@ -206,7 +198,7 @@ class CreateExam extends React.Component {
                             <td>{studentList.username}</td>
                             <td>{studentList.name}</td>
                             <td>
-                              <Form.Group controlId="">
+                              <Form.Group>
                                 <Form.Check
                                   onChange={(event) =>
                                     this.onCheckChange(event, studentList.id)
@@ -224,7 +216,7 @@ class CreateExam extends React.Component {
                 </Col>
                 <Col md={4} className="mt-5">
                   <Form>
-                    <Form.Group Row>
+                    <Form.Group>
                       <Form.Label column htmlFor="duration">
                         Duration of Each Slot (in Minute)
                       </Form.Label>
@@ -243,18 +235,9 @@ class CreateExam extends React.Component {
                         />
                       </Col>
                     </Form.Group>
-                    <FormGroup>
-                      <FormControl
-                        type="text"
-                        value={`The Number of Selected Students :    ${this.state.totalNumberOfStudents}`}
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                      <FormControl
-                        type="text"
-                        value={`The Number of defined Slots :    ${this.state.totalNumberOfSlots}`}
-                      />
-                    </FormGroup>
+                    <p>{`The Number of Selected Students :    ${this.state.totalNumberOfStudents}`}</p>
+                    <p>{`The Number of defined Slots :    ${this.state.totalNumberOfSlots}`}</p>
+
                     <FormGroup>
                       <Button
                         variant="info"

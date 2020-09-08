@@ -27,7 +27,6 @@ class CreateSession extends React.Component {
   }
 
   dateChangeHandler = (date, key) => {
-    console.log({ date });
     this.setState({
       [key]: date,
     });
@@ -35,7 +34,6 @@ class CreateSession extends React.Component {
 
   handleInputChange = (event) => {
     const target = event.target;
-
     const value = target.value;
     const name = target.name;
 
@@ -49,8 +47,6 @@ class CreateSession extends React.Component {
     this.props.toggleModal(); //close modal once it is created;
     let session = Object.assign({}, this.state);
     session.date = this.state.date;
-    // console.log("total Session :", session);
-
     this.props.slotGenerator(session);
   };
   render() {
@@ -70,13 +66,6 @@ class CreateSession extends React.Component {
                 dateFormat="yyyy/MM/dd"
                 minDate={new Date()}
               />
-              {/* <Input
-                type="Date"
-                id="date"
-                name="date"
-                value={this.state.date}
-                onChange={this.handleInputChange}
-              ></Input> */}
             </FormGroup>
             <FormGroup>
               <Label htmlFor="startingTime">Starting Time :</Label>
@@ -101,7 +90,7 @@ class CreateSession extends React.Component {
               ></Input>
             </FormGroup>
 
-            {this.state.totalDuration % this.props.duration == 0 ? (
+            {this.state.totalDuration % this.props.duration === 0 ? (
               <Button type="submit" value="submit" color="primary">
                 Create
               </Button>

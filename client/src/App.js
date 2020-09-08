@@ -7,7 +7,7 @@ import ExecuteExam from "./components/ExecuteExam";
 import ShowSlots from "./components/ShowSlots";
 import Teacher from "./components/Teacher";
 import API from "./api/API";
-import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
 import { Col, Row, Container, Alert } from "react-bootstrap";
 import { ROLES } from "./shared/consts";
@@ -66,6 +66,7 @@ class App extends React.Component {
   //     }
   //   }
   // }
+
   logout = () => {
     return API.userLogout().then(() => {
       this.setState({ authUser: null, authErr: null });
@@ -168,7 +169,6 @@ class App extends React.Component {
 
   //------- get the List of Slots for Specific exam number ---- used in ShowSlots Component
   getTeacherSlots = (exam_no) => {
-    console.log(exam_no);
     API.getTeacherSlots(exam_no)
       .then((slots) =>
         this.setState({
@@ -215,7 +215,6 @@ class App extends React.Component {
     API.getStudentExams()
       .then((studentExams) => {
         //getting the array of assaigned exams's details from API'S function (exam_no ,name) and storing into listStudentExams Array
-        console.log({ studentExams });
 
         this.setState({
           listStudentExams: studentExams,
@@ -256,7 +255,6 @@ class App extends React.Component {
   //------------------------after clicking the reserve button in StudentPage component using this is handler function, and it's calling the API function for getting the array of specific exam's slots and passing the exam_no to the API function
 
   handleReserve = async (exam_no) => {
-    console.log("GIGIGIGIGIGIG:", exam_no);
     const result = await API.getExamSlots(exam_no); //passing the exam number (exam_no) and get the array of objects, contains the details of slots related to that exam number
     this.setState({
       listSlots: result,
@@ -342,6 +340,7 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/logout"></Route>
+            <Redirect from="/" exact to="login" />
           </Switch>
         </Container>
         <Row>

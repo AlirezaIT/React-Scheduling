@@ -1,16 +1,8 @@
 import React from "react";
-import { Row, Col, Form, FormGroup, Container, Button } from "react-bootstrap";
-import { Link, Route } from "react-router-dom";
+import { Row, Col, Form, FormGroup, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 class Teacher extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  handleClick() {
-    // alert("Hello");
-  }
-
   render() {
     return (
       <AuthContext.Consumer>

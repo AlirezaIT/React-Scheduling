@@ -1,17 +1,7 @@
 import React from "react";
-import {
-  Form,
-  FormGroup,
-  Col,
-  Button,
-  Container,
-  Row,
-  Table,
-  FormControl,
-  Alert,
-} from "react-bootstrap";
+import { Form, Col, Container, Row, Table, Button } from "react-bootstrap";
 import { AuthContext } from "../auth/AuthContext";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 class ExecuteExam extends React.Component {
   constructor(props) {
@@ -34,7 +24,7 @@ class ExecuteExam extends React.Component {
 
   render() {
     if (this.state.exam_no) {
-      return <Redirect to={`/exams/slots?exam_no=${this.state.exam_no}`} />;
+      return <Redirect to={`/exams/slots?exam_no=${this.state.exam_no}`} />; // passing exam_no as QueryString for preventing loosing Data when refresh the Page
     }
     return (
       <AuthContext.Consumer>
@@ -48,21 +38,19 @@ class ExecuteExam extends React.Component {
                     <Table striped bordered hover size="sm" className="mt-5">
                       <thead>
                         <tr>
-                          {/* <th>#</th> */}
                           <th>Exam Number</th>
                           <th>Date</th>
                           <th>Select</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {this.props.examLists?.map((examList) => (
-                          <tr key={examList.id}>
-                            {/* <td>{examList.id}</td> */}
+                        {this.props.examLists?.map((examList, index) => (
+                          <tr key={index}>
                             <td>{examList.exam_no}</td>
                             <td>{examList.date}</td>
                             <td>
                               <Form.Group controlId="">
-                                <Link
+                                <Button
                                   onClick={() =>
                                     this.executeExamHandler(examList.exam_no)
                                   }
@@ -73,7 +61,7 @@ class ExecuteExam extends React.Component {
                                   className="btn btn-primary"
                                 >
                                   Execute
-                                </Link>
+                                </Button>
                               </Form.Group>
                             </td>
                           </tr>

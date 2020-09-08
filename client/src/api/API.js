@@ -96,8 +96,6 @@ async function getStudentLists() {
 
 // ------------- Save slots for an exams into DB
 async function saveExam(payLoad) {
-  console.log("In API Client", payLoad);
-  console.log("Json Stingfy", JSON.stringify(payLoad));
   const response = await fetch(`${baseURL}/saveExam`, {
     method: "POST",
     headers: {
@@ -113,7 +111,7 @@ async function saveExam(payLoad) {
 async function getExamLists() {
   try {
     const response = await fetch(`${baseURL}/examLists`);
-    console.log(response);
+
     if (response.ok) {
       return response.json();
     } else {
@@ -127,10 +125,9 @@ async function getExamLists() {
 
 // ------------- fetch the list of slots form DB for ShowSlots Component
 async function getTeacherSlots(exam_no) {
-  console.log(exam_no);
   try {
     const response = await fetch(`${baseURL}/teacherExamSlots/${exam_no}`);
-    console.log(response);
+
     if (response.ok) {
       return response.json();
     } else {

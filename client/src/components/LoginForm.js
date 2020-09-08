@@ -7,7 +7,6 @@ import {
   FormControl,
   Container,
   Row,
-  Alert,
 } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
@@ -36,11 +35,10 @@ class UserRole extends React.Component {
     this.setState({
       [name]: value,
     });
-    // console.log(this.state.username);
   }
 
   handleSubmit(event, onLogin) {
-    console.log(this.state.username, this.state.password, this.state.role);
+    // console.log(this.state.username, this.state.password, this.state.role);
     event.preventDefault();
     onLogin(this.state.username, this.state.password, this.state.role);
   }
@@ -75,7 +73,7 @@ class UserRole extends React.Component {
                       </select>
                     </FormGroup>
 
-                    {this.state.role == ROLES.TEACHER && (
+                    {this.state.role === ROLES.TEACHER && (
                       <>
                         <FormGroup>
                           <FormControl
