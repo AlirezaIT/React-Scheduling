@@ -9,6 +9,8 @@ import {
   FormControl,
   Button,
 } from "react-bootstrap";
+// import * as QueryString from "query-string";
+
 import { AuthContext } from "../auth/AuthContext";
 import { Redirect, Link } from "react-router-dom";
 import API from "../api/API";
@@ -17,6 +19,7 @@ class ShowSlots extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      ...props,
       submitted: false,
       counter: 0,
       grade: [],
@@ -27,10 +30,8 @@ class ShowSlots extends React.Component {
       },
     };
   }
-  componentDidUpdate() {
-    console.log(this.state.counter);
-    console.log(this.props.length);
-    console.log(this.state);
+  componentDidMount() {
+    this.props.getTeacherSlots(window.location.href.split("=")[1]);
   }
 
   handleInputChange = (exam_id, event) => {
@@ -39,6 +40,10 @@ class ShowSlots extends React.Component {
 
     let value = target.value;
     const name = target.name;
+
+    // ====================== in order to prevent duplication grade into array
+    const index = this.state.examId.indexOf(exam_id);
+
     switch (value) {
       case "fail":
         value = -1;
@@ -49,21 +54,26 @@ class ShowSlots extends React.Component {
       case "absent":
         value = -3;
         break;
+      case "none":
+        this.setState({
+          counter: this.state.counter - 1,
+          grade: this.state.grade.filter((x, i) => i !== index),
+          examId: this.state.examId.filter((x, i) => i !== index),
+        });
+        break;
       default:
         value = parseInt(value);
     }
-    // ====================== in order to prevent duplication grade into array
-    const index = this.state.examId.indexOf(exam_id);
 
     let grades = this.state.grade;
 
-    if (index !== -1 && value !== "") {
+    if (index !== -1 && value !== "none") {
       grades[index] = value;
 
       this.setState({
         grade: grades,
       });
-    } else if (value !== "") {
+    } else if (value !== "none") {
       this.setState((prevState) => {
         return {
           examId: [...prevState.examId, exam_id],
@@ -139,7 +149,7 @@ class ShowSlots extends React.Component {
                                   this.handleInputChange(teacherSlot.id, event)
                                 }
                               >
-                                <option value="">Select Option</option>
+                                <option value="none">Select Option</option>
                                 <option value="fail">Fail</option>
                                 <option value="withdraw">Withdraw</option>
                                 <option value="absent">Absent</option>

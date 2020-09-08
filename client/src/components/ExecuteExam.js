@@ -16,6 +16,9 @@ import { Redirect, Link } from "react-router-dom";
 class ExecuteExam extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      exam_no: "",
+    };
   }
 
   componentDidMount() {
@@ -23,10 +26,16 @@ class ExecuteExam extends React.Component {
   }
 
   executeExamHandler = (exam_no) => {
+    this.setState({
+      exam_no: exam_no,
+    });
     this.props.getTeacherSlots(exam_no);
   };
 
   render() {
+    if (this.state.exam_no) {
+      return <Redirect to={`/exams/slots?exam_no=${this.state.exam_no}`} />;
+    }
     return (
       <AuthContext.Consumer>
         {(context) => (
@@ -57,9 +66,9 @@ class ExecuteExam extends React.Component {
                                   onClick={() =>
                                     this.executeExamHandler(examList.exam_no)
                                   }
-                                  to={{
-                                    pathname: "/exams/slots",
-                                  }}
+                                  // to={{
+                                  //   pathname: "/exams/slots",
+                                  // }}
                                   name="execute"
                                   className="btn btn-primary"
                                 >

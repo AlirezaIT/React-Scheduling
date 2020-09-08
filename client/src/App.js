@@ -22,6 +22,7 @@ class App extends React.Component {
     // this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
+
       teacherStudentLists: [],
       examLists: [], // contains tle list of Exams for teacher for ShowSlots Component
       teacherSlots: [], // contains the list Of Slots for specific exam for ExecuteExam Component
@@ -191,6 +192,7 @@ class App extends React.Component {
   //------------------------after clicking the reserve button in StudentPage component using this is handler function, and it's calling the API function for getting the array of specific exam's slots and passing the exam_no to the API function
 
   handleReserve = async (exam_no) => {
+    console.log("GIGIGIGIGIGIG:", exam_no);
     const result = await API.getExamSlots(exam_no); //passing the exam number (exam_no) and get the array of objects, contains the details of slots related to that exam number
     this.setState({
       listSlots: result,
@@ -204,6 +206,10 @@ class App extends React.Component {
       [key]: array,
     });
   };
+
+  getQueryParam() {
+    return this.props;
+  }
 
   render() {
     const value = {
@@ -244,6 +250,7 @@ class App extends React.Component {
                 getTeacherSlots={this.getTeacherSlots}
                 teacherSlots={this.state.teacherSlots}
                 length={this.state.teacherSlots.length}
+                // getQueryParam={this.getQueryParam}
               />
             </Route>
             <Route path="/exam/showreport">
