@@ -63,7 +63,6 @@ router.post("/saveExam", async (req, res) => {
           date: moment(slot.date).format("YYYY-MM-DD"),
           student_id: null,
           grade: null,
-          is_absent: false,
         });
       }
     }

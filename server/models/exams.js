@@ -10,8 +10,7 @@ class Exams {
     teacher_id,
     date,
     student_id,
-    grade,
-    is_absent
+    grade
   ) {
     if (id) {
       this.id = id;
@@ -26,7 +25,6 @@ class Exams {
     this.date = date;
     this.student_id = student_id;
     this.grade = grade;
-    this.is_absent = is_absent;
   }
 }
 module.exports = Exams;

@@ -27,6 +27,7 @@ class CreateSession extends React.Component {
   }
 
   dateChangeHandler = (date, key) => {
+    console.log({ date });
     this.setState({
       [key]: date,
     });
@@ -47,7 +48,7 @@ class CreateSession extends React.Component {
     ev.preventDefault();
     this.props.toggleModal(); //close modal once it is created;
     let session = Object.assign({}, this.state);
-
+    session.date = this.state.date;
     // console.log("total Session :", session);
 
     this.props.slotGenerator(session);

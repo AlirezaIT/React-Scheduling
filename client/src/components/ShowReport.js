@@ -30,7 +30,7 @@ class ShowReport extends Component {
               <th>Date</th>
               <th>Student</th>
               <th>Grade</th>
-              <th>Attendance</th>
+              {/* <th>Attendance</th> */}
             </tr>
           </thead>
           <tbody>
@@ -43,7 +43,7 @@ class ShowReport extends Component {
                 <td>{exam.date}</td>
                 <td>{exam.username}</td>
                 <td>{exam.grade}</td>
-                <td>{exam.is_absent}</td>
+                {/* <td>{exam.is_absent}</td> */}
                 <td>
                   {/* <Link
                     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam

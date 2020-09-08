@@ -1,4 +1,5 @@
 "use strict";
+const moment = require("moment");
 
 // const StudentExams = require("../models/student_exams");
 const db = require("../db/index");
@@ -8,8 +9,24 @@ exports.getStudentExams = async (student_id) => {
   const sql = `select distinct c.name ,exam_no ,e.date from exams e , courses c where c.id = e.course_id and exam_no in (select exam_no from student_exams where student_id = ? and  not EXISTS (select * from exams where student_exams.student_id = exams.student_id and student_exams.exam_no = exams.exam_no and exams.student_id is not null))`;
   try {
     let studentExams = await db.query(sql, [student_id]);
+
     let lists = studentExams.rows;
-    return lists;
+    var groupBy = function (xs, key) {
+      return xs.reduce(function (rv, x) {
+        (rv[x[key]] = rv[x[key]] || []).push(x);
+        return rv;
+      }, {});
+    };
+    const listGroup = groupBy(lists, "exam_no");
+    let newList = [];
+    Object.entries(listGroup).forEach(([key, value]) => {
+      newList.push(value[0]);
+    });
+    newList = newList.filter(
+      (x) => moment(x.date).format("YYYY-MM-DD") > moment().format("YYYY-MM-DD")
+    );
+
+    return newList;
   } catch (error) {
     throw error;
   }

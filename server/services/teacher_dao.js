@@ -56,9 +56,8 @@ exports.insertIntoExams = async ({
   date,
   student_id = null,
   grade = null,
-  is_absent = false,
 }) => {
-  const sql = `INSERT INTO exams(exam_no, duration, start_time, end_time, booking_status, course_id, teacher_id , date , student_id, grade, is_absent) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
+  const sql = `INSERT INTO exams(exam_no, duration, start_time, end_time, booking_status, course_id, teacher_id , date , student_id, grade) VALUES(?,?,?,?,?,?,?,?,?,?)`;
   console.log(sql);
   try {
     let studentLists = await db.query(sql, [
@@ -72,7 +71,6 @@ exports.insertIntoExams = async ({
       date,
       student_id,
       grade,
-      is_absent,
     ]);
     console.log(sql);
     // if (!studentLists || !studentLists.rows.length) {
@@ -149,7 +147,7 @@ exports.getTeacherSlots = async (userId, exam_no) => {
 
 exports.getFinalResultReport = async (userId) => {
   // const sql = `select * from exams where teacher_id =? and grade is not null`;
-  const sql = `select e.id,e.exam_no,e.start_time,e.end_time, c.name,e.date,u.username,e.grade,e.is_absent from exams e ,users u ,courses c where e.course_id=c.id and e.student_id=u.id and e.teacher_id =? and e.grade is not null `;
+  const sql = `select e.id,e.exam_no,e.start_time,e.end_time, c.name,e.date,u.username,e.grade from exams e ,users u ,courses c where e.course_id=c.id and e.student_id=u.id and e.teacher_id =? and e.grade is not null `;
   try {
     let resultReport = await db.query(sql, [userId]);
     let result = resultReport.rows;

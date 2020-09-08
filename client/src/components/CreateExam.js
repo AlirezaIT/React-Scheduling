@@ -67,13 +67,6 @@ class CreateExam extends React.Component {
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
-    // const re = /^[0-9\b]+$/;
-    // if (value === "" || re.test(value)) {
-    //   this.setState({
-    //     disableButton: !this.state.disableButton,
-    //   });
-    // }
-
     this.setState({
       [name]: value,
     });
@@ -110,6 +103,7 @@ class CreateExam extends React.Component {
 
   // ---------------------------------  function for Slots Creation --------------------------------------------------
   slotGenerator = (session) => {
+    console.log({ session });
     const totalDurationExam = session.totalDuration;
     const startingTime = session.startingTime;
     const date = session.date;
@@ -150,18 +144,18 @@ class CreateExam extends React.Component {
       startStopTime.push({
         start_time: startTime,
         end_time: endTime,
-        date: this.state.date,
+        date: session.date,
       });
     }
 
     let sessions = { ...this.state.sessions };
     sessions[this.state.lastSession] = startStopTime;
-    // console.log(sessions);
+
     this.setState({
       sessions: { ...sessions },
       lastSession: this.state.lastSession + 1,
     });
-    // console.log(this.state);
+
     // ------------------------ End function (slotGenerator) for Slots Creation --------------------------------
   };
 

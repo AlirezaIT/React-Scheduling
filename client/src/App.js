@@ -215,6 +215,8 @@ class App extends React.Component {
     API.getStudentExams()
       .then((studentExams) => {
         //getting the array of assaigned exams's details from API'S function (exam_no ,name) and storing into listStudentExams Array
+        console.log({ studentExams });
+
         this.setState({
           listStudentExams: studentExams,
         });
