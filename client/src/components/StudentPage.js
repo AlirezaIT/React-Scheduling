@@ -50,32 +50,19 @@ class StudentPage extends Component {
     console.log("result of canceling", result);
   };
 
-  //----------------Conditional rendering of list of availabe exams for student-------------------
-  // renderLink() {
-  //   this.props.listStudentExams.map((exam) => {
-  //     console.log("for link ", exam);
-  //     if (moment().isSameOrBefore(exam.date)) return <p>Absent</p>;
-  //     // return (
-  //     //   <Button
-  //     //     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
-  //     //     width="40"
-  //     //
-  //     //     to={{
-  //     //       pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
-  //     //     }}
-  //     //     className="btn btn-primary w-50"
-  //     //   >
-  //     //     Reserve Exam
-  //     //   </Button>
-  //     //   );
-  //   });
-  // }
   renderExams() {
     const { length: examCount } = this.props.listStudentExams; //checking the length of listStudentexams array
 
     if (examCount === 0)
       //if length of array is zero,the below <p> will render instead of table
-      return <p> Ooops There are no exams assigned to you to reserve !!!!!</p>; //
+      return (
+        <p>
+          {" "}
+          Ooops There are no exams assigned to you to reserve OR you missed
+          deadline (deadline is a day before the exam's first session date)
+          !!!!!
+        </p>
+      ); //
     return (
       <div>
         <p>There are {examCount} exams assigned to you</p>
@@ -93,14 +80,10 @@ class StudentPage extends Component {
                 <td>{exam.name}</td>
                 <td>{exam.exam_no}</td>
                 <td>
-                  {/* <div>{this.renderLink()}</div> */}
                   <Button
                     key={index}
                     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
                     width="40"
-                    // to={{
-                    //   pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
-                    // }}
                     className="btn btn-primary w-50"
                   >
                     Reserve Exam
