@@ -23,6 +23,7 @@ class CreateExam extends React.Component {
     this.state = {
       examHasBeenCreated: false,
       isModalOpen: false,
+      disableButton: true,
       totalNumberOfStudents: 0,
       duration: "",
       totalNumberOfSlots: 0,
@@ -32,11 +33,13 @@ class CreateExam extends React.Component {
       startTime: "",
       totalDuration: "",
       sessions: {},
+      dates: {},
       lastSession: 1,
+      lastSession1: 1,
       // final Object which is sent to Server
       payload: {
         studentIds: [],
-        date: "",
+        date: [],
         totalDuration: "",
         durationTime: [], // contains the whole start and end time of slots
         startTime: "",
@@ -46,6 +49,10 @@ class CreateExam extends React.Component {
 
   componentDidMount() {
     this.props.studentLists();
+  }
+
+  componentDidUpdate() {
+    console.log(this.state.payload);
   }
 
   toggleModal = () => {
@@ -59,6 +66,13 @@ class CreateExam extends React.Component {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
+
+    // const re = /^[0-9\b]+$/;
+    // if (value === "" || re.test(value)) {
+    //   this.setState({
+    //     disableButton: !this.state.disableButton,
+    //   });
+    // }
 
     this.setState({
       [name]: value,
@@ -99,10 +113,11 @@ class CreateExam extends React.Component {
     const totalDurationExam = session.totalDuration;
     const startingTime = session.startingTime;
     const date = session.date;
+
     this.setState({
       startTime: startingTime,
       totalDuration: totalDurationExam,
-      date,
+      date: date,
     });
     const slotsForEachSession = totalDurationExam / this.state.duration; // variable fo loop
 
@@ -135,17 +150,18 @@ class CreateExam extends React.Component {
       startStopTime.push({
         start_time: startTime,
         end_time: endTime,
+        date: this.state.date,
       });
     }
 
     let sessions = { ...this.state.sessions };
     sessions[this.state.lastSession] = startStopTime;
-    console.log(sessions);
+    // console.log(sessions);
     this.setState({
       sessions: { ...sessions },
       lastSession: this.state.lastSession + 1,
     });
-    console.log(this.state);
+    // console.log(this.state);
     // ------------------------ End function (slotGenerator) for Slots Creation --------------------------------
   };
 
@@ -155,7 +171,7 @@ class CreateExam extends React.Component {
       {
         examHasBeenCreated: true,
         payload: {
-          date: this.state.date,
+          date: this.state.dates,
           studentIds: this.state.studentsId,
           totalDuration: this.state.duration,
           durationTime: this.state.sessions,
@@ -224,12 +240,12 @@ class CreateExam extends React.Component {
                           onChange={this.onCheckChange}
                           id="lastname"
                           size="sm"
-                          type="text"
                           name="duration"
                           placeholder="Duration"
                           disabled={this.state.disabledInputDuration}
                           required
                           autoFocus
+                          type="number"
                         />
                       </Col>
                     </Form.Group>
