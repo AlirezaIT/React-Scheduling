@@ -169,12 +169,13 @@ exports.updateGrade = async (examId, grade) => {
 };
 
 exports.getStudentNotBooked = async (userId) => {
-  // const sql = `select * from exams where teacher_id =? and grade is not null`;
-  const sql = `select se.id,exam_no,student_id , name,username from student_exams se, users u where se.student_id = u.id and student_id  not in  (select student_id from exams where teacher_id =? and student_id is not null)
+  // const sql = `select se.id,exam_no,student_id , name,username from student_exams se, users u where se.student_id = u.id and student_id  not in  (select student_id from exams where teacher_id =? and student_id is not null)
+  // `;
+  const sql = `select se.id,exam_no,student_id , name,username from student_exams se, users u where se.student_id = u.id and student_id  not in  (select student_id from exams where teacher_id =? and student_id is not null) and exam_no in (select DISTINCT exam_no from exams where teacher_id =?)
   `;
 
   try {
-    let resultReport = await db.query(sql, [userId]);
+    let resultReport = await db.query(sql, [userId, userId]);
     let result = resultReport.rows;
     return result;
   } catch (error) {
