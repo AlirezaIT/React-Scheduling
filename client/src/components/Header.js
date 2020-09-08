@@ -33,14 +33,14 @@ const Header = (props) => {
                       )}
                       {context.authUser.role === ROLES.TEACHER && (
                         <NavItem>
-                          <NavLink className="nav-link" to="/home">
+                          <NavLink className="nav-link" to="/exam/execute">
                             Execute Exam
                           </NavLink>
                         </NavItem>
                       )}
                       {context.authUser.role === ROLES.TEACHER && (
                         <NavItem>
-                          <NavLink className="nav-link" to="/home">
+                          <NavLink className="nav-link" to="/exam/showreport">
                             Show Report
                           </NavLink>
                         </NavItem>

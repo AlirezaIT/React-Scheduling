@@ -39,7 +39,7 @@ class Teacher extends React.Component {
                   <FormGroup>
                     <Link
                       to={{
-                        pathname: "/",
+                        pathname: "/exam/execute",
                       }}
                       className="btn btn-primary w-100"
                     >

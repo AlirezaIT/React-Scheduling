@@ -3,6 +3,8 @@ import "./App.css";
 import LoginForm from "./components/LoginForm";
 import Header from "./components/Header";
 import CreateExam from "./components/CreateExam";
+import ExecuteExam from "./components/ExecuteExam";
+import ShowSlots from "./components/ShowSlots";
 import Teacher from "./components/Teacher";
 import API from "./api/API";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
@@ -17,10 +19,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.toggleNav = this.toggleNav.bind(this);
+    // this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
+
       teacherStudentLists: [],
+      examLists: [], // contains tle list of Exams for teacher for ShowSlots Component
+      teacherSlots: [], // contains the list Of Slots for specific exam for ExecuteExam Component
       role: "",
       listStudentExams: [], //assaigned exams to the student
       listReservedExams: [], //reserved exam and its slot's details
@@ -100,6 +105,18 @@ class App extends React.Component {
       });
   };
 
+  //------- get the List of Exams for an authorized Teacher ---- used in ExecuteExam Component
+  examLists = () => {
+    API.getExamLists()
+      .then((exams) =>
+        this.setState({
+          examLists: exams || [],
+        })
+      )
+      .catch((errorObj) => {
+        const err = errorObj.errors;
+      });
+  };
   //***------------------------functions related to Teacher Report page----------------***
 
   finalResultReport = () => {
@@ -114,6 +131,22 @@ class App extends React.Component {
         const err = errorObj.errors;
       });
   };
+
+  //------- get the List of Slots for Specific exam number ---- used in ShowSlots Component
+  getTeacherSlots = (exam_no) => {
+    console.log(exam_no);
+    API.getTeacherSlots(exam_no)
+      .then((slots) =>
+        this.setState({
+          teacherSlots: slots || [],
+        })
+      )
+
+      .catch((errorObj) => {
+        const err = errorObj.errors;
+      });
+  };
+
   studentNotBooked = () => {
     API.getstudentNotBooked()
       .then((details) => {
@@ -159,6 +192,7 @@ class App extends React.Component {
   //------------------------after clicking the reserve button in StudentPage component using this is handler function, and it's calling the API function for getting the array of specific exam's slots and passing the exam_no to the API function
 
   handleReserve = async (exam_no) => {
+    console.log("GIGIGIGIGIGIG:", exam_no);
     const result = await API.getExamSlots(exam_no); //passing the exam number (exam_no) and get the array of objects, contains the details of slots related to that exam number
     this.setState({
       listSlots: result,
@@ -172,6 +206,10 @@ class App extends React.Component {
       [key]: array,
     });
   };
+
+  getQueryParam() {
+    return this.props;
+  }
 
   render() {
     const value = {
@@ -190,14 +228,31 @@ class App extends React.Component {
         />
         <Container fluid>
           <Switch>
+            <Route path="/home" component={Teacher}></Route>
+            <Route path="/login" component={LoginForm}></Route>
             <Route path="/exam/create">
               <CreateExam
                 studentLists={this.studentLists}
                 teacherStudentLists={this.state.teacherStudentLists}
               />
             </Route>
-            <Route path="/home" component={Teacher}></Route>
-            <Route path="/login" component={LoginForm}></Route>
+            <Route path="/exam/execute">
+              <ExecuteExam
+                getExamtLists={this.examLists}
+                examLists={this.state.examLists}
+                len={this.state.examLists.length}
+                getTeacherSlots={this.getTeacherSlots}
+                teacherSlots={this.state.teacherSlots}
+              />
+            </Route>
+            <Route path="/exams/slots">
+              <ShowSlots
+                getTeacherSlots={this.getTeacherSlots}
+                teacherSlots={this.state.teacherSlots}
+                length={this.state.teacherSlots.length}
+                // getQueryParam={this.getQueryParam}
+              />
+            </Route>
             <Route path="/exam/showreport">
               <ShowReport
                 fullReports={this.state.fullReports}

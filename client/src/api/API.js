@@ -78,6 +78,7 @@ async function isAuthenticated() {
   }
 }
 
+// ------------- fetch the list of Students form DB for CreateExam Component
 async function getStudentLists() {
   try {
     const response = await fetch(`${baseURL}/studentLists`);
@@ -87,12 +88,13 @@ async function getStudentLists() {
     } else {
       return [];
     }
-  } catch (e) {
-    console.log("Error", e);
-    throw e;
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
   }
 }
 
+// ------------- Save slots for an exams into DB
 async function saveExam(payLoad) {
   console.log("In API Client", payLoad);
   console.log("Json Stingfy", JSON.stringify(payLoad));
@@ -107,6 +109,51 @@ async function saveExam(payLoad) {
   return response.json();
 }
 
+// ------------- fetch the list of Exams form DB for ExecuteExam Component
+async function getExamLists() {
+  try {
+    const response = await fetch(`${baseURL}/examLists`);
+    console.log(response);
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
+  }
+}
+
+// ------------- fetch the list of slots form DB for ShowSlots Component
+async function getTeacherSlots(exam_no) {
+  console.log(exam_no);
+  try {
+    const response = await fetch(`${baseURL}/teacherExamSlots/${exam_no}`);
+    console.log(response);
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
+  }
+}
+
+// ------------------------------------- Update the grade in proper table
+
+async function updateGrade(payLoad) {
+  const response = await fetch(`${baseURL}/updateGrade`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payLoad }),
+  });
+  return response.json();
+}
 //---------------Teacher report page API FUNCTIONS
 
 async function getFinalResultReport() {
@@ -166,6 +213,9 @@ const API = {
   isAuthenticated,
   getStudentLists,
   saveExam,
+  getExamLists,
+  getTeacherSlots,
+  updateGrade,
   getStudentExams,
   getReservedExams,
   getExamSlots,

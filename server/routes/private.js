@@ -69,6 +69,16 @@ router.post("/saveExam", async (req, res) => {
   }
 });
 
+router.get("/examLists", async (req, res) => {
+  const userId = req.user.user;
+  try {
+    const examLists = await teacherDao.getExamtLists(userId);
+    return res.json(examLists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
 router.get("/exam/getFullreport", async (req, res) => {
   try {
     const userId = req.user.user;
@@ -79,6 +89,17 @@ router.get("/exam/getFullreport", async (req, res) => {
     return res.status(401).json(authErrorObj);
   }
 });
+
+router.get("/examSlots", async (req, res) => {
+  const userId = req.user.user;
+  try {
+    const examSlots = await teacherDao.getExamtSlots(userId);
+    return res.json(examSlots);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
 router.get("/exam/getStudentNotBooked", async (req, res) => {
   try {
     const userId = req.user.user;
@@ -89,6 +110,37 @@ router.get("/exam/getStudentNotBooked", async (req, res) => {
     return res.status(401).json(authErrorObj);
   }
 });
+
+router.get("/teacherExamSlots/:exam_no", async (req, res) => {
+  const userId = req.user.user;
+  try {
+    const { exam_no } = req.params;
+    const slotLists = await teacherDao.getTeacherSlots(userId, exam_no);
+
+    return res.json(slotLists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
+router.put("/updateGrade", async (req, res) => {
+  try {
+    const { payLoad } = req.body;
+    console.log(payLoad);
+    for (let index = 0; index < payLoad.examIds.length; index++) {
+      const examId = payLoad.examIds[index];
+      const grade = payLoad.grades[index];
+      await teacherDao.updateGrade(examId, grade);
+    }
+    // const lists = await teacherDao.updateGrade(slot_id, user);
+    // return res.json(lists);
+  } catch (error) {
+    return res.status(401).json(authErrorObj);
+  }
+});
+
+// ==================================== API EndPoints for Students ======================================== //
+
 router.get("/studentExams", async (req, res) => {
   try {
     const userId = req.user.user;

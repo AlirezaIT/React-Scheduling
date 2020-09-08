@@ -19,6 +19,10 @@ class BoookingSlot extends Component {
     this.props.handleReserve(window.location.href.split("=")[1]);
   }
 
+  componentDidMount() {
+    this.props.handleReserve(window.location.href.split("=")[1]);
+  }
+
   handlerSelect = async (slot) => {
     //get details in object form of selected slot and store into selectedSlot
 

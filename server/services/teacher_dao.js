@@ -96,6 +96,57 @@ exports.createStudentExam = async (student_id, exam_no) => {
   }
 };
 
+exports.getExamtLists = async (userId) => {
+  const sql = `SELECT DISTINCT exam_no, date from exams WHERE teacher_id = ?  and exam_done is Null and student_id is not NULL`;
+  console.log(sql);
+  try {
+    let examLists = await db.query(sql, [userId]);
+    console.log(sql);
+    console.log(examLists);
+    // if (!studentLists || !studentLists.rows.length) {
+    //   return [];
+    // }
+
+    return examLists.rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.getExamSlots = async (userId) => {
+  const sql = `SELECT * from exams WHERE teacher_id = ?  and exam_no = ?`;
+  console.log(sql);
+  try {
+    let examLists = await db.query(sql, [userId]);
+    console.log(sql);
+    console.log(examLists);
+    // if (!studentLists || !studentLists.rows.length) {
+    //   return [];
+    // }
+
+    return examLists.rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.getTeacherSlots = async (userId, exam_no) => {
+  const sql = `SELECT e.id,e.exam_no,e.duration,e.start_time,e.end_time,e.date,e.grade,u.username,u.name from exams e , users u WHERE e.student_id = u.id and teacher_id = ?  and exam_no = ? and student_id is not NULL and grade is NULL`;
+  console.log(sql);
+  try {
+    let slotLists = await db.query(sql, [userId, exam_no]);
+    console.log(sql);
+    console.log(slotLists);
+    // if (!studentLists || !studentLists.rows.length) {
+    //   return [];
+    // }
+
+    return slotLists.rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
 exports.getFinalResultReport = async (userId) => {
   // const sql = `select * from exams where teacher_id =? and grade is not null`;
   const sql = `select e.id,e.exam_no,e.start_time,e.end_time, c.name,e.date,u.username,e.grade,e.is_absent from exams e ,users u ,courses c where e.course_id=c.id and e.student_id=u.id and e.teacher_id =? and e.grade is not null `;
@@ -107,6 +158,16 @@ exports.getFinalResultReport = async (userId) => {
     throw error;
   }
 };
+
+exports.updateGrade = async (examId, grade) => {
+  const sql = `UPDATE exams set grade = ? , exam_done = 1 where id = ? `;
+  try {
+    let result = await db.query(sql, [grade, examId]);
+  } catch (error) {
+    throw error;
+  }
+};
+
 exports.getStudentNotBooked = async (userId) => {
   // const sql = `select * from exams where teacher_id =? and grade is not null`;
   const sql = `select se.id,exam_no,student_id , name,username from student_exams se, users u where se.student_id = u.id and student_id  not in  (select student_id from exams where teacher_id =? and student_id is not null)
