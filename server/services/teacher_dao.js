@@ -97,7 +97,7 @@ exports.createStudentExam = async (student_id, exam_no) => {
 };
 
 exports.getExamtLists = async (userId) => {
-  const sql = `SELECT DISTINCT exam_no, date from exams WHERE teacher_id = ?  and exam_done is Null`;
+  const sql = `SELECT DISTINCT exam_no, date from exams WHERE teacher_id = ?  and exam_done is Null and student_id is not NULL`;
   console.log(sql);
   try {
     let examLists = await db.query(sql, [userId]);

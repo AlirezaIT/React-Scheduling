@@ -119,7 +119,7 @@ class ShowSlots extends React.Component {
                     <tbody>
                       {this.props.teacherSlots?.map((teacherSlot) => (
                         <tr key={teacherSlot.id}>
-                          <td>{teacherSlot.id}</td>
+                          {/* <td>{teacherSlot.id}</td> */}
                           <td>{teacherSlot.exam_no}</td>
                           <td>{teacherSlot.username}</td>
                           <td>{teacherSlot.name}</td>

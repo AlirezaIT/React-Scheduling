@@ -234,6 +234,7 @@ class App extends React.Component {
               <ExecuteExam
                 getExamtLists={this.examLists}
                 examLists={this.state.examLists}
+                len={this.state.examLists.length}
                 getTeacherSlots={this.getTeacherSlots}
                 teacherSlots={this.state.teacherSlots}
               />

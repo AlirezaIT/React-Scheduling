@@ -35,41 +35,47 @@ class ExecuteExam extends React.Component {
             <Container>
               <Row>
                 <Col md={12}>
-                  <Table striped bordered hover size="sm" className="mt-5">
-                    <thead>
-                      <tr>
-                        {/* <th>#</th> */}
-                        <th>Exam Number</th>
-                        <th>Date</th>
-                        <th>Select</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.props.examLists?.map((examList) => (
-                        <tr key={examList.id}>
-                          {/* <td>{examList.id}</td> */}
-                          <td>{examList.exam_no}</td>
-                          <td>{examList.date}</td>
-                          <td>
-                            <Form.Group controlId="">
-                              <Link
-                                onClick={() =>
-                                  this.executeExamHandler(examList.exam_no)
-                                }
-                                to={{
-                                  pathname: "/exams/slots",
-                                }}
-                                name="execute"
-                                className="btn btn-primary"
-                              >
-                                Execute
-                              </Link>
-                            </Form.Group>
-                          </td>
+                  {this.props.len !== 0 ? (
+                    <Table striped bordered hover size="sm" className="mt-5">
+                      <thead>
+                        <tr>
+                          {/* <th>#</th> */}
+                          <th>Exam Number</th>
+                          <th>Date</th>
+                          <th>Select</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                      </thead>
+                      <tbody>
+                        {this.props.examLists?.map((examList) => (
+                          <tr key={examList.id}>
+                            {/* <td>{examList.id}</td> */}
+                            <td>{examList.exam_no}</td>
+                            <td>{examList.date}</td>
+                            <td>
+                              <Form.Group controlId="">
+                                <Link
+                                  onClick={() =>
+                                    this.executeExamHandler(examList.exam_no)
+                                  }
+                                  to={{
+                                    pathname: "/exams/slots",
+                                  }}
+                                  name="execute"
+                                  className="btn btn-primary"
+                                >
+                                  Execute
+                                </Link>
+                              </Form.Group>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  ) : (
+                    <p className="d-flex justify-content-center text-danger display-5 mt-5">
+                      There is no Exam to execute
+                    </p>
+                  )}
                 </Col>
               </Row>
             </Container>
