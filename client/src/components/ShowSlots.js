@@ -17,8 +17,8 @@ class ShowSlots extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      registerGrades: false,
-      count: 0,
+      submitted: false,
+      counter: 0,
       grade: [],
       examId: [],
       payload: {
@@ -28,18 +28,34 @@ class ShowSlots extends React.Component {
     };
   }
   componentDidUpdate() {
-    console.log(this.state.count);
+    console.log(this.state.counter);
     console.log(this.props.length);
     console.log(this.state);
   }
 
   handleInputChange = (exam_id, event) => {
+    event.preventDefault();
     const target = event.target;
-    const value = target.value;
+
+    let value = target.value;
     const name = target.name;
+    switch (value) {
+      case "fail":
+        value = -1;
+        break;
+      case "withdraw":
+        value = -2;
+        break;
+      case "absent":
+        value = -3;
+        break;
+      default:
+        value = parseInt(value);
+    }
     // ====================== in order to prevent duplication grade into array
     const index = this.state.examId.indexOf(exam_id);
-    let grades = this.state.grade; // without {...this.state.grade}
+
+    let grades = this.state.grade;
 
     if (index !== -1 && value !== "") {
       grades[index] = value;
@@ -52,7 +68,7 @@ class ShowSlots extends React.Component {
         return {
           examId: [...prevState.examId, exam_id],
           grade: [...prevState.grade, value],
-          count: this.state.count + 1,
+          counter: this.state.counter++,
         };
       });
     }
@@ -61,6 +77,7 @@ class ShowSlots extends React.Component {
   saveExamHandler = async () => {
     this.setState(
       {
+        submitted: !this.state.submitted,
         payload: {
           grades: this.state.grade,
           examIds: this.state.examId,
@@ -73,6 +90,9 @@ class ShowSlots extends React.Component {
   };
 
   render() {
+    if (this.state.submitted) {
+      return <Redirect to="/home" />;
+    }
     return (
       <AuthContext.Consumer>
         {(context) => (
@@ -153,7 +173,7 @@ class ShowSlots extends React.Component {
                       type="submit"
                       color="primary"
                       onClick={this.saveExamHandler}
-                      disabled={this.state.count !== this.props.length}
+                      disabled={this.state.counter !== this.props.length}
                     >
                       Save Grades
                     </Button>

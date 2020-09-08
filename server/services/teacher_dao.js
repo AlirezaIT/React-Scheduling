@@ -97,7 +97,7 @@ exports.createStudentExam = async (student_id, exam_no) => {
 };
 
 exports.getExamtLists = async (userId) => {
-  const sql = `SELECT DISTINCT exam_no, date from exams WHERE teacher_id = ? `;
+  const sql = `SELECT DISTINCT exam_no, date from exams WHERE teacher_id = ?  and exam_done is Null`;
   console.log(sql);
   try {
     let examLists = await db.query(sql, [userId]);
@@ -114,7 +114,7 @@ exports.getExamtLists = async (userId) => {
 };
 
 exports.getExamSlots = async (userId) => {
-  const sql = `SELECT * from exams WHERE teacher_id = ?  and exam_no = ? `;
+  const sql = `SELECT * from exams WHERE teacher_id = ?  and exam_no = ?`;
   console.log(sql);
   try {
     let examLists = await db.query(sql, [userId]);
@@ -160,7 +160,7 @@ exports.getFinalResultReport = async (userId) => {
 };
 
 exports.updateGrade = async (examId, grade) => {
-  const sql = `UPDATE exams set grade = ? where id = ? `;
+  const sql = `UPDATE exams set grade = ? , exam_done = 1 where id = ? `;
   try {
     let result = await db.query(sql, [grade, examId]);
   } catch (error) {

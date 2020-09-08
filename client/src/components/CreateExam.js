@@ -104,7 +104,7 @@ class CreateExam extends React.Component {
       totalDuration: totalDurationExam,
       date,
     });
-    const slotsForEachSession = totalDurationExam / this.state.duration;
+    const slotsForEachSession = totalDurationExam / this.state.duration; // variable fo loop
 
     // ---------------------- Calculate required total number of Slots and setState for the exam
     this.setState((prevState) => {
