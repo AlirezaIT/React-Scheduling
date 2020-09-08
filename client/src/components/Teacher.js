@@ -27,7 +27,7 @@ class Teacher extends React.Component {
                     <Link
                       onClick={this.handleClick}
                       width="80"
-                      eventKey="link-1"
+                      key="1"
                       to={{
                         pathname: "/exam/create",
                       }}

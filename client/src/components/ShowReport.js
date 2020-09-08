@@ -34,8 +34,8 @@ class ShowReport extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.fullReports.map((exam) => (
-              <tr key={exam.id}>
+            {this.props.fullReports.map((exam, index) => (
+              <tr key={index}>
                 <td>{exam.exam_no}</td>
                 <td>{exam.name}</td>
                 <td>{exam.start_time}</td>
@@ -48,7 +48,7 @@ class ShowReport extends Component {
                   {/* <Link
                     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
                     width="40"
-                    eventKey="link-1"
+                    
                     to={{
                       pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
                     }}
@@ -82,8 +82,8 @@ class ShowReport extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.listStudentsNotBooked.map((student) => (
-              <tr key={student.id}>
+            {this.props.listStudentsNotBooked.map((student, index) => (
+              <tr key={index}>
                 <td>{student.exam_no}</td>
                 <td>{student.name}</td>
                 <td>{student.username}</td>
@@ -91,7 +91,7 @@ class ShowReport extends Component {
                   {/* <Link
                     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
                     width="40"
-                    eventKey="link-1"
+                    
                     to={{
                       pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
                     }}
