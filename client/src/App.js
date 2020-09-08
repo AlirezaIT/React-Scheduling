@@ -9,7 +9,7 @@ import Teacher from "./components/Teacher";
 import API from "./api/API";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { AuthContext } from "./auth/AuthContext";
-import { Col, Row, Container } from "react-bootstrap";
+import { Col, Row, Container, Alert } from "react-bootstrap";
 import { ROLES } from "./shared/consts";
 import StudentPage from "./components/StudentPage";
 import BookingSlot from "./components/BookingSlot";
@@ -21,6 +21,7 @@ class App extends React.Component {
 
     // this.toggleNav = this.toggleNav.bind(this);
     this.state = {
+      err: "",
       isNavOpen: false,
 
       teacherStudentLists: [],
@@ -49,6 +50,11 @@ class App extends React.Component {
       .catch((err) => {
         this.props.history.push("/login");
         this.setState({ authErr: err.errorObj });
+        setTimeout(() => {
+          this.setState({
+            err: "",
+          });
+        }, 2000);
       });
   }
 
@@ -73,22 +79,29 @@ class App extends React.Component {
         if (user.role === ROLES.TEACHER) {
           this.setState({ authUser: user, authErr: null });
           this.props.history.push("/home");
-          // console.log(this.state.authUser.name);
+
           this.setState({
             role: this.state.authUser.role,
           });
         } else if (user.role === ROLES.STUDENT) {
           this.setState({ authUser: user, authErr: null });
           this.props.history.push("/student");
-          // console.log(this.state.authUser);
+
           this.setState({
             role: this.state.authUser.role,
           });
         }
       })
       .catch((errorObj) => {
-        const err0 = errorObj.errors[0];
-        this.setState({ authErr: err0 });
+        this.setState({
+          err: errorObj.errors[0].msg,
+        });
+
+        setTimeout(() => {
+          this.setState({
+            err: "",
+          });
+        }, 2500);
       });
   };
 
@@ -101,7 +114,14 @@ class App extends React.Component {
         })
       )
       .catch((errorObj) => {
-        const err = errorObj.errors;
+        this.setState({
+          err: errorObj.errors[0].msg,
+        });
+        setTimeout(() => {
+          this.setState({
+            err: "",
+          });
+        }, 2000);
       });
   };
 
@@ -114,7 +134,14 @@ class App extends React.Component {
         })
       )
       .catch((errorObj) => {
-        const err = errorObj.errors;
+        this.setState({
+          err: errorObj.errors[0].msg,
+        });
+        setTimeout(() => {
+          this.setState({
+            err: "",
+          });
+        }, 2000);
       });
   };
   //***------------------------functions related to Teacher Report page----------------***
@@ -128,7 +155,14 @@ class App extends React.Component {
         });
       })
       .catch((errorObj) => {
-        const err = errorObj.errors;
+        this.setState({
+          err: errorObj.errors[0].msg,
+        });
+        setTimeout(() => {
+          this.setState({
+            err: "",
+          });
+        }, 2000);
       });
   };
 
@@ -143,7 +177,14 @@ class App extends React.Component {
       )
 
       .catch((errorObj) => {
-        const err = errorObj.errors;
+        this.setState({
+          err: errorObj.errors[0].msg,
+        });
+        setTimeout(() => {
+          this.setState({
+            err: "",
+          });
+        }, 2000);
       });
   };
 
@@ -156,7 +197,14 @@ class App extends React.Component {
         });
       })
       .catch((errorObj) => {
-        const err = errorObj.errors;
+        this.setState({
+          err: errorObj.errors[0].msg,
+        });
+        setTimeout(() => {
+          this.setState({
+            err: "",
+          });
+        }, 2000);
       });
   };
 
@@ -172,7 +220,14 @@ class App extends React.Component {
         });
       })
       .catch((errorObj) => {
-        const err = errorObj.errors;
+        this.setState({
+          err: errorObj.errors[0].msg,
+        });
+        setTimeout(() => {
+          this.setState({
+            err: "",
+          });
+        }, 2000);
       });
   };
   //------------------------calling the API function for getting the array of reserved exams
@@ -185,7 +240,14 @@ class App extends React.Component {
         });
       })
       .catch((errorObj) => {
-        const err = errorObj.errors;
+        this.setState({
+          err: errorObj.errors[0].msg,
+        });
+        setTimeout(() => {
+          this.setState({
+            err: "",
+          });
+        }, 2000);
       });
   };
 
@@ -280,6 +342,19 @@ class App extends React.Component {
             <Route path="/logout"></Route>
           </Switch>
         </Container>
+        <Row>
+          <Col md={4}></Col>
+          <Col md={4}>
+            {this.state.err ? (
+              <Alert variant="danger">
+                <Alert.Heading>Warning !</Alert.Heading>
+                <p className="">{this.state.err}</p>
+              </Alert>
+            ) : (
+              <></>
+            )}
+          </Col>
+        </Row>
       </AuthContext.Provider>
     );
   }

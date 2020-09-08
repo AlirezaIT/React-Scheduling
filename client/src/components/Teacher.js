@@ -17,7 +17,7 @@ class Teacher extends React.Component {
         {(context) => (
           <Container>
             <h2 className="mt-5 , mb-5">
-              Welcome Prof. {context.authUser?.name}{" "}
+              Welcome Prof. {context.authUser?.name}
             </h2>
 
             <Row>
