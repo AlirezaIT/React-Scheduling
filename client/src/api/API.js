@@ -157,31 +157,69 @@ async function updateGrade(payLoad) {
 //---------------Teacher report page API FUNCTIONS
 
 async function getFinalResultReport() {
-  console.log("gereftam");
-  const response = await fetch(`${baseURL}/exam/getFullreport`);
-  return response.json();
+  try {
+    const response = await fetch(`${baseURL}/exam/getFullreport`);
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (error) {
+    throw error;
+  }
 }
 async function getstudentNotBooked() {
-  console.log("gereftam2");
-  const response = await fetch(`${baseURL}/exam/getStudentNotBooked`);
-  return response.json();
+  try {
+    const response = await fetch(`${baseURL}/exam/getStudentNotBooked`);
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (error) {
+    throw error;
+  }
 }
 
 //---------------StudentPage and BookingSlots API FUNCTIONS
 
 async function getStudentExams() {
-  const response = await fetch(`${baseURL}/studentExams`);
-  return response.json();
+  try {
+    const response = await fetch(`${baseURL}/studentExams`);
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function getReservedExams() {
-  const response = await fetch(`${baseURL}/reservedExams`);
-  return response.json();
+  try {
+    const response = await fetch(`${baseURL}/reservedExams`);
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function getExamSlots(exam_no) {
-  const response = await fetch(`${baseURL}/examSlots/${exam_no}`);
-  return response.json();
+  try {
+    const response = await fetch(`${baseURL}/examSlots/${exam_no}`);
+    if (response.ok) {
+      return response.json();
+    } else {
+      return [];
+    }
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function reservingSlot(slot_id) {

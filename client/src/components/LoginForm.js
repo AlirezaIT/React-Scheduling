@@ -126,9 +126,9 @@ class UserRole extends React.Component {
                       </Button>
                     </FormGroup>
                   </Form>
-                  {context.authErr && (
+                  {/* {context.authErr && (
                     <Alert variant="danger">{context.authErr.msg}</Alert>
-                  )}
+                  )} */}
                 </Col>
               </Row>
             </Container>
