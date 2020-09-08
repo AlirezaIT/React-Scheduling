@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import API from "../api/API";
-import { FormGroup } from "reactstrap";
+import { Row } from "reactstrap";
 
 //SHOWING THE EXAM'S SLOT IN THIS PAGE
 class BoookingSlot extends Component {
@@ -13,6 +13,10 @@ class BoookingSlot extends Component {
       buttonDisabled: true,
       mounted: false,
     };
+  }
+  componentDidMount() {
+    console.log("choghlar", window.location.href);
+    this.props.handleReserve(window.location.href.split("=")[1]);
   }
 
   componentDidMount() {
@@ -52,14 +56,14 @@ class BoookingSlot extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.listSlots.map((slot) => (
-              <tr key={slot.id}>
+            {this.props.listSlots.map((slot, index) => (
+              <tr key={index}>
                 <td>{slot.date}</td>
                 <td>{slot.start_time}</td>
                 <td>
                   <input
                     onChange={() => this.handlerSelect(slot)}
-                    class="form-check-input"
+                    className="form-check-input"
                     type="radio"
                     name="exampleRadios"
                     id="exampleRadios1"
@@ -70,11 +74,11 @@ class BoookingSlot extends Component {
             ))}
           </tbody>
         </table>
-        <row>
+        <Row>
           {/* <Link
                   onClick={this.handlersave} //reference to handlersave function
                   width="40"
-                  eventKey="link-1"
+                  
                   to={{
                     pathname: "/student/",
                   }}
@@ -89,11 +93,11 @@ class BoookingSlot extends Component {
           >
             Save
           </button>
-        </row>
-        <row>
+        </Row>
+        <Row>
           <Link
             width="40"
-            eventKey="link-1"
+            key="1"
             to={{
               pathname: "/student/", //back to the student main page by clicking cancel button
             }}
@@ -101,7 +105,7 @@ class BoookingSlot extends Component {
           >
             Cancel
           </Link>
-        </row>
+        </Row>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+
 import API from "../api/API";
 import moment from "moment";
 import { AuthContext } from "../auth/AuthContext";
@@ -8,7 +8,7 @@ import { AuthContext } from "../auth/AuthContext";
 class StudentPage extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
+    this.state = {};
   }
 
   componentDidMount() {
@@ -37,11 +37,11 @@ class StudentPage extends Component {
   handleCancelReservation = async (reservedExam) => {
     // console.log("cancelling", reservedExam);
     const result = await API.cancelExam(reservedExam);
-    const listStudentExams = this.state.listStudentExams.filter(
+    const listStudentExams = this.props.listStudentExams.filter(
       (e) => e.exam_no !== reservedExam.exam_no
     );
     listStudentExams.push({ ...reservedExam });
-    let listReservedExams = this.state.listReservedExams;
+    let listReservedExams = this.props.listReservedExams;
     listReservedExams = listReservedExams.filter(
       (e) => e.id !== reservedExam.id
     );
@@ -59,7 +59,7 @@ class StudentPage extends Component {
   //     //   <Button
   //     //     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
   //     //     width="40"
-  //     //     eventKey="link-1"
+  //     //
   //     //     to={{
   //     //       pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
   //     //     }}
@@ -88,23 +88,23 @@ class StudentPage extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.listStudentExams.map((exam) => (
-              <tr key={exam.id}>
+            {this.props.listStudentExams.map((exam, index) => (
+              <tr key={index}>
                 <td>{exam.name}</td>
                 <td>{exam.exam_no}</td>
                 <td>
                   {/* <div>{this.renderLink()}</div> */}
-                  <Link
+                  <Button
+                    key={index}
                     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
                     width="40"
-                    eventKey="link-1"
-                    to={{
-                      pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
-                    }}
+                    // to={{
+                    //   pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
+                    // }}
                     className="btn btn-primary w-50"
                   >
                     Reserve Exam
-                  </Link>
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -134,8 +134,8 @@ class StudentPage extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.listReservedExams.map((reservedExam) => (
-              <tr key={reservedExam.id}>
+            {this.props.listReservedExams.map((reservedExam, index) => (
+              <tr key={index}>
                 <td>{reservedExam.name}</td>
                 <td>{reservedExam.date}</td>
                 <td>{reservedExam.start_time}</td>
@@ -156,13 +156,13 @@ class StudentPage extends Component {
       <AuthContext.Consumer>
         {(context) => (
           <Container>
-            <h2 className="mt-5 , mb-5">
+            <h2 className="mt-5  mb-5">
               Welcome Student. {context.authUser?.name}{" "}
             </h2>
             <div>
-              <div>{this.renderExams()}</div>{" "}
+              <div>{this.renderExams()}</div>
               {/*calling the conditional rendering function of showing list availabe exams which are assainged to the student  */}
-              <div> {this.renderReserveredExams()}</div>{" "}
+              <div> {this.renderReserveredExams()}</div>
               {/*calling the conditional rendering function of showing list reserved exams which are registered by student  */}
             </div>
           </Container>

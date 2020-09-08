@@ -189,24 +189,26 @@ class CreateExam extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.props.teacherStudentLists?.map((studentList) => (
-                        <tr key={studentList.id}>
-                          <td>{studentList.id}</td>
-                          <td>{studentList.username}</td>
-                          <td>{studentList.name}</td>
-                          <td>
-                            <Form.Group controlId="">
-                              <Form.Check
-                                onChange={(event) =>
-                                  this.onCheckChange(event, studentList.id)
-                                }
-                                type="checkbox"
-                                name="checkbox"
-                              />
-                            </Form.Group>
-                          </td>
-                        </tr>
-                      ))}
+                      {this.props.teacherStudentLists?.map(
+                        (studentList, index) => (
+                          <tr key={index}>
+                            <td>{studentList.id}</td>
+                            <td>{studentList.username}</td>
+                            <td>{studentList.name}</td>
+                            <td>
+                              <Form.Group controlId="">
+                                <Form.Check
+                                  onChange={(event) =>
+                                    this.onCheckChange(event, studentList.id)
+                                  }
+                                  type="checkbox"
+                                  name="checkbox"
+                                />
+                              </Form.Group>
+                            </td>
+                          </tr>
+                        )
+                      )}
                     </tbody>
                   </Table>
                 </Col>
