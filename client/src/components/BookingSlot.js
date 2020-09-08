@@ -15,7 +15,8 @@ class BoookingSlot extends Component {
     };
   }
   componentDidMount() {
-    console.log("choghlar");
+    console.log("choghlar", window.location.href);
+    this.props.handleReserve(window.location.href.split("=")[1]);
   }
 
   handlerSelect = async (slot) => {

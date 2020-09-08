@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+
 import API from "../api/API";
 import moment from "moment";
 import { AuthContext } from "../auth/AuthContext";
@@ -94,17 +94,17 @@ class StudentPage extends Component {
                 <td>{exam.exam_no}</td>
                 <td>
                   {/* <div>{this.renderLink()}</div> */}
-                  <Link
+                  <Button
                     key={index}
                     onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
                     width="40"
-                    to={{
-                      pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
-                    }}
+                    // to={{
+                    //   pathname: "/student/reserve", //go to the BookingSlot component to see list of availabe slots and do booking
+                    // }}
                     className="btn btn-primary w-50"
                   >
                     Reserve Exam
-                  </Link>
+                  </Button>
                 </td>
               </tr>
             ))}
