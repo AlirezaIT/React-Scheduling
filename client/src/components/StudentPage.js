@@ -156,7 +156,6 @@ class StudentPage extends Component {
       <AuthContext.Consumer>
         {(context) => (
           <Container>
-            <h1>{context.authUser?.role}</h1>
             <h2 className="mt-5  mb-5">
               Welcome Student. {context.authUser?.name}{" "}
             </h2>

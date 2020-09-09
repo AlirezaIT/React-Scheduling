@@ -24,6 +24,7 @@ class App extends React.Component {
       err: "",
       isNavOpen: false,
       isReservedButtonClick: false,
+      isExecuteButtonClick: false,
       teacherStudentLists: [],
       examLists: [], // contains tle list of Exams for teacher for ShowSlots Component
       teacherSlots: [], // contains the list Of Slots for specific exam for ExecuteExam Component
@@ -167,25 +168,31 @@ class App extends React.Component {
       });
   };
 
-  //------- get the List of Slots for Specific exam number ---- used in ShowSlots Component
-  getTeacherSlots = (exam_no) => {
-    API.getTeacherSlots(exam_no)
-      .then((slots) =>
+  getTeacherSlots = async (exam_no, isClicked) => {
+    this.setState({
+      isExecuteButtonClick: isClicked,
+    });
+    const result = await API.getTeacherSlots(exam_no);
+    try {
+      setTimeout(() => {
         this.setState({
-          teacherSlots: slots || [],
-        })
-      )
-
-      .catch((errorObj) => {
-        this.setState({
-          err: errorObj.errors[0].msg,
+          isExecuteButtonClick: false,
         });
-        setTimeout(() => {
-          this.setState({
-            err: "",
-          });
-        }, 2000);
+      }, 200);
+
+      this.setState({
+        teacherSlots: result || [],
       });
+    } catch (errorObj) {
+      this.setState({
+        err: errorObj.errors[0].msg,
+      });
+      setTimeout(() => {
+        this.setState({
+          err: "",
+        });
+      }, 2000);
+    }
   };
 
   studentNotBooked = () => {
@@ -321,6 +328,7 @@ class App extends React.Component {
                 getTeacherSlots={this.getTeacherSlots}
                 teacherSlots={this.state.teacherSlots}
                 length={this.state.teacherSlots.length}
+                isExecuteButtonClick={this.state.isExecuteButtonClick}
                 // getQueryParam={this.getQueryParam}
               />
             </Route>

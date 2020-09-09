@@ -19,7 +19,7 @@ class ExecuteExam extends React.Component {
     this.setState({
       exam_no: exam_no,
     });
-    this.props.getTeacherSlots(exam_no);
+    this.props.getTeacherSlots(exam_no, true);
   };
 
   render() {

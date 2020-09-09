@@ -22,7 +22,9 @@ class ShowSlots extends React.Component {
     };
   }
   componentDidMount() {
-    this.props.getTeacherSlots(window.location.href.split("=")[1]);
+    if (!this.props.isExecuteButtonClick) {
+      this.props.getTeacherSlots(window.location.href.split("=")[1]);
+    }
   }
 
   handleInputChange = (exam_id, event) => {
