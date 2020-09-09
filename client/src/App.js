@@ -336,6 +336,7 @@ class App extends React.Component {
               <BookingSlot
                 listSlots={this.state.listSlots}
                 handleReserve={this.handleReserve}
+                isReservedButtonClick={this.state.isReservedButtonClick}
               />
             </Route>
             <Route path="/student">
