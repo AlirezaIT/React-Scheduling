@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import API from "../api/API";
-import { Row } from "reactstrap";
+import { Row, Col } from "reactstrap";
+import { Container } from "react-bootstrap";
 
 //SHOWING THE EXAM'S SLOT IN THIS PAGE
 class BoookingSlot extends Component {
@@ -43,67 +44,60 @@ class BoookingSlot extends Component {
     }
 
     return (
-      <div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Start Time</th>
-              <th>Choose..</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.listSlots.map((slot, index) => (
-              <tr key={index}>
-                <td>{slot.date}</td>
-                <td>{slot.start_time}</td>
-                <td>
-                  <input
-                    onChange={() => this.handlerSelect(slot)}
-                    className="form-check-input"
-                    type="radio"
-                    name="exampleRadios"
-                    id="exampleRadios1"
-                    value="option1"
-                  />
-                </td>
+      <Container>
+        <div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>Choose..</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <Row>
-          {/* <Link
-                  onClick={this.handlersave} //reference to handlersave function
-                  width="40"
-                  
-                  to={{
-                    pathname: "/student/",
-                  }}
-                  className="btn btn-primary w-30"
-                >
-                  Save
-                </Link> */}
-          <button
-            onClick={this.handlersave}
-            disabled={this.state.buttonDisabled}
-            className="btn btn-primary w-30  "
-          >
-            Save
-          </button>
-        </Row>
-        <Row>
-          <Link
-            width="40"
-            key="1"
-            to={{
-              pathname: "/student/", //back to the student main page by clicking cancel button
-            }}
-            className="btn btn-danger w-30"
-          >
-            Cancel
-          </Link>
-        </Row>
-      </div>
+            </thead>
+            <tbody>
+              {this.props.listSlots.map((slot, index) => (
+                <tr key={index}>
+                  <td>{slot.date}</td>
+                  <td>{slot.start_time}</td>
+                  <td>
+                    <input
+                      onChange={() => this.handlerSelect(slot)}
+                      className="form-check-input"
+                      type="radio"
+                      name="exampleRadios"
+                      id="exampleRadios1"
+                      value="option1"
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Row>
+            <Col>
+              <button
+                onClick={this.handlersave}
+                disabled={this.state.buttonDisabled}
+                className="btn btn-primary w-30  "
+              >
+                Save
+              </button>
+            </Col>
+            <Col>
+              <Link
+                width="40"
+                key="1"
+                to={{
+                  pathname: "/student/", //back to the student main page by clicking cancel button
+                }}
+                className="btn btn-danger w-30"
+              >
+                Cancel
+              </Link>
+            </Col>
+          </Row>
+        </div>
+      </Container>
     );
   }
 }
