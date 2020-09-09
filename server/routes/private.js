@@ -117,7 +117,8 @@ router.get("/teacherExamSlots/:exam_no", async (req, res) => {
   console.log("query", req.query);
   try {
     const { exam_no } = req.params;
-    const slotLists = await teacherDao.getTeacherSlots(userId, exam_no);
+    const { date } = req.query;
+    const slotLists = await teacherDao.getTeacherSlots(userId, exam_no, date);
 
     return res.json(slotLists);
   } catch (error) {

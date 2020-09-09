@@ -128,11 +128,11 @@ exports.getExamSlots = async (userId) => {
   }
 };
 
-exports.getTeacherSlots = async (userId, exam_no) => {
-  const sql = `SELECT e.id,e.exam_no,e.duration,e.start_time,e.end_time,e.date,e.grade,u.username,u.name from exams e , users u WHERE e.student_id = u.id and teacher_id = ?  and exam_no = ? and student_id is not NULL and grade is NULL`;
+exports.getTeacherSlots = async (userId, exam_no, date) => {
+  const sql = `SELECT e.id,e.exam_no,e.duration,e.start_time,e.end_time,e.date,e.grade,u.username,u.name from exams e , users u WHERE e.student_id = u.id and teacher_id = ?  and exam_no = ? and date =? and student_id is not NULL and grade is NULL`;
   console.log(sql);
   try {
-    let slotLists = await db.query(sql, [userId, exam_no]);
+    let slotLists = await db.query(sql, [userId, exam_no, date]);
     console.log(sql);
     console.log(slotLists);
     // if (!studentLists || !studentLists.rows.length) {
@@ -158,7 +158,7 @@ exports.getFinalResultReport = async (userId) => {
 };
 
 exports.updateGrade = async (examId, grade) => {
-  const sql1 = `	DELETE from student_exams where student_id = (select student_id from exams where id = ?) and exam_no = (select exam_no from exams where id =?  ) `;
+  const sql1 = `DELETE from student_courses where student_id = (select student_id from exams where id = ? and grade >=18 and grade <=31) and course_id = (select course_id from exams where id =?  ) `;
   const sql2 = `UPDATE exams set grade = ? , exam_done = 1 where id = ? `;
   try {
     let result1 = await db.query(sql1, [examId, examId]);
