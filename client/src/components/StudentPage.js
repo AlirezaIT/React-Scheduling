@@ -72,16 +72,15 @@ class StudentPage extends Component {
     if (examCount === 0)
       //if length of array is zero,the below <p> will render instead of table
       return (
-        <p>
-          {" "}
+        <h5 className="mt-5">
           Ooops There are no exams assigned to you to reserve OR you missed
           deadline (deadline is a day before the exam's first session date)
           !!!!!
-        </p>
+        </h5>
       ); //
     return (
       <div>
-        <p>There are {examCount} exams assigned to you</p>
+        <h5 className="mt-5">There are {examCount} exams assigned to you</h5>
         <table className="table">
           <thead>
             <tr>
@@ -117,10 +116,11 @@ class StudentPage extends Component {
 
   renderReserveredExams() {
     const { length: countReserved } = this.props.listReservedExams; // checking the length of listReservedExams array that contains list of exams that student has already reserved.
-    if (countReserved === 0) return <p>There are no reserved exams </p>;
+    if (countReserved === 0)
+      return <h5 className="mt-5">There are no reserved exams </h5>;
     return (
       <div>
-        <p>You have {countReserved} reserved exams</p>
+        <h5 className="mt-5">You have {countReserved} reserved exams</h5>
         <table className="table">
           <thead>
             <tr>

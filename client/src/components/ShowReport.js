@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Container } from "react-bootstrap";
 
 class ShowReport extends Component {
   constructor(props) {
@@ -33,7 +34,9 @@ class ShowReport extends Component {
     //   return <p> Ooops There are no exams assigned to you to reserve !!!!!</p>; //
     return (
       <div>
-        <h1>There is a list of the final report of exam and student grade</h1>
+        <h5 className="mt-5">
+          There is a list of the final report of exam and student grade.
+        </h5>
         <table className="table">
           <thead>
             <tr>
@@ -86,7 +89,9 @@ class ShowReport extends Component {
     //   return <p> Ooops There are no exams assigned to you to reserve !!!!!</p>; //
     return (
       <div>
-        <h1>There is a list of student that did not book the exam</h1>
+        <h5 className="mt-5">
+          There is a list of student that did not book the exam.
+        </h5>
         <table className="table">
           <thead>
             <tr>
@@ -123,10 +128,12 @@ class ShowReport extends Component {
   }
   render() {
     return (
-      <div>
-        <div>{this.renderFinalResult()}</div>
-        <div>{this.studentNotBooked()}</div>
-      </div>
+      <Container>
+        <div>
+          <div>{this.renderFinalResult()}</div>
+          <div>{this.studentNotBooked()}</div>
+        </div>
+      </Container>
     );
   }
 }
