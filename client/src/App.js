@@ -168,11 +168,11 @@ class App extends React.Component {
       });
   };
 
-  getTeacherSlots = async (exam_no, isClicked) => {
+  getTeacherSlots = async (exam_no, date, isClicked) => {
     this.setState({
       isExecuteButtonClick: isClicked,
     });
-    const result = await API.getTeacherSlots(exam_no);
+    const result = await API.getTeacherSlots(exam_no, date);
     try {
       setTimeout(() => {
         this.setState({

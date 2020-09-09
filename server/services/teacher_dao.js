@@ -6,7 +6,7 @@ const db = require("../db/index");
 exports.getStudentLists = async (userId) => {
   const sql = `SELECT id , username,name from users where role = "student" and  id in (
     select sc.student_id from users u , courses c , student_courses sc where u.id = ? and u.course_id = c.id and sc.course_id = u.course_id and sc.student_id not in 
-    (select e.student_id from student_exams se ,exams e where se.exam_no =e.exam_no and grade is not NULL)
+    (select e.student_id from student_exams se ,exams e where se.exam_no =e.exam_no  and grade > 0)
     )`;
   console.log(sql);
   try {
@@ -158,9 +158,11 @@ exports.getFinalResultReport = async (userId) => {
 };
 
 exports.updateGrade = async (examId, grade) => {
-  const sql = `UPDATE exams set grade = ? , exam_done = 1 where id = ? `;
+  const sql1 = `	DELETE from student_exams where student_id = (select student_id from exams where id = ?) and exam_no = (select exam_no from exams where id =?  ) `;
+  const sql2 = `UPDATE exams set grade = ? , exam_done = 1 where id = ? `;
   try {
-    let result = await db.query(sql, [grade, examId]);
+    let result1 = await db.query(sql1, [examId, examId]);
+    let result2 = await db.query(sql2, [grade, examId]);
   } catch (error) {
     throw error;
   }

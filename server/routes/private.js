@@ -112,7 +112,9 @@ router.get("/exam/getStudentNotBooked", async (req, res) => {
 });
 
 router.get("/teacherExamSlots/:exam_no", async (req, res) => {
+  console.log("params", req.params);
   const userId = req.user.user;
+  console.log("query", req.query);
   try {
     const { exam_no } = req.params;
     const slotLists = await teacherDao.getTeacherSlots(userId, exam_no);
@@ -126,7 +128,6 @@ router.get("/teacherExamSlots/:exam_no", async (req, res) => {
 router.put("/updateGrade", async (req, res) => {
   try {
     const { payLoad } = req.body;
-
     for (let index = 0; index < payLoad.examIds.length; index++) {
       const examId = payLoad.examIds[index];
       const grade = payLoad.grades[index];

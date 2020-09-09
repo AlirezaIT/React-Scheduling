@@ -124,9 +124,11 @@ async function getExamLists() {
 }
 
 // ------------- fetch the list of slots form DB for ShowSlots Component
-async function getTeacherSlots(exam_no) {
+async function getTeacherSlots(exam_no, date) {
   try {
-    const response = await fetch(`${baseURL}/teacherExamSlots/${exam_no}`);
+    const response = await fetch(
+      `${baseURL}/teacherExamSlots/${exam_no}?date=${date}`
+    ); // Query String
 
     if (response.ok) {
       return response.json();

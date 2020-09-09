@@ -215,7 +215,11 @@ class CreateExam extends React.Component {
                   </Table>
                 </Col>
                 <Col md={4} className="mt-5">
-                  <Form>
+                  <Form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
                     <Form.Group>
                       <Form.Label column htmlFor="duration">
                         Duration of Each Slot (in Minute)
@@ -282,7 +286,11 @@ class CreateExam extends React.Component {
                         <p>
                           The Number Of Slots are lower than the Number Of
                           Students. <br />
-                          Please Create more Slots.
+                          You need{"\u00A0"}
+                          {this.state.totalNumberOfStudents -
+                            this.state.totalNumberOfSlots}
+                          {"\u00A0"}
+                          extra Slots. Please create more Slots.
                         </p>
                       </Alert>
                     )}

@@ -26,6 +26,8 @@ class StudentPage extends Component {
         return (value = "Withdraw");
       case -3:
         return (value = "Absent");
+      case 31:
+        return (value = "30L");
       default:
         return (value = grade);
     }

@@ -8,6 +8,7 @@ class ExecuteExam extends React.Component {
     super(props);
     this.state = {
       exam_no: "",
+      date: "",
     };
   }
 
@@ -15,11 +16,12 @@ class ExecuteExam extends React.Component {
     this.props.getExamtLists();
   }
 
-  executeExamHandler = (exam_no) => {
+  executeExamHandler = (exam_no, date) => {
     this.setState({
       exam_no: exam_no,
+      date: date,
     });
-    this.props.getTeacherSlots(exam_no, true);
+    this.props.getTeacherSlots(exam_no, date, true);
   };
 
   render() {
@@ -52,7 +54,10 @@ class ExecuteExam extends React.Component {
                               <Form.Group controlId="">
                                 <Button
                                   onClick={() =>
-                                    this.executeExamHandler(examList.exam_no)
+                                    this.executeExamHandler(
+                                      examList.exam_no,
+                                      examList.date
+                                    )
                                   }
                                   // to={{
                                   //   pathname: "/exams/slots",
