@@ -23,7 +23,7 @@ class App extends React.Component {
     this.state = {
       err: "",
       isNavOpen: false,
-
+      isReservedButtonClick: false,
       teacherStudentLists: [],
       examLists: [], // contains tle list of Exams for teacher for ShowSlots Component
       teacherSlots: [], // contains the list Of Slots for specific exam for ExecuteExam Component
@@ -254,8 +254,17 @@ class App extends React.Component {
 
   //------------------------after clicking the reserve button in StudentPage component using this is handler function, and it's calling the API function for getting the array of specific exam's slots and passing the exam_no to the API function
 
-  handleReserve = async (exam_no) => {
+  handleReserve = async (exam_no, isClicked) => {
+    this.setState({
+      isReservedButtonClick: isClicked,
+    });
     const result = await API.getExamSlots(exam_no); //passing the exam number (exam_no) and get the array of objects, contains the details of slots related to that exam number
+    setTimeout(() => {
+      this.setState({
+        isReservedButtonClick: false,
+      });
+    }, 200);
+
     this.setState({
       listSlots: result,
     });

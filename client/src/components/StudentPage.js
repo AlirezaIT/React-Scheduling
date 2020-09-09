@@ -4,6 +4,7 @@ import { Container, Button } from "react-bootstrap";
 import API from "../api/API";
 import moment from "moment";
 import { AuthContext } from "../auth/AuthContext";
+
 //STUDENT SEGMENT
 class StudentPage extends Component {
   constructor(props) {
@@ -97,7 +98,7 @@ class StudentPage extends Component {
                 <td>
                   <Button
                     key={index}
-                    onClick={() => this.props.handleReserve(exam.exam_no)} //calling the handleReserve (in app.js) to get list of slots of specific exam
+                    onClick={() => this.props.handleReserve(exam.exam_no, true)} //calling the handleReserve (in app.js) to get list of slots of specific exam
                     width="40"
                     className="btn btn-primary w-50"
                   >
@@ -155,6 +156,7 @@ class StudentPage extends Component {
       <AuthContext.Consumer>
         {(context) => (
           <Container>
+            <h1>{context.authUser?.role}</h1>
             <h2 className="mt-5  mb-5">
               Welcome Student. {context.authUser?.name}{" "}
             </h2>
